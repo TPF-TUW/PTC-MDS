@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{34473323-C08B-4333-83D7-9F7EA63D8167}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MDS.Master</RootNamespace>
+    <AssemblyName>MDS.Master</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ChaClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>\\172.16.0.190\MDS_Project\MDS\FileConfig\ChaClass.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.BonusSkins.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.Desktop.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Office.v20.2.Core, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v20.2.Core, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Spreadsheet.v20.2.Core, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraDialogs.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraSpreadsheet.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TheepClass">
+      <HintPath>\\172.16.0.190\mds_project\MDS\FileConfig\TheepClass.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="M01.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M01.Designer.cs">
+      <DependentUpon>M01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M02.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M02.Designer.cs">
+      <DependentUpon>M02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M03.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M03.Designer.cs">
+      <DependentUpon>M03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M04.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M04.Designer.cs">
+      <DependentUpon>M04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M05.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M05.Designer.cs">
+      <DependentUpon>M05.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M06.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M06.Designer.cs">
+      <DependentUpon>M06.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M07-01.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M07-01.Designer.cs">
+      <DependentUpon>M07-01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M07.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M07.Designer.cs">
+      <DependentUpon>M07.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M08-01.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M08-01.Designer.cs">
+      <DependentUpon>M08-01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M08.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M08.Designer.cs">
+      <DependentUpon>M08.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M09.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M09.Designer.cs">
+      <DependentUpon>M09.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M10.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M10.Designer.cs">
+      <DependentUpon>M10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M11-01.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M11-01.Designer.cs">
+      <DependentUpon>M11-01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M11.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M11.Designer.cs">
+      <DependentUpon>M11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M12.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M12.Designer.cs">
+      <DependentUpon>M12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M13.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M13.Designer.cs">
+      <DependentUpon>M13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M14.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M14.Designer.cs">
+      <DependentUpon>M14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M15.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M15.Designer.cs">
+      <DependentUpon>M15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M16.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M16.Designer.cs">
+      <DependentUpon>M16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M17.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M17.Designer.cs">
+      <DependentUpon>M17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="M18.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M18.Designer.cs">
+      <DependentUpon>M18.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MarkerRectangles\RectangleMarker.cs" />
+    <Compile Include="MarkerRectangles\RectangleResizePoints.cs" />
+    <Compile Include="ShowImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowImage.Designer.cs">
+      <DependentUpon>ShowImage.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="M01.resx">
+      <DependentUpon>M01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M02.resx">
+      <DependentUpon>M02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M03.resx">
+      <DependentUpon>M03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M04.resx">
+      <DependentUpon>M04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M05.resx">
+      <DependentUpon>M05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M06.resx">
+      <DependentUpon>M06.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M07-01.resx">
+      <DependentUpon>M07-01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M07.resx">
+      <DependentUpon>M07.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M08-01.resx">
+      <DependentUpon>M08-01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M08.resx">
+      <DependentUpon>M08.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M09.resx">
+      <DependentUpon>M09.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M10.resx">
+      <DependentUpon>M10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M11-01.resx">
+      <DependentUpon>M11-01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M11.resx">
+      <DependentUpon>M11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M12.resx">
+      <DependentUpon>M12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M13.resx">
+      <DependentUpon>M13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M14.resx">
+      <DependentUpon>M14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M15.resx">
+      <DependentUpon>M15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M16.resx">
+      <DependentUpon>M16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M17.resx">
+      <DependentUpon>M17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M18.resx">
+      <DependentUpon>M18.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ShowImage.resx">
+      <DependentUpon>ShowImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
