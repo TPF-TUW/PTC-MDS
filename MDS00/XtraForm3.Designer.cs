@@ -624,6 +624,7 @@ namespace MDS00
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1223, 715);
             this.Controls.Add(this.accordionControl1);
+            this.IconOptions.Image = ((System.Drawing.Image)(resources.GetObject("XtraForm3.IconOptions.Image")));
             this.IsMdiContainer = true;
             this.Name = "XtraForm3";
             this.Text = "PTC-MDS : Merchandise and Development System";
