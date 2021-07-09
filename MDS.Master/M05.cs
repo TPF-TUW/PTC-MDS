@@ -293,6 +293,9 @@ namespace MDS.Master
             gvCurrency.IndicatorWidth = 40;
         }
 
-       
+        private void ribbonControl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

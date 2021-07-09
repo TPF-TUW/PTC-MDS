@@ -52,6 +52,9 @@ namespace MDS.MPS
 
         }
 
-  
+        private void ribbonControl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

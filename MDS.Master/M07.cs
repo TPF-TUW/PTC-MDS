@@ -20,7 +20,7 @@ namespace MDS.Master
     public partial class M07 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         private Functionality.Function FUNC = new Functionality.Function();
-        private const string imgPathFile = @"\\172.16.0.190\MDS_Project\MDS\Pictures\";
+        private const string imgPathFile = Configuration.CONFIG.PATH_FILE + @"Pictures\";
         private DataTable dtVendor = new DataTable();
         private string selCode = "";
         StringBuilder sbMeterial = new StringBuilder();
@@ -45,6 +45,7 @@ namespace MDS.Master
 
         private void XtraForm1_Load(object sender, EventArgs e)
         {
+           // MessageBox.Show(Configuration.CONFIG.DATABASE_FILE);
             //***** SET CONNECT DB ********
             if (this.ConnectionString != null)
             {

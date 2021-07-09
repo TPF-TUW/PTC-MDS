@@ -25,7 +25,7 @@ namespace MDS.Development
     {
         private Functionality.Function FUNCT = new Functionality.Function();
 
-        private const string COMPANY_CODE = "TPF";
+        private const string COMPANY_CODE = "PTC";
 
         const int TYPE_FG = 0;
         const int TYPE_FABRIC = 1;
@@ -36,8 +36,8 @@ namespace MDS.Development
         const int TYPE_TEMPORARY = 8;
 
         string sql          = string.Empty;
-        string imgPath      = @"\\172.16.0.190\MDS_Project\MDS\Pictures\";
-        string reportPath = @"\\172.16.0.190\MDS_Project\MDS\Report\";
+        string imgPath      = Configuration.CONFIG.PATH_FILE + @"Pictures\";
+        string reportPath = Configuration.CONFIG.PATH_FILE + @"Report\";
 
         string currenTab    = string.Empty;
         string dosetOIDSMPL = string.Empty;

@@ -96,6 +96,7 @@
             this.ribbonControl.ShowApplicationButton = DevExpress.Utils.DefaultBoolean.False;
             this.ribbonControl.Size = new System.Drawing.Size(1118, 160);
             this.ribbonControl.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
+            this.ribbonControl.Click += new System.EventHandler(this.ribbonControl_Click);
             // 
             // bbiPrintPreview
             // 
@@ -297,14 +298,14 @@
             this.layoutControlGroup1.Size = new System.Drawing.Size(1104, 572);
             this.layoutControlGroup1.Text = "Marking";
             // 
-            // DEV04
+            // MPS04
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 770);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.ribbonControl);
-            this.Name = "DEV04";
+            this.Name = "MPS04";
             this.Ribbon = this.ribbonControl;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MPS04 : MPS Schedule";

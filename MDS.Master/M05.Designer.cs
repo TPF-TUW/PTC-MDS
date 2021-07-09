@@ -126,6 +126,7 @@
             this.ribbonControl.Size = new System.Drawing.Size(994, 160);
             this.ribbonControl.StatusBar = this.ribbonStatusBar;
             this.ribbonControl.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
+            this.ribbonControl.Click += new System.EventHandler(this.ribbonControl_Click);
             // 
             // bbiPrintPreview
             // 

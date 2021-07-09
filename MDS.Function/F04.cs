@@ -34,7 +34,7 @@ namespace MDS.Function
         ArrayList arlFunc;
 
         DataTable dtFuncName;
-        private string pathDrive = @"\\172.16.0.190\MDS_Project\MDS\EXE\";
+        private string pathDrive = Configuration.CONFIG.PATH_FILE + @"EXE\";
         public LogIn UserLogin { get; set; }
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";

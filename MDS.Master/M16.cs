@@ -18,7 +18,7 @@ namespace MDS.Master
     public partial class M16 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         private Functionality.Function FUNC = new Functionality.Function();
-        private const string xlsxPathFile = @"\\172.16.0.190\MDS_Project\MDS\ImportFile\Vessel\";
+        private const string xlsxPathFile = Configuration.CONFIG.PATH_FILE + @"ImportFile\Vessel\";
         string LongGestDays = "";
         private const int PORT_THAI = 8602;
         public LogIn UserLogin { get; set; }

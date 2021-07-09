@@ -69,9 +69,8 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ChaClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\172.16.0.190\MDS_Project\MDS\FileConfig\ChaClass.dll</HintPath>
+    <Reference Include="ChaClass">
+      <HintPath>\\192.168.101.3\Software_tuw\PTC-MDS\FileConfig\ChaClass.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.BonusSkins.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.CodeParser.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />

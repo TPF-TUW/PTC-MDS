@@ -96,6 +96,7 @@
             this.ribbonControl.ShowApplicationButton = DevExpress.Utils.DefaultBoolean.False;
             this.ribbonControl.Size = new System.Drawing.Size(1118, 160);
             this.ribbonControl.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
+            this.ribbonControl.Click += new System.EventHandler(this.ribbonControl_Click);
             // 
             // bbiPrintPreview
             // 

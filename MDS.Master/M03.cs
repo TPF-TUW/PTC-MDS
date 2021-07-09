@@ -424,6 +424,9 @@ namespace MDS.Master
             gvColor.IndicatorWidth = 40;
         }
 
-       
+        private void ribbonControl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

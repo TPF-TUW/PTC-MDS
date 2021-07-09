@@ -413,5 +413,10 @@ namespace MDS.Function
             if (e.Info.IsRowIndicator) e.Info.DisplayText = (e.RowHandle + 1).ToString();
             gvBranch.IndicatorWidth = 40;
         }
+
+        private void ribbonControl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
