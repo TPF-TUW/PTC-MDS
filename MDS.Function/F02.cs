@@ -74,8 +74,9 @@ namespace MDS.Function
 
             glueCREATE.EditValue = UserLogin.OIDUser;
 
-            LoadData();
+            
             NewData();
+            LoadData();
         }
 
         private void LoadData()
@@ -86,6 +87,9 @@ namespace MDS.Function
             sbSQL.Append("ORDER BY ID ");
             new ObjDE.setGridLookUpEdit(glueCompany, sbSQL, "Company Code", "ID").getData();
             glueCompany.EditValue = this.Company;
+            glueCompany.Enabled = false;
+            glueCompany.BackColor = Color.White;
+            glueCompany.ForeColor = Color.Navy;
 
             sbSQL.Clear();
             sbSQL.Append("SELECT 0 AS ID, 'Branch' AS Type ");

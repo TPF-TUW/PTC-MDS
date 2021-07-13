@@ -422,7 +422,7 @@ namespace MDS.Master
                 sbSQL.Append("       Unit AS UN ON IT.DefaultUnit = UN.OIDUNIT LEFT OUTER JOIN ");
                 sbSQL.Append("       Branchs AS BN ON IT.Branch = BN.OIDBranch LEFT OUTER JOIN ");
                 sbSQL.Append("       (" + sbMeterial.ToString() + ") AS MTYPE ON IT.MaterialType = MTYPE.ID ");
-                sbSQL.Append("WHERE (IT.OIDITEM <> '') ");
+                sbSQL.Append("WHERE (IT.OIDCOMPANY = '" + this.Company + "') ");
                 if(slueSMaterial.Text.Trim() != "")
                     sbSQL.Append("AND (IT.MaterialType = '" + slueSMaterial.EditValue.ToString() + "') ");
                 if(slueSBranch.Text.Trim() != "")
@@ -629,11 +629,11 @@ namespace MDS.Master
                             {
                                 sbSQL.Append("  INSERT INTO Items(MaterialType, Code, Description, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, OIDCUST, BusinessUnit, Season, ClassType, Branch,  ");
                                 sbSQL.Append("       CostSheetNo, StdPrice, FirstVendor, PurchaseType, PurchaseLoss, TaxBenefits, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, StdCost, DefaultUnit, PathFile, LabTestNo, ApprovedLabDate, QCInspection, ");
-                                sbSQL.Append("       CreatedBy, CreatedDate, UpdatedBy, UpdatedDate) ");
+                                sbSQL.Append("       CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, OIDCOMPANY) ");
                                 sbSQL.Append("  VALUES('" + MaterialType + "', N'" + glueCode.Text.Trim().Replace("'", "''") + "', N'" + txeDescription.Text.Trim().Replace("'", "''") + "', N'" + txeComposition.Text.Trim().Replace("'", "''") + "', N'" + txeWeight.Text.Trim().Replace("'", "''") + "', N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', N'" + txeModelName.Text.Trim().Replace("'", "''") + "', " + OIDCATEGORY + ", " + OIDSTYLE + ", " + OIDCOLOR + ", " + OIDSIZE + ", " + OIDCUST + ",  ");
                                 sbSQL.Append("         N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', N'" + cbeSeason.Text.Trim() + "', N'" + cbeClass.Text.Trim().Replace("'", "''") + "', " + Branch + ", N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', '" + StdPrice + "', " + FirstVendor + ", '" + PurchaseType + "', " + PurchaseLoss + ", '" + TaxBenefits + "', '" + Convert.ToDateTime(dteFirstReceiptDate.Text).ToString("yyyy-MM-dd") + "', '" + slueDefaultVendor.EditValue.ToString() + "', ");
                                 sbSQL.Append("         " + MinStock + ", " + MaxStock + ", " + StockShelfLife + ", " + StdCost + ", " + DefaultUnit + ", N'" + newFileName + "', N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', '" + Convert.ToDateTime(dteApprovedLabDate.Text).ToString("yyyy-MM-dd") + "', '" + QCInspection + "', ");
-                                sbSQL.Append("         '" + strCREATE + "', GETDATE(), '" + strUPDATE + "', GETDATE()) ");
+                                sbSQL.Append("         '" + strCREATE + "', GETDATE(), '" + strUPDATE + "', GETDATE(), '" + this.Company + "') ");
                             }
                             else if (lblStatus.Text.ToUpper().Trim() == "EDIT")
                             {

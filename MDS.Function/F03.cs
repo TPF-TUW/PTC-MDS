@@ -96,8 +96,9 @@ namespace MDS.Function
             glueDPType.Properties.DisplayMember = "name";
             glueDPType.Properties.ValueMember = "value";
 
-            LoadData();
+            
             NewData();
+            LoadData();
         }
 
         private void LoadDEPT()
@@ -141,11 +142,15 @@ namespace MDS.Function
             sbSQL.Clear();
             sbSQL.Append("SELECT Code AS [Company Code], EngName AS [Company Name (En)], THName AS [Company Name (Th)], OIDCOMPANY AS ID ");
             sbSQL.Append("FROM Company ");
+            sbSQL.Append("WHERE (OIDCOMPANY = '" + this.Company + "') ");
             sbSQL.Append("ORDER BY OIDCOMPANY ");
             new ObjDE.setGridLookUpEdit(glueCompany, sbSQL, "Company Code", "ID").getData();
             glueCompany.Properties.View.PopulateColumns(glueCompany.Properties.DataSource);
             glueCompany.Properties.View.Columns["ID"].Visible = false;
             glueCompany.EditValue = this.Company;
+            glueCompany.Enabled = false;
+            glueCompany.BackColor = Color.White;
+            glueCompany.ForeColor = Color.Navy;
 
             sbSQL.Clear();
             sbSQL.Append("SELECT Name AS [Department Type], Code AS ID ");
