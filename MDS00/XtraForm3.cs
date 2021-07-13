@@ -78,7 +78,7 @@ namespace MDS00
             frm.UserLogin = UserLogin;
             try
             {
-                frm.ConnectionString = "172.16.0.30,sa,gik8nv@tpf,MDS";
+                frm.ConnectionString = "domain-ii,sa,ZAQ113m4tuw,MDS";
             }
             catch (Exception)
             { }

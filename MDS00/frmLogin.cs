@@ -15,7 +15,7 @@ namespace MDS00
 {
     public partial class frmLogin : DevExpress.XtraEditors.XtraForm
     {
-        cDatabase db = new cDatabase("Server=" + "domain-ii" + ";uid=sa;pwd=ZAQ113m4tuw;database=MDS");
+        cDatabase db = new cDatabase("Server=domain-ii;uid=sa;pwd=ZAQ113m4tuw;database=MDS");
         //private LogIn User_Login;
 
         public frmLogin()
