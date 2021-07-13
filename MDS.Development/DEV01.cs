@@ -70,6 +70,7 @@ namespace MDS.Development
         int chkReadWrite = 0;
 
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
         public string ConnectionString { get; set; }
 
         string CONNECT_STRING = "";

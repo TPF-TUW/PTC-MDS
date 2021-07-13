@@ -33,6 +33,7 @@ namespace MDS.Function
         ArrayList arlFunc;
         DataTable dtFuncName;
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";

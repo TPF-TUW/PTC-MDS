@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using Microsoft.Win32;
-//using Microsoft.AspNet.Identity;
+using DBConnect;
 using TheepClass;
 using DevExpress.LookAndFeel;
 
@@ -17,6 +17,10 @@ namespace MDS00
     {
         cDatabase db = new cDatabase("Server=domain-ii;uid=sa;pwd=ZAQ113m4tuw;database=MDS");
         //private LogIn User_Login;
+
+        public string ConnectionString { get; set; }
+        string CONNECT_STRING = "";
+        DatabaseConnect DBC;
 
         public frmLogin()
         {
@@ -28,16 +32,16 @@ namespace MDS00
             txtUsername.Text = userName == null ? "" : userName.ToString();
         }
         
-        private LogIn VerifyLogin(string userName, string passWord)
+        private LogIn VerifyLogin(string userName, string passWord, string company)
         {
             db.ConnectionOpen();
-            if (db.ExecuteFirstValue("SELECT COUNT(USERNAME) FROM Users WHERE UserName='" + userName + "'")=="0")
+            if (db.ExecuteFirstValue("SELECT COUNT(USERNAME) FROM Users WHERE OIDCompany='" + company + "' AND UserName='" + userName + "'")=="0")
             {
                 MessageBox.Show("User Name is not valid.","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 db.ConnectionClose();
                 return null;
             }
-            if (db.ExecuteFirstValue("SELECT COUNT(PASSWORD) FROM Users WHERE UserName='"+userName+"' AND Password='"+passWord+"'")=="0")
+            if (db.ExecuteFirstValue("SELECT COUNT(PASSWORD) FROM Users WHERE OIDCompany='" + company + "' AND UserName='" + userName+"' AND Password='"+passWord+"'")=="0")
             {
                 MessageBox.Show("Password is not correct.","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return null;
@@ -45,7 +49,7 @@ namespace MDS00
             db.ConnectionClose();
             string strSQL = "SELECT B.OIDUSER,B.USERNAME,B.FULLNAME,A.FUNCTIONNO,A.READWRITESTATUS,A.ALLOWDENYSTATUS "+ 
                 "FROM FunctionAccess A INNER JOIN Users B ON A.OIDUser = B.OIDUSER "+
-                "WHERE B.UserName = '"+userName+"'";
+                "WHERE B.OIDCompany='" + company + "' AND B.UserName = '" + userName+"'";
             DataTable dtLogin = db.GetDataTable(strSQL);
             var User_Login = new LogIn();
             var functions = new List<LogIn_Function>();
@@ -75,28 +79,36 @@ namespace MDS00
         }
         private void btnOK_Click(object sender, EventArgs e)
         {
-            try
+            if (glueCompany.Text == "")
             {
-                var userLogin=VerifyLogin(txtUsername.Text, txtPassword.Text);
-                if (userLogin == null) 
-                    return;
-                else
-                    cUtility.SaveRegistry(@"Software\MDS", "UserName", userLogin.UserName);
-                this.Hide();
-                XtraForm3 frmMain = new XtraForm3();
-                frmMain.UserLogin = userLogin;
-                frmMain.WindowState = FormWindowState.Maximized;
-                frmMain.Show();
+                MessageBox.Show("Please select company.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                glueCompany.Focus();
             }
-            catch (SystemException ex)
+            else
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    var userLogin = VerifyLogin(txtUsername.Text, txtPassword.Text, glueCompany.EditValue.ToString());
+                    if (userLogin == null)
+                        return;
+                    else
+                        cUtility.SaveRegistry(@"Software\MDS", "UserName", userLogin.UserName);
+                    this.Hide();
+                    XtraForm3 frmMain = new XtraForm3();
+                    frmMain.Company = Convert.ToInt32(glueCompany.EditValue.ToString());
+                    frmMain.UserLogin = userLogin;
+                    frmMain.WindowState = FormWindowState.Maximized;
+                    frmMain.Show();
+                }
+                catch (SystemException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (ApplicationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            catch (ApplicationException ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
         }
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -112,7 +124,35 @@ namespace MDS00
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
+            //***** SET CONNECT DB ********
+            if (this.ConnectionString != null)
+            {
+                if (this.ConnectionString != "")
+                {
+                    CONNECT_STRING = this.ConnectionString;
+                }
+            }
 
+            this.DBC = new DatabaseConnect(CONNECT_STRING);
+
+            if (this.DBC.chkCONNECTION_STING() == false)
+            {
+                this.DBC.setCONNECTION_STRING_INIFILE();
+                if (this.DBC.chkCONNECTION_STING() == false)
+                {
+                    return;
+                }
+            }
+            new ObjDE.setDatabase(this.DBC);
+            //*****************************
+
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.Append("SELECT Code AS [Company Code], EngName AS[Name (En)], THName AS[Name (Th)], OIDCOMPANY AS ID ");
+            sbSQL.Append("FROM Company ");
+            sbSQL.Append("ORDER BY OIDCOMPANY ");
+            new ObjDE.setGridLookUpEdit(glueCompany, sbSQL, "Company Code", "ID").getData();
+            glueCompany.Properties.View.PopulateColumns(glueCompany.Properties.DataSource);
+            glueCompany.Properties.View.Columns["ID"].Visible = false;
         }
     }
 

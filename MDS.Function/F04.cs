@@ -36,6 +36,7 @@ namespace MDS.Function
         DataTable dtFuncName;
         private string pathDrive = Configuration.CONFIG.PATH_FILE + @"EXE\";
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
         DatabaseConnect DBC;

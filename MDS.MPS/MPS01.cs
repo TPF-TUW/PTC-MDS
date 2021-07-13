@@ -26,7 +26,7 @@ namespace MDS.MPS
         StringBuilder sbSTATUS = new StringBuilder();
         DataTable dtINPUT = new DataTable();
         public LogIn UserLogin { get; set; }
-
+        public int Company { get; set; }
         public MPS01()
         {
             InitializeComponent();

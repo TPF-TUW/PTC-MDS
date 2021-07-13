@@ -9,7 +9,7 @@ namespace MDS.MPS
     public partial class MPS05 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         public LogIn UserLogin { get; set; }
-
+        public int Company { get; set; }
         public MPS05()
         {
             InitializeComponent();

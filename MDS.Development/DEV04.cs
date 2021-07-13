@@ -19,6 +19,7 @@ namespace MDS.Development
 
         DataTable dtFB = new DataTable();
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public DEV04()
         {

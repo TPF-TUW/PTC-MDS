@@ -26,6 +26,7 @@ namespace MDS.Development
         private Functionality.Function FUNC = new Functionality.Function();
         
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public DEV03()
         {

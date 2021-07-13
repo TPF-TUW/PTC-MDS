@@ -30,6 +30,7 @@ namespace MDS.MPS
         List<DocumentStatus> documentDOStatuses;
         List<TransportationMethod> transportationMethod;
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public MPS02()
         {

@@ -19,6 +19,7 @@ namespace MDS.Master
         private Functionality.Function FUNC = new Functionality.Function();
         bool chkShow = false;
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
@@ -483,6 +484,9 @@ namespace MDS.Master
             gvCustDes.IndicatorWidth = 40;
         }
 
-      
+        private void ribbonControl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

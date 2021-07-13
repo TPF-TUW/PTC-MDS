@@ -614,6 +614,7 @@
             this.ribbonControl2.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2013;
             this.ribbonControl2.Size = new System.Drawing.Size(1098, 160);
             this.ribbonControl2.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
+            this.ribbonControl2.Click += new System.EventHandler(this.ribbonControl2_Click);
             // 
             // bbiNew
             // 

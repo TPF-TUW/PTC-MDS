@@ -22,7 +22,7 @@ namespace MDS.Master
         string LongGestDays = "";
         private const int PORT_THAI = 8602;
         public LogIn UserLogin { get; set; }
-
+        public int Company { get; set; }
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
         DatabaseConnect DBC;

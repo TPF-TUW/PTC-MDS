@@ -23,6 +23,7 @@ namespace MDS.Function
         private string dbBranch = "Branchs";
         List<DepartmentType> departmentTypes;
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";

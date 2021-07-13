@@ -16,7 +16,7 @@ namespace MDS.Master
     {
         private Functionality.Function FUNC = new Functionality.Function();
         public LogIn UserLogin { get; set; }
-
+        public int Company { get; set; }
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
         DatabaseConnect DBC;
@@ -331,6 +331,9 @@ namespace MDS.Master
             gvStyle.IndicatorWidth = 40;
         }
 
+        private void ribbonControl_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

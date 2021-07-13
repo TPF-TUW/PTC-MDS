@@ -27,6 +27,7 @@ namespace MDS.Development
         string global_oidSmpl = string.Empty;
         string global_Marking = string.Empty;
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         //private Functionality.Function FUNC = new Functionality.Function();
         public DEV02()

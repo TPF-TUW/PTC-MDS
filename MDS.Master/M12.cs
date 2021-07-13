@@ -20,7 +20,7 @@ namespace MDS.Master
         private string selCode = "";
         List<VendorType> vendorTypes;
         public LogIn UserLogin { get; set; }
-
+        public int Company { get; set; }
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
         DatabaseConnect DBC;

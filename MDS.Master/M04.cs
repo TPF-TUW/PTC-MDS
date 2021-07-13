@@ -18,6 +18,7 @@ namespace MDS.Master
         private Functionality.Function FUNC = new Functionality.Function();
         private string selCode = "";
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
@@ -59,7 +60,7 @@ namespace MDS.Master
             }
             new ObjDE.setDatabase(this.DBC);
             //*****************************
-
+            MessageBox.Show(this.Company.ToString());
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'M04') ");
             int chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();

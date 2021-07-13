@@ -26,7 +26,8 @@ namespace MDS00
     public partial class XtraForm3 : DevExpress.XtraEditors.XtraForm
     {
         internal LogIn UserLogin { get; set; }
-        
+        public int Company { get; set; }
+
         public XtraForm3()
         {
             InitializeComponent();
@@ -76,6 +77,13 @@ namespace MDS00
             var objectType = Type.GetType("MDS."+projectName+"."+processName+",MDS."+projectName);
             dynamic frm = Activator.CreateInstance(objectType);
             frm.UserLogin = UserLogin;
+            try
+            {
+                frm.Company = this.Company;
+            }
+            catch (Exception)
+            { }
+
             try
             {
                 frm.ConnectionString = "domain-ii,sa,ZAQ113m4tuw,MDS";

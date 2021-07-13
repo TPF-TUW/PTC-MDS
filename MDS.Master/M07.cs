@@ -25,6 +25,7 @@ namespace MDS.Master
         private string selCode = "";
         StringBuilder sbMeterial = new StringBuilder();
         public LogIn UserLogin { get; set; }
+        public int Company { get; set; }
 
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
@@ -1995,6 +1996,11 @@ namespace MDS.Master
                 var frm = new M07_01(this.DBC, UserLogin.OIDUser, rgMaterial.EditValue.ToString(), rgMaterial.Properties.Items[rgMaterial.SelectedIndex].Description, txeID.Text.Trim());
                 frm.ShowDialog(this);
             }
+        }
+
+        private void ribbonControl2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
