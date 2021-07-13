@@ -116,7 +116,9 @@ namespace MDS00
         }
         private void frmLogin_Shown(object sender, EventArgs e)
         {
-            if (txtUsername.Text.Length == 0)
+            if (glueCompany.Text.Length == 0)
+                glueCompany.Focus();
+            else if (txtUsername.Text.Length == 0)
                 txtUsername.Focus();
             else
                 txtPassword.Focus();
@@ -149,10 +151,18 @@ namespace MDS00
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT Code AS [Company Code], EngName AS[Name (En)], THName AS[Name (Th)], OIDCOMPANY AS ID ");
             sbSQL.Append("FROM Company ");
+            sbSQL.Append("WHERE (Status = 1) ");
             sbSQL.Append("ORDER BY OIDCOMPANY ");
             new ObjDE.setGridLookUpEdit(glueCompany, sbSQL, "Company Code", "ID").getData();
             glueCompany.Properties.View.PopulateColumns(glueCompany.Properties.DataSource);
             glueCompany.Properties.View.Columns["ID"].Visible = false;
+
+            try
+            {
+                glueCompany.EditValue = glueCompany.Properties.GetKeyValue(0);
+            }
+            catch (Exception) { }
+
         }
     }
 

@@ -60,7 +60,7 @@ namespace MDS.Master
             }
             new ObjDE.setDatabase(this.DBC);
             //*****************************
-            MessageBox.Show(this.Company.ToString());
+            //MessageBox.Show(this.Company.ToString());
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'M04') ");
             int chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
@@ -129,13 +129,18 @@ namespace MDS.Master
             sbSQL.Append("UNION ALL ");
             sbSQL.Append("SELECT '1' AS ID, 'Sub Contract' AS Type ");
             new ObjDE.setGridLookUpEdit(glueCustType, sbSQL, "Type", "ID").getData(true);
+            glueCustType.Properties.View.PopulateColumns(glueCustType.Properties.DataSource);
+            glueCustType.Properties.View.Columns["ID"].Visible = false;
 
             //Sales Section
             sbSQL.Clear();
             sbSQL.Append("SELECT OIDDEPT AS ID, Name AS Department ");
             sbSQL.Append("FROM Departments ");
+            sbSQL.Append("WHERE (OIDCOMPANY = '" + this.Company + "') ");
             sbSQL.Append("ORDER BY OIDDEPT ");
             new ObjDE.setGridLookUpEdit(glueSection, sbSQL, "Department", "Department").getData(true);
+            glueSection.Properties.View.PopulateColumns(glueSection.Properties.DataSource);
+            glueSection.Properties.View.Columns["ID"].Visible = false;
 
             //Payment Term
             sbSQL.Clear();
@@ -150,6 +155,8 @@ namespace MDS.Master
             sbSQL.Append("FROM Currency ");
             sbSQL.Append("ORDER BY OIDCURR ");
             new ObjDE.setGridLookUpEdit(glueCurrency, sbSQL, "Currency", "Currency").getData(true);
+            glueCurrency.Properties.View.PopulateColumns(glueCurrency.Properties.DataSource);
+            glueCurrency.Properties.View.Columns["ID"].Visible = false;
 
             //Calendar No.
             sbSQL.Clear();
@@ -158,7 +165,9 @@ namespace MDS.Master
             sbSQL.Append("CROSS APPLY(SELECT ShortName AS CompanyName FROM Customer WHERE OIDCUST = A.OIDCompany) B  ");
             sbSQL.Append("WHERE CompanyType = 1  ");
             sbSQL.Append("ORDER BY Year DESC, CompanyName, OIDCALENDAR  ");
-            new ObjDE.setGridLookUpEdit(glueCalendar, sbSQL, "CustomerName", "No").getData(true);
+            new ObjDE.setSearchLookUpEdit(glueCalendar, sbSQL, "CustomerName", "No").getData(true);
+            glueCalendar.Properties.View.PopulateColumns(glueCalendar.Properties.DataSource);
+            glueCalendar.Properties.View.Columns["No"].Visible = false;
 
             //All Customer
             sbSQL.Clear();

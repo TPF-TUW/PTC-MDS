@@ -145,6 +145,7 @@ namespace MDS.Function
             new ObjDE.setGridLookUpEdit(glueCompany, sbSQL, "Company Code", "ID").getData();
             glueCompany.Properties.View.PopulateColumns(glueCompany.Properties.DataSource);
             glueCompany.Properties.View.Columns["ID"].Visible = false;
+            glueCompany.EditValue = this.Company;
 
             sbSQL.Clear();
             sbSQL.Append("SELECT Name AS [Department Type], Code AS ID ");

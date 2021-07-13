@@ -151,7 +151,21 @@ namespace MDS.Function
             glueCompany.Properties.View.PopulateColumns(glueCompany.Properties.DataSource);
             glueCompany.Properties.View.Columns["ID"].Visible = false;
 
+            glueCompany.EditValue = this.Company;
+            glueCompany.Enabled = false;
+            glueCompany.BackColor = Color.White;
+            glueCompany.ForeColor = Color.Navy;
+
             glueBranch.Properties.DataSource = null;
+            sbSQL.Clear();
+            sbSQL.Append("SELECT Code, Name AS [Branch Name], OIDBranch AS ID ");
+            sbSQL.Append("FROM  Branchs ");
+            sbSQL.Append("WHERE (OIDCOMPANY = '" + this.Company + "') ");
+            sbSQL.Append("ORDER BY Code ");
+            new ObjDE.setGridLookUpEdit(glueBranch, sbSQL, "Branch Name", "ID").getData();
+            glueBranch.Properties.View.PopulateColumns(glueBranch.Properties.DataSource);
+            glueBranch.Properties.View.Columns["ID"].Visible = false;
+
             glueDepartment.Properties.DataSource = null;
 
             LoadFunction();
@@ -163,6 +177,7 @@ namespace MDS.Function
             sbSQL.Append("       Departments AS D ON U.OIDDEPT = D.OIDDEPT LEFT OUTER JOIN ");
             sbSQL.Append("       Company AS C ON U.OIDCompany = C.OIDCOMPANY LEFT OUTER JOIN ");
             sbSQL.Append("       Branchs AS B ON U.OIDBranch = B.OIDBranch ");
+            sbSQL.Append("WHERE  (U.OIDCompany = '" + this.Company + "') AND (U.UserName <> 'admin') ");
             sbSQL.Append("ORDER BY[Company ID], [Department ID], B.OIDBranch, [User ID] ");
             new ObjDE.setGridControl(gcUser, gvUser, sbSQL).getData(false, false, false, true);
             gvUser.Columns["User ID"].Visible = false;
@@ -498,10 +513,10 @@ namespace MDS.Function
             if (glueCompany.Text.Trim() != "")
             {
                 StringBuilder sbSQL = new StringBuilder();
-                sbSQL.Append("SELECT Code AS [Branch Code], Name AS [Branch Name], OIDBranch AS ID ");
+                sbSQL.Append("SELECT Code, Name AS [Branch Name], OIDBranch AS ID ");
                 sbSQL.Append("FROM  Branchs ");
                 sbSQL.Append("WHERE (OIDCOMPANY = '" + glueCompany.EditValue.ToString() + "') ");
-                sbSQL.Append("ORDER BY [Branch Code] ");
+                sbSQL.Append("ORDER BY Code ");
                 new ObjDE.setGridLookUpEdit(glueBranch, sbSQL, "Branch Name", "ID").getData();
                 glueBranch.Properties.View.PopulateColumns(glueBranch.Properties.DataSource);
                 glueBranch.Properties.View.Columns["ID"].Visible = false;
@@ -515,9 +530,9 @@ namespace MDS.Function
         {
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT DP.Code, DP.Name AS Department, DT.Name AS Type, DP.OIDDEPT AS ID ");
-            sbSQL.Append("FROM   Departments AS DP LEFT OUTER JOIN ");
-            sbSQL.Append("       DepartmentType AS DT ON DP.DepartmentType = DT.OIDDepType ");
-            sbSQL.Append("WHERE (DP.OIDCOMPANY = '" + glueCompany.EditValue.ToString() + "') AND(DP.OIDBRANCH = '" + glueBranch.EditValue.ToString() + "') ");
+            sbSQL.Append("FROM   Departments AS DP INNER JOIN ");
+            sbSQL.Append("       DepartmentType AS DT ON DP.DepartmentType = DT.Code ");
+            sbSQL.Append("WHERE (DP.OIDCOMPANY = '" + this.Company + "') AND(DP.OIDBRANCH = '" + glueBranch.EditValue.ToString() + "') ");
             sbSQL.Append("ORDER BY DT.Code, DP.Code ");
             new ObjDE.setGridLookUpEdit(glueDepartment, sbSQL, "Department", "ID").getData();
             glueDepartment.Properties.View.PopulateColumns(glueDepartment.Properties.DataSource);

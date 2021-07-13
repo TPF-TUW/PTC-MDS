@@ -85,6 +85,7 @@ namespace MDS.Function
             sbSQL.Append("FROM Company ");
             sbSQL.Append("ORDER BY ID ");
             new ObjDE.setGridLookUpEdit(glueCompany, sbSQL, "Company Code", "ID").getData();
+            glueCompany.EditValue = this.Company;
 
             sbSQL.Clear();
             sbSQL.Append("SELECT 0 AS ID, 'Branch' AS Type ");

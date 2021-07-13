@@ -68,8 +68,6 @@
             this.txeOthAddr1 = new DevExpress.XtraEditors.TextEdit();
             this.txeOthContract = new DevExpress.XtraEditors.TextEdit();
             this.txeEval = new DevExpress.XtraEditors.TextEdit();
-            this.glueCalendar = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridLookUpEdit4View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.glueCurrency = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit3View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.glueTerm = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -92,6 +90,8 @@
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.glueUPDATE = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.glueCalendar = new DevExpress.XtraEditors.SearchLookUpEdit();
+            this.searchLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -150,8 +150,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txeOthAddr1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeOthContract.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeEval.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.glueCalendar.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit4View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.glueCurrency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit3View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.glueTerm.Properties)).BeginInit();
@@ -174,6 +172,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.glueUPDATE.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.glueCalendar.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.searchLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
@@ -430,7 +430,6 @@
             this.layoutControl1.Controls.Add(this.txeOthAddr1);
             this.layoutControl1.Controls.Add(this.txeOthContract);
             this.layoutControl1.Controls.Add(this.txeEval);
-            this.layoutControl1.Controls.Add(this.glueCalendar);
             this.layoutControl1.Controls.Add(this.glueCurrency);
             this.layoutControl1.Controls.Add(this.glueTerm);
             this.layoutControl1.Controls.Add(this.glueSection);
@@ -447,6 +446,7 @@
             this.layoutControl1.Controls.Add(this.txeID);
             this.layoutControl1.Controls.Add(this.glueCREATE);
             this.layoutControl1.Controls.Add(this.glueUPDATE);
+            this.layoutControl1.Controls.Add(this.glueCalendar);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 160);
             this.layoutControl1.Name = "layoutControl1";
@@ -625,29 +625,6 @@
             this.txeEval.StyleController = this.layoutControl1;
             this.txeEval.TabIndex = 17;
             this.txeEval.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txeEval_KeyDown);
-            // 
-            // glueCalendar
-            // 
-            this.glueCalendar.Location = new System.Drawing.Point(614, 124);
-            this.glueCalendar.MenuManager = this.ribbonControl;
-            this.glueCalendar.Name = "glueCalendar";
-            this.glueCalendar.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.glueCalendar.Properties.NullText = "";
-            this.glueCalendar.Properties.PopupView = this.gridLookUpEdit4View;
-            this.glueCalendar.Size = new System.Drawing.Size(116, 20);
-            this.glueCalendar.StyleController = this.layoutControl1;
-            this.glueCalendar.TabIndex = 16;
-            this.glueCalendar.EditValueChanged += new System.EventHandler(this.glueCalendar_EditValueChanged);
-            // 
-            // gridLookUpEdit4View
-            // 
-            this.gridLookUpEdit4View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridLookUpEdit4View.Name = "gridLookUpEdit4View";
-            this.gridLookUpEdit4View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridLookUpEdit4View.OptionsView.EnableAppearanceEvenRow = true;
-            this.gridLookUpEdit4View.OptionsView.EnableAppearanceOddRow = true;
-            this.gridLookUpEdit4View.OptionsView.ShowGroupPanel = false;
             // 
             // glueCurrency
             // 
@@ -901,6 +878,29 @@
             this.gridView4.Name = "gridView4";
             this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView4.OptionsView.ShowGroupPanel = false;
+            // 
+            // glueCalendar
+            // 
+            this.glueCalendar.Location = new System.Drawing.Point(614, 124);
+            this.glueCalendar.MenuManager = this.ribbonControl;
+            this.glueCalendar.Name = "glueCalendar";
+            this.glueCalendar.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.glueCalendar.Properties.NullText = "";
+            this.glueCalendar.Properties.PopupView = this.searchLookUpEdit1View;
+            this.glueCalendar.Size = new System.Drawing.Size(116, 20);
+            this.glueCalendar.StyleController = this.layoutControl1;
+            this.glueCalendar.TabIndex = 16;
+            this.glueCalendar.EditValueChanged += new System.EventHandler(this.glueCalendar_EditValueChanged);
+            // 
+            // searchLookUpEdit1View
+            // 
+            this.searchLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.searchLookUpEdit1View.Name = "searchLookUpEdit1View";
+            this.searchLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.searchLookUpEdit1View.OptionsView.EnableAppearanceEvenRow = true;
+            this.searchLookUpEdit1View.OptionsView.EnableAppearanceOddRow = true;
+            this.searchLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // Root
             // 
@@ -1250,7 +1250,7 @@
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem17.Name = "layoutControlItem17";
             this.layoutControlItem17.Size = new System.Drawing.Size(398, 24);
-            this.layoutControlItem17.Text = "Customer";
+            this.layoutControlItem17.Text = "Customer Code";
             this.layoutControlItem17.TextSize = new System.Drawing.Size(137, 14);
             // 
             // layoutControlItem7
@@ -1346,8 +1346,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txeOthAddr1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeOthContract.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeEval.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.glueCalendar.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit4View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.glueCurrency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit3View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.glueTerm.Properties)).EndInit();
@@ -1370,6 +1368,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.glueUPDATE.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.glueCalendar.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.searchLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
@@ -1452,8 +1452,6 @@
         private DevExpress.XtraEditors.TextEdit txeOthAddr1;
         private DevExpress.XtraEditors.TextEdit txeOthContract;
         private DevExpress.XtraEditors.TextEdit txeEval;
-        private DevExpress.XtraEditors.GridLookUpEdit glueCalendar;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit4View;
         private DevExpress.XtraEditors.GridLookUpEdit glueCurrency;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit3View;
         private DevExpress.XtraEditors.GridLookUpEdit glueTerm;
@@ -1522,5 +1520,7 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraEditors.GridLookUpEdit glueUPDATE;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
+        private DevExpress.XtraEditors.SearchLookUpEdit glueCalendar;
+        private DevExpress.XtraGrid.Views.Grid.GridView searchLookUpEdit1View;
     }
 }

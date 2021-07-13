@@ -292,10 +292,23 @@ namespace MDS.Master
             new ObjDE.setSearchLookUpEdit(slueCustomer, sbSQL, "ShortName", "ID").getData(true);
 
             sbSQL.Clear();
-            sbSQL.Append("SELECT DISTINCT ISNULL(Season, '') AS Season ");
-            sbSQL.Append("FROM  Items ");
-            sbSQL.Append("ORDER BY Season ");
-            new ObjDE.setComboboxEdit(cbeSeason, sbSQL).getDataRange();
+            //sbSQL.Append("SELECT DISTINCT ISNULL(Season, '') AS Season ");
+            //sbSQL.Append("FROM  Items ");
+            //sbSQL.Append("ORDER BY Season ");
+            //sbSQL.Append("SELECT SeasonNo AS Season, SeasonName ");
+            //sbSQL.Append("FROM  Season ");
+            //sbSQL.Append("ORDER BY OIDSEASON ");
+            sbSQL.Append("SELECT Season ");
+            sbSQL.Append("FROM (SELECT FORMAT(DATEADD(year, -1, GETDATE()), 'yy') + SeasonNo AS Season, FORMAT(DATEADD(year, -1, GETDATE()), 'yy') AS Year, SeasonNo, OIDSEASON ");
+            sbSQL.Append("      FROM   Season AS SS1 ");
+            sbSQL.Append("      UNION ALL ");
+            sbSQL.Append("      SELECT FORMAT(GETDATE(), 'yy') + SeasonNo AS Season, FORMAT(GETDATE(), 'yy') AS Year, SeasonNo, OIDSEASON ");
+            sbSQL.Append("      FROM   Season AS SS2 ");
+            sbSQL.Append("      UNION ALL ");
+            sbSQL.Append("      SELECT FORMAT(DATEADD(year, 1, GETDATE()), 'yy') + SeasonNo AS Season, FORMAT(DATEADD(year, 1, GETDATE()), 'yy') AS Year, SeasonNo, OIDSEASON ");
+            sbSQL.Append("      FROM   Season AS SS3) AS SS ");
+            sbSQL.Append("ORDER BY Year DESC, OIDSEASON ");
+            new ObjDE.setSearchLookUpEdit(cbeSeason, sbSQL, "Season", "Season").getData(true);
 
             sbSQL.Clear();
             sbSQL.Append("SELECT DISTINCT ISNULL(ClassType, '') AS ClassType ");
@@ -306,6 +319,7 @@ namespace MDS.Master
             sbSQL.Clear();
             sbSQL.Append("SELECT Name AS Branch, OIDBranch AS ID ");
             sbSQL.Append("FROM  Branchs ");
+            sbSQL.Append("WHERE (OIDCOMPANY = '" + this.Company + "') ");
             sbSQL.Append("ORDER BY OIDBranch ");
             new ObjDE.setGridLookUpEdit(glueBranch, sbSQL, "Branch", "ID").getData(true);
             new ObjDE.setSearchLookUpEdit(slueSBranch, sbSQL, "Branch", "ID").getData(true);
@@ -2001,6 +2015,26 @@ namespace MDS.Master
         private void ribbonControl2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void sbCategory_Click(object sender, EventArgs e)
+        {
+            var frm = new M07_02(this.DBC, UserLogin.OIDUser);
+            frm.ShowDialog(this);
+        }
+
+        private void sbStyle_Click(object sender, EventArgs e)
+        {
+            if (sbCategory.Text == "")
+            {
+                FUNC.msgWarning("Please select category (division).");
+                sbCategory.Focus();
+            }
+            else
+            {
+                var frm = new M07_03(this.DBC, slueCategory.EditValue.ToString(), UserLogin.OIDUser);
+                frm.ShowDialog(this);
+            }
         }
     }
 }
