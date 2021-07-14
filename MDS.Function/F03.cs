@@ -176,9 +176,9 @@ namespace MDS.Function
             txeName.Text = "";
             rgStatus.EditValue = 1;
 
-            glueDPType.EditValue = "";
-            glueCompany.EditValue = "";
-            glueBranch.Properties.DataSource = null;
+            //glueDPType.EditValue = "";
+            //glueCompany.EditValue = "";
+            //glueBranch.Properties.DataSource = null;
 
             glueCREATE.EditValue = UserLogin.OIDUser;
             txeCDATE.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");

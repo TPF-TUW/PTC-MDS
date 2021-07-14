@@ -127,7 +127,7 @@ namespace MDS.Function
             lblStatus.ForeColor = Color.Green;
 
             txeID.Text = this.DBC.DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDBranch), '') = '' THEN 1 ELSE MAX(OIDBranch) + 1 END AS NewNo FROM " + this.dbBranch).getString();
-            glueCompany.EditValue = "";
+            //glueCompany.EditValue = "";
             txeBranchNo.Text = "";
             txeBranchName.Text = "";
             glueBranchType.EditValue = "";

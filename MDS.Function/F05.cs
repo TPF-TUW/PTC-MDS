@@ -227,9 +227,9 @@ namespace MDS.Function
             txeUserName.Text = "";
             txeFullName.Text = "";
             txtPassword.Text = "";
-            glueDepartment.EditValue = "";
-            glueCompany.EditValue = "";
-            glueBranch.EditValue = "";
+            //glueDepartment.EditValue = "";
+            //glueCompany.EditValue = "";
+            //glueBranch.EditValue = "";
 
             rgStatus.EditValue = 1;
         }
