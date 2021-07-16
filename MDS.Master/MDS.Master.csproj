@@ -123,6 +123,12 @@
     <Compile Include="M07-03.Designer.cs">
       <DependentUpon>M07-03.cs</DependentUpon>
     </Compile>
+    <Compile Include="M07-M12.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M07-M12.Designer.cs">
+      <DependentUpon>M07-M12.cs</DependentUpon>
+    </Compile>
     <Compile Include="M07.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="M07-03.resx">
       <DependentUpon>M07-03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M07-M12.resx">
+      <DependentUpon>M07-M12.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="M07.resx">
       <DependentUpon>M07.cs</DependentUpon>

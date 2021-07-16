@@ -331,12 +331,14 @@ namespace MDS.Master
             new ObjDE.setSearchLookUpEdit(slueDefaultUnit, sbSQL, "UnitName", "ID").getData(true);
 
             sbSQL.Clear();
-            sbSQL.Append("SELECT Code, Name, OIDVEND AS ID ");
-            sbSQL.Append("FROM  Vendor ");
-            sbSQL.Append("ORDER BY Name ");
-            new ObjDE.setSearchLookUpEdit(slueFirstVendor, sbSQL, "Name", "ID").getData(true);
+            sbSQL.Append("SELECT VD.Code, VD.Name, ENT.Name AS Type, VD.OIDVEND AS ID ");
+            sbSQL.Append("FROM   Vendor AS VD INNER JOIN ");
+            sbSQL.Append("       ENUMTYPE AS ENT ON VD.VendorType = ENT.No AND ENT.Module = N'Vendor' ");
+            sbSQL.Append("ORDER BY VD.Name ");
+            //new ObjDE.setSearchLookUpEdit(slueFirstVendor, sbSQL, "Name", "ID").getData(true);
             new ObjDE.setSearchLookUpEdit(slueDefaultVendor, sbSQL, "Name", "ID").getData(true);
-            new ObjDE.setSearchLookUpEdit(slueVendorCode, sbSQL, "Code", "ID").getData(true);
+            //slueDefaultVendor.Properties.View.Columns["ID"].Visible = false;
+            //new ObjDE.setSearchLookUpEdit(slueVendorCode, sbSQL, "Code", "ID").getData(true);
 
             //SEARCH
             new ObjDE.setSearchLookUpEdit(slueSMaterial, sbMeterial, "MaterialType", "ID").getData(true);
@@ -345,9 +347,20 @@ namespace MDS.Master
             slueSCustomer.Properties.DisplayMember = slueCustomer.Properties.DisplayMember;
             slueSCustomer.Properties.ValueMember = slueCustomer.Properties.ValueMember;
 
+            slueFirstVendor.Properties.DataSource = slueDefaultVendor.Properties.DataSource;
+            slueFirstVendor.Properties.DisplayMember = slueDefaultVendor.Properties.DisplayMember;
+            slueFirstVendor.Properties.ValueMember = slueDefaultVendor.Properties.ValueMember;
+            //slueFirstVendor.Properties.View.Columns["ID"].Visible = false;
+
+            slueVendorCode.Properties.DataSource = slueDefaultVendor.Properties.DataSource;
+            slueVendorCode.Properties.DisplayMember = slueDefaultVendor.Properties.DisplayMember;
+            slueVendorCode.Properties.ValueMember = slueDefaultVendor.Properties.ValueMember;
+            //slueVendorCode.Properties.View.Columns["ID"].Visible = false;
+
             slueSVendor.Properties.DataSource = slueDefaultVendor.Properties.DataSource;
             slueSVendor.Properties.DisplayMember = slueDefaultVendor.Properties.DisplayMember;
             slueSVendor.Properties.ValueMember = slueDefaultVendor.Properties.ValueMember;
+            //slueSVendor.Properties.View.Columns["ID"].Visible = false;
 
             slueSCategory.Properties.DataSource = slueCategory.Properties.DataSource;
             slueSCategory.Properties.DisplayMember = slueCategory.Properties.DisplayMember;
@@ -2035,6 +2048,12 @@ namespace MDS.Master
                 var frm = new M07_03(this.DBC, slueCategory.EditValue.ToString(), UserLogin.OIDUser);
                 frm.ShowDialog(this);
             }
+        }
+
+        private void sbVENDOR_Click(object sender, EventArgs e)
+        {
+            var frm = new M07_M12(this.DBC, "FG", UserLogin.OIDUser);
+            frm.ShowDialog(this);
         }
     }
 }
