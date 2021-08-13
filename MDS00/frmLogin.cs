@@ -47,7 +47,7 @@ namespace MDS00
                 return null;
             }
             db.ConnectionClose();
-            string strSQL = "SELECT B.OIDUSER,B.USERNAME,B.FULLNAME,A.FUNCTIONNO,A.READWRITESTATUS,A.ALLOWDENYSTATUS "+ 
+            string strSQL = "SELECT B.OIDUSER,B.USERNAME,B.FULLNAME,A.FUNCTIONNO,A.READWRITESTATUS,A.ALLOWDENYSTATUS, B.OIDDEPT, B.OIDCompany, B.OIDBranch " + 
                 "FROM FunctionAccess A INNER JOIN Users B ON A.OIDUser = B.OIDUSER "+
                 "WHERE B.OIDCompany='" + company + "' AND B.UserName = '" + userName+"'";
             DataTable dtLogin = db.GetDataTable(strSQL);
@@ -60,6 +60,9 @@ namespace MDS00
                     User_Login.OIDUser = Convert.ToInt32(dr["OIDUSER"]);
                     User_Login.UserName = dr["USERNAME"].ToString();
                     User_Login.FullName = dr["FULLNAME"].ToString();
+                    User_Login.OIDDept = Convert.ToInt32(dr["OIDDEPT"]);
+                    User_Login.OIDCompany = Convert.ToInt32(dr["OIDCompany"]);
+                    User_Login.OIDBranch = Convert.ToInt32(dr["OIDBranch"]);
                 }
                 functions.Add(new LogIn_Function {
                     FunctionNo = dr["FUNCTIONNO"].ToString(),
