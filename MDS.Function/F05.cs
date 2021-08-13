@@ -141,6 +141,19 @@ namespace MDS.Function
             LoadData();
         }
 
+        private void LoadUser()
+        {
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.Append("SELECT U.UserName, U.FullName, D.Name AS Departments, U.OIDUSER AS ID ");
+            sbSQL.Append("FROM   Users AS U INNER JOIN ");
+            sbSQL.Append("       Departments AS D ON U.OIDDEPT = D.OIDDEPT AND U.OIDBranch = D.OIDBRANCH AND U.OIDCompany = D.OIDCOMPANY INNER JOIN ");
+            sbSQL.Append("       Company AS C ON U.OIDCompany = C.OIDCOMPANY INNER JOIN ");
+            sbSQL.Append("       Branchs AS B ON U.OIDBranch = B.OIDBranch AND U.OIDCompany = B.OIDCOMPANY ");
+            sbSQL.Append("WHERE (U.OIDCompany = '" + UserLogin.OIDCompany + "') ");
+            sbSQL.Append("ORDER BY U.UserName ");
+            new ObjDE.setGridLookUpEdit(glueSame, sbSQL, "UserName", "ID").getData();
+        }
+
         private void LoadData()
         {
             StringBuilder sbSQL = new StringBuilder();
@@ -185,6 +198,8 @@ namespace MDS.Function
             gvUser.Columns["Company ID"].Visible = false;
             gvUser.Columns["Branch ID"].Visible = false;
             gvUser.Columns["StatusID"].Visible = false;
+
+            LoadUser();
 
             txeUserName.Focus();
         }
@@ -610,5 +625,34 @@ namespace MDS.Function
                 }
             }
         }
+
+        private void glueSame_EditValueChanged(object sender, EventArgs e)
+        {
+            LoadUserFunction(glueSame.EditValue.ToString());
+        }
+
+        private void LoadUserFunction(string UserID = "")
+        {
+            if (UserID != "")
+            {
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT GF.[Group Function] AS [Group], FL.FunctionNo, FL.FunctionName, MAX(FL.Version) AS Version, FL.GroupFunction, ISNULL(FA.AllowDenyStatus, 0) AS [Permission], ISNULL(FA.ReadWriteStatus, 0) AS [ReadWrite]  ");
+                sbSQL.Append("FROM   FunctionList AS FL LEFT OUTER JOIN ");
+                sbSQL.Append("       (" + sbGROUP + ") AS GF ON FL.GroupFunction = GF.ID LEFT OUTER JOIN ");
+                sbSQL.Append("       FunctionAccess AS FA ON FL.FunctionNo = FA.FunctionNo AND FA.OIDUser = '" + UserID + "' ");
+                sbSQL.Append("GROUP BY FL.GroupFunction, GF.ID, GF.[Group Function], FL.FunctionNo, FL.FunctionName, FA.AllowDenyStatus, FA.ReadWriteStatus ");
+                sbSQL.Append("ORDER BY GF.ID, FL.FunctionNo ");
+
+                new ObjDE.setGridControl(gcFunction, gvFunction, sbSQL).getData(false, false, false, true);
+
+                gvFunction.Columns[0].Group();
+                gvFunction.Columns["GroupFunction"].Visible = false;
+                gvFunction.Columns["Version"].Visible = false;
+
+                dtFuncName = this.DBC.DBQuery(sbSQL).getDataTable();
+            }
+ 
+        }
+
     }
 }
