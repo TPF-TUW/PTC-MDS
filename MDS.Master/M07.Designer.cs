@@ -163,14 +163,6 @@
             this.cbeSheet = new DevExpress.XtraEditors.ComboBoxEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
-            this.lcgImport = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem85 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciPregressSave = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem13 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem88 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem89 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem87 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem90 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup13 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem69 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -280,6 +272,14 @@
             this.layoutControlItem66 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem67 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem68 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcgImport = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem85 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPregressSave = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem13 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem88 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem89 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem87 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem90 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraOpenFileDialog1 = new DevExpress.XtraEditors.XtraOpenFileDialog(this.components);
             this.ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -391,14 +391,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.cbeSheet.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lcgImport)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciPregressSave)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem88)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
@@ -508,6 +500,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem66)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem67)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcgImport)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPregressSave)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem88)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -2039,7 +2039,7 @@
             this.tabbedControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.tabbedControlGroup1.Name = "tabbedControlGroup1";
             this.tabbedControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.tabbedControlGroup1.SelectedTabPage = this.layoutControlGroup13;
+            this.tabbedControlGroup1.SelectedTabPage = this.lcgImport;
             this.tabbedControlGroup1.Size = new System.Drawing.Size(1094, 564);
             this.tabbedControlGroup1.TabPages.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlGroup13,
@@ -2048,99 +2048,6 @@
             this.lcgImport});
             this.tabbedControlGroup1.TextLocation = DevExpress.Utils.Locations.Bottom;
             this.tabbedControlGroup1.SelectedPageChanged += new DevExpress.XtraLayout.LayoutTabPageChangedEventHandler(this.tabbedControlGroup1_SelectedPageChanged);
-            // 
-            // lcgImport
-            // 
-            this.lcgImport.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem85,
-            this.lciPregressSave,
-            this.emptySpaceItem13,
-            this.layoutControlItem88,
-            this.layoutControlItem89,
-            this.layoutControlItem87,
-            this.layoutControlItem90});
-            this.lcgImport.Location = new System.Drawing.Point(0, 0);
-            this.lcgImport.Name = "lcgImport";
-            this.lcgImport.Size = new System.Drawing.Size(1084, 530);
-            this.lcgImport.Text = "Import Items";
-            // 
-            // layoutControlItem85
-            // 
-            this.layoutControlItem85.Control = this.spsImport;
-            this.layoutControlItem85.Location = new System.Drawing.Point(0, 50);
-            this.layoutControlItem85.MinSize = new System.Drawing.Size(104, 24);
-            this.layoutControlItem85.Name = "layoutControlItem85";
-            this.layoutControlItem85.Size = new System.Drawing.Size(1084, 461);
-            this.layoutControlItem85.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem85.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem85.TextVisible = false;
-            // 
-            // lciPregressSave
-            // 
-            this.lciPregressSave.Control = this.pbcSave;
-            this.lciPregressSave.Location = new System.Drawing.Point(0, 511);
-            this.lciPregressSave.MinSize = new System.Drawing.Size(216, 18);
-            this.lciPregressSave.Name = "lciPregressSave";
-            this.lciPregressSave.Size = new System.Drawing.Size(1084, 19);
-            this.lciPregressSave.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.lciPregressSave.Text = "Status Saving ...";
-            this.lciPregressSave.TextSize = new System.Drawing.Size(150, 14);
-            this.lciPregressSave.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
-            // emptySpaceItem13
-            // 
-            this.emptySpaceItem13.AllowHotTrack = false;
-            this.emptySpaceItem13.Location = new System.Drawing.Point(748, 24);
-            this.emptySpaceItem13.Name = "emptySpaceItem13";
-            this.emptySpaceItem13.Size = new System.Drawing.Size(336, 26);
-            this.emptySpaceItem13.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // layoutControlItem88
-            // 
-            this.layoutControlItem88.Control = this.sbBrowse;
-            this.layoutControlItem88.Location = new System.Drawing.Point(440, 24);
-            this.layoutControlItem88.MaxSize = new System.Drawing.Size(66, 26);
-            this.layoutControlItem88.MinSize = new System.Drawing.Size(66, 26);
-            this.layoutControlItem88.Name = "layoutControlItem88";
-            this.layoutControlItem88.Size = new System.Drawing.Size(66, 26);
-            this.layoutControlItem88.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem88.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem88.TextVisible = false;
-            // 
-            // layoutControlItem89
-            // 
-            this.layoutControlItem89.Control = this.cbeSheet;
-            this.layoutControlItem89.Location = new System.Drawing.Point(506, 24);
-            this.layoutControlItem89.Name = "layoutControlItem89";
-            this.layoutControlItem89.Size = new System.Drawing.Size(242, 26);
-            this.layoutControlItem89.Text = "Select Sheet";
-            this.layoutControlItem89.TextSize = new System.Drawing.Size(150, 14);
-            // 
-            // layoutControlItem87
-            // 
-            this.layoutControlItem87.Control = this.txeFilePath;
-            this.layoutControlItem87.Location = new System.Drawing.Point(0, 24);
-            this.layoutControlItem87.MaxSize = new System.Drawing.Size(440, 26);
-            this.layoutControlItem87.MinSize = new System.Drawing.Size(440, 26);
-            this.layoutControlItem87.Name = "layoutControlItem87";
-            this.layoutControlItem87.Size = new System.Drawing.Size(440, 26);
-            this.layoutControlItem87.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem87.Text = "Add File";
-            this.layoutControlItem87.TextSize = new System.Drawing.Size(150, 14);
-            // 
-            // layoutControlItem90
-            // 
-            this.layoutControlItem90.AppearanceItemCaption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.layoutControlItem90.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.layoutControlItem90.AppearanceItemCaption.Options.UseBackColor = true;
-            this.layoutControlItem90.AppearanceItemCaption.Options.UseFont = true;
-            this.layoutControlItem90.Control = this.labelControl1;
-            this.layoutControlItem90.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem90.Name = "layoutControlItem90";
-            this.layoutControlItem90.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem90.Size = new System.Drawing.Size(1084, 24);
-            this.layoutControlItem90.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem90.TextVisible = false;
             // 
             // layoutControlGroup13
             // 
@@ -3275,6 +3182,99 @@
             this.layoutControlItem68.TextVisible = false;
             this.layoutControlItem68.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
+            // lcgImport
+            // 
+            this.lcgImport.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem85,
+            this.lciPregressSave,
+            this.emptySpaceItem13,
+            this.layoutControlItem88,
+            this.layoutControlItem89,
+            this.layoutControlItem87,
+            this.layoutControlItem90});
+            this.lcgImport.Location = new System.Drawing.Point(0, 0);
+            this.lcgImport.Name = "lcgImport";
+            this.lcgImport.Size = new System.Drawing.Size(1084, 530);
+            this.lcgImport.Text = "Import Items";
+            // 
+            // layoutControlItem85
+            // 
+            this.layoutControlItem85.Control = this.spsImport;
+            this.layoutControlItem85.Location = new System.Drawing.Point(0, 50);
+            this.layoutControlItem85.MinSize = new System.Drawing.Size(104, 24);
+            this.layoutControlItem85.Name = "layoutControlItem85";
+            this.layoutControlItem85.Size = new System.Drawing.Size(1084, 461);
+            this.layoutControlItem85.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem85.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem85.TextVisible = false;
+            // 
+            // lciPregressSave
+            // 
+            this.lciPregressSave.Control = this.pbcSave;
+            this.lciPregressSave.Location = new System.Drawing.Point(0, 511);
+            this.lciPregressSave.MinSize = new System.Drawing.Size(216, 18);
+            this.lciPregressSave.Name = "lciPregressSave";
+            this.lciPregressSave.Size = new System.Drawing.Size(1084, 19);
+            this.lciPregressSave.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciPregressSave.Text = "Status Saving ...";
+            this.lciPregressSave.TextSize = new System.Drawing.Size(150, 14);
+            this.lciPregressSave.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // emptySpaceItem13
+            // 
+            this.emptySpaceItem13.AllowHotTrack = false;
+            this.emptySpaceItem13.Location = new System.Drawing.Point(748, 24);
+            this.emptySpaceItem13.Name = "emptySpaceItem13";
+            this.emptySpaceItem13.Size = new System.Drawing.Size(336, 26);
+            this.emptySpaceItem13.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem88
+            // 
+            this.layoutControlItem88.Control = this.sbBrowse;
+            this.layoutControlItem88.Location = new System.Drawing.Point(440, 24);
+            this.layoutControlItem88.MaxSize = new System.Drawing.Size(66, 26);
+            this.layoutControlItem88.MinSize = new System.Drawing.Size(66, 26);
+            this.layoutControlItem88.Name = "layoutControlItem88";
+            this.layoutControlItem88.Size = new System.Drawing.Size(66, 26);
+            this.layoutControlItem88.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem88.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem88.TextVisible = false;
+            // 
+            // layoutControlItem89
+            // 
+            this.layoutControlItem89.Control = this.cbeSheet;
+            this.layoutControlItem89.Location = new System.Drawing.Point(506, 24);
+            this.layoutControlItem89.Name = "layoutControlItem89";
+            this.layoutControlItem89.Size = new System.Drawing.Size(242, 26);
+            this.layoutControlItem89.Text = "Select Sheet";
+            this.layoutControlItem89.TextSize = new System.Drawing.Size(150, 14);
+            // 
+            // layoutControlItem87
+            // 
+            this.layoutControlItem87.Control = this.txeFilePath;
+            this.layoutControlItem87.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem87.MaxSize = new System.Drawing.Size(440, 26);
+            this.layoutControlItem87.MinSize = new System.Drawing.Size(440, 26);
+            this.layoutControlItem87.Name = "layoutControlItem87";
+            this.layoutControlItem87.Size = new System.Drawing.Size(440, 26);
+            this.layoutControlItem87.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem87.Text = "Add File";
+            this.layoutControlItem87.TextSize = new System.Drawing.Size(150, 14);
+            // 
+            // layoutControlItem90
+            // 
+            this.layoutControlItem90.AppearanceItemCaption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.layoutControlItem90.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.layoutControlItem90.AppearanceItemCaption.Options.UseBackColor = true;
+            this.layoutControlItem90.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutControlItem90.Control = this.labelControl1;
+            this.layoutControlItem90.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem90.Name = "layoutControlItem90";
+            this.layoutControlItem90.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem90.Size = new System.Drawing.Size(1084, 24);
+            this.layoutControlItem90.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem90.TextVisible = false;
+            // 
             // ribbonPage2
             // 
             this.ribbonPage2.Name = "ribbonPage2";
@@ -3402,14 +3402,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.cbeSheet.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lcgImport)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciPregressSave)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem88)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
@@ -3519,6 +3511,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem66)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem67)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcgImport)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPregressSave)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem88)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

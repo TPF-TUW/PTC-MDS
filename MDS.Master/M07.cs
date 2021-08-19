@@ -814,26 +814,26 @@ namespace MDS.Master
                         pbcSave.Properties.Minimum = 0;
                         pbcSave.EditValue = 0;
 
-                        string Customer = "";
-                        string OIDCUST = "";
+                        string Customer = "--";
+                        string OIDCUST = "0";
 
-                        string Unit = "";
-                        string OIDUNIT = "";
+                        string Unit = "--";
+                        string OIDUNIT = "0";
 
-                        string Vendor = "";
-                        string OIDVEND = "";
+                        string Vendor = "--";
+                        string OIDVEND = "0";
 
-                        string Category = "";
-                        string OIDCATEGORY = "";
+                        string Category = "--";
+                        string OIDCATEGORY = "0";
 
-                        string Style = "";
-                        string OIDSTYLE = "";
+                        string Style = "--";
+                        string OIDSTYLE = "0";
 
-                        string Color = "";
-                        string OIDCOLOR = "";
+                        string Color = "--";
+                        string OIDCOLOR = "0";
 
-                        string Size = "";
-                        string OIDSIZE = "";
+                        string Size = "--";
+                        string OIDSIZE = "0";
 
                         for (int i = 4; i < WSHEET.GetDataRange().RowCount; i++)
                         {
@@ -935,6 +935,7 @@ namespace MDS.Master
                                     MAXIMUM = "0";
                                 }
 
+                                if (SUPPLIER == null) SUPPLIER = "";
                                 if (Vendor != SUPPLIER.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Vendor = SUPPLIER.Replace(" ", "").Replace(".", "").Replace(",", "");
@@ -947,6 +948,7 @@ namespace MDS.Master
                                     OIDVEND = this.DBC.DBQuery(sbVENDOR).getString();
                                 }
 
+                                if (CATEGORY == null) CATEGORY = "";
                                 if (Category != CATEGORY.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Category = CATEGORY.Replace(" ", "").Replace(".", "").Replace(",", "");
@@ -959,6 +961,7 @@ namespace MDS.Master
                                     OIDCATEGORY = this.DBC.DBQuery(sbCATEGORY).getString();
                                 }
 
+                                if (STYLE == null) STYLE = "";
                                 if (Style != STYLE.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Style = STYLE.Replace(" ", "").Replace(".", "").Replace(",", "");
@@ -971,18 +974,20 @@ namespace MDS.Master
                                     OIDSTYLE = this.DBC.DBQuery(sbSTYLE).getString();
                                 }
 
+                                if (COLOR == null) COLOR = "";
                                 if (Color != COLOR.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Color = COLOR.Replace(" ", "").Replace(".", "").Replace(",", "");
                                     StringBuilder sbCOLOR = new StringBuilder();
-                                    sbCOLOR.Append("IF NOT EXISTS(SELECT OIDCOLOR FROM ProductColor WHERE (ColorName=N'" + COLOR + "')) ");
+                                    sbCOLOR.Append("IF NOT EXISTS(SELECT OIDCOLOR FROM ProductColor WHERE (ColorName=N'" + COLOR + "') AND (ColorType='" + COLOR_TYPE + "')) ");
                                     sbCOLOR.Append(" BEGIN ");
                                     sbCOLOR.Append("   INSERT INTO ProductColor(ColorNo, ColorName, ColorType, CreatedBy, CreatedDate) VALUES(N'" + COLOR + "', N'" + COLOR + "', '" + COLOR_TYPE + "', '" + UserLogin.OIDUser + "', GETDATE()) ");
                                     sbCOLOR.Append(" END  ");
-                                    sbCOLOR.Append("SELECT OIDCOLOR FROM ProductColor WHERE (ColorName=N'" + COLOR + "')  ");
+                                    sbCOLOR.Append("SELECT OIDCOLOR FROM ProductColor WHERE (ColorName=N'" + COLOR + "') AND (ColorType='" + COLOR_TYPE + "')  ");
                                     OIDCOLOR = this.DBC.DBQuery(sbCOLOR).getString();
                                 }
 
+                                if (SIZE == null) SIZE = "";
                                 if (Size != SIZE.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Size = SIZE.Replace(" ", "").Replace(".", "").Replace(",", "");
@@ -995,6 +1000,7 @@ namespace MDS.Master
                                     OIDSIZE = this.DBC.DBQuery(sbSIZE).getString();
                                 }
 
+                                if (CUSTOMER == null) CUSTOMER = "";
                                 if (Customer != CUSTOMER.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Customer = CUSTOMER.Replace(" ", "").Replace(".", "").Replace(",", "");
@@ -1009,6 +1015,7 @@ namespace MDS.Master
                                     OIDCUST = this.DBC.DBQuery(sbCUST).getString();
                                 }
 
+                                if (UNIT == null) UNIT = "";
                                 if (Unit != UNIT.Replace(" ", "").Replace(".", "").Replace(",", ""))
                                 {
                                     Unit = UNIT.Replace(" ", "").Replace(".", "").Replace(",", "");
