@@ -15,7 +15,7 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace MDS.Function
 {
-    public partial class F01 : DevExpress.XtraBars.ToolbarForm.ToolbarForm
+    public partial class F01 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         private Functionality.Function FUNC = new Functionality.Function();
         public LogIn UserLogin { get; set; }
@@ -67,11 +67,11 @@ namespace MDS.Function
             int chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
             if (chkReadWrite == 0)
             {
-                bbiNew.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-                bbiEdit.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-                bbiSave.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-                bbiDelete.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-                bbiRefresh.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                bbiNew1.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                bbiEdit1.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                bbiSave1.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                bbiDelete1.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                bbiRefresh1.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             }
 
             sbSQL.Clear();
@@ -237,7 +237,7 @@ namespace MDS.Function
                                 if (chkSAVE == true)
                                 {
                                     FUNC.msgInfo("Save complete.");
-                                    bbiNew.PerformClick();
+                                    bbiNew1.PerformClick();
                                 }
                             }
                             catch (Exception)
