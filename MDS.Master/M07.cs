@@ -137,7 +137,7 @@ namespace MDS.Master
             //    txeID.Text = this.DBC.DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDITEM), '') = '' THEN 1 ELSE MAX(OIDITEM) + 1 END AS NewNo FROM Items WHERE (MaterialType = '" + Material + "') ").getString();
             //}
 
-            layoutControlGroup4.Text = "";
+            layoutControlGroup4.Text = ".";
 
             txeOldCode.Text = "";
             txeID.Text = "";
@@ -183,7 +183,8 @@ namespace MDS.Master
             txeStockSheifLife.Text = "";
             txeStdCost.Text = "";
             slueDefaultUnit.EditValue = "";
-            glueUnit.EditValue = "";
+            slueUnit.EditValue = "";
+            txeFactor.Text = "";
 
             picImg.Image = null;
             txePath.Text = "";
@@ -334,6 +335,12 @@ namespace MDS.Master
             sbSQL.Append("ORDER BY UnitName ");
             new ObjDE.setSearchLookUpEdit(slueDefaultUnit, sbSQL, "UnitName", "ID").getData(true);
 
+            new ObjDE.setSearchLookUpEdit(slueUnit, sbSQL, "UnitName", "ID").getData(true);
+
+            //slueUnit.Properties.DataSource = slueDefaultUnit.Properties.DataSource;
+            //slueUnit.Properties.DisplayMember = slueDefaultUnit.Properties.DisplayMember;
+            //slueUnit.Properties.ValueMember = slueDefaultUnit.Properties.ValueMember;
+
             sbSQL.Clear();
             sbSQL.Append("SELECT VD.Code, VD.Name, ENT.Name AS Type, VD.OIDVEND AS ID ");
             sbSQL.Append("FROM   Vendor AS VD INNER JOIN ");
@@ -426,7 +433,7 @@ namespace MDS.Master
                 sbSQL.Append("       BN.Name AS Branch, IT.CostSheetNo, IT.StdPrice, IT.FirstVendor AS FirstVendID, VD2.Name AS FirstVendor, IT.PurchaseType AS PurchaseTypeID, ");
                 sbSQL.Append("       CASE WHEN IT.PurchaseType = 0 THEN 'Local' ELSE CASE WHEN IT.PurchaseType = 1 THEN 'Import' ELSE CASE WHEN IT.PurchaseType = 9 THEN 'Other' ELSE '' END END END AS PurchaseType, IT.PurchaseLoss, ");
                 sbSQL.Append("       IT.TaxBenefits AS TaxBenefitsID, CASE WHEN IT.TaxBenefits = 1 THEN 'BOI' ELSE CASE WHEN IT.TaxBenefits = 2 THEN '19 BIS' ELSE CASE WHEN IT.TaxBenefits = 9 THEN 'Other' ELSE '' END END END AS TaxBenefits, ");
-                sbSQL.Append("       CASE WHEN IT.FirstReceiptDate IS NULL THEN '' ELSE CONVERT(VARCHAR(10), IT.FirstReceiptDate, 103) END FirstReceiptDate, IT.DefaultVendor AS DefaultVendID, VD.Name AS DefaultVendor, IT.MinStock, IT.MaxStock, IT.StockShelfLife, IT.StdCost, IT.DefaultUnit AS DefaultUnitID, UN.UnitName AS DefaultUnit, IT.PathFile, IT.LabTestNo, ");
+                sbSQL.Append("       CASE WHEN IT.FirstReceiptDate IS NULL THEN '' ELSE CONVERT(VARCHAR(10), IT.FirstReceiptDate, 103) END FirstReceiptDate, IT.DefaultVendor AS DefaultVendID, VD.Name AS DefaultVendor, IT.MinStock, IT.MaxStock, IT.StockShelfLife, IT.StdCost, IT.DefaultUnit AS DefaultUnitID, UN.UnitName AS DefaultUnit, UN2.UnitName AS ConvertUnit, CASE WHEN IT.ConvertFactor = 0 THEN NULL ELSE IT.ConvertFactor END AS ConversionFactor, IT.PathFile, IT.LabTestNo, ");
                 sbSQL.Append("       CASE WHEN IT.ApprovedLabDate IS NULL THEN '' ELSE CONVERT(VARCHAR(10), IT.ApprovedLabDate, 103) END AS ApprovedLabDate, IT.QCInspection, IT.CreatedBy, IT.CreatedDate, IT.UpdatedBy, IT.UpdatedDate ");
                 sbSQL.Append("FROM   Items AS IT LEFT OUTER JOIN ");
                 sbSQL.Append("       ProductStyle AS PS ON IT.OIDSTYLE = PS.OIDSTYLE LEFT OUTER JOIN ");
@@ -437,6 +444,7 @@ namespace MDS.Master
                 sbSQL.Append("       Vendor AS VD ON IT.DefaultVendor = VD.OIDVEND LEFT OUTER JOIN ");
                 sbSQL.Append("       Vendor AS VD2 ON IT.FirstVendor = VD2.OIDVEND LEFT OUTER JOIN ");
                 sbSQL.Append("       Unit AS UN ON IT.DefaultUnit = UN.OIDUNIT LEFT OUTER JOIN ");
+                sbSQL.Append("       Unit AS UN2 ON IT.ConvertUnit = UN2.OIDUNIT LEFT OUTER JOIN ");
                 sbSQL.Append("       Branchs AS BN ON IT.Branch = BN.OIDBranch LEFT OUTER JOIN ");
                 sbSQL.Append("       (" + sbMeterial.ToString() + ") AS MTYPE ON IT.MaterialType = MTYPE.ID ");
                 sbSQL.Append("WHERE (IT.OIDCOMPANY = '" + this.Company + "') ");
@@ -646,6 +654,9 @@ namespace MDS.Master
                                 string StdCost = txeStdCost.Text.Trim() == "" ? "NULL" : "'" + txeStdCost.Text.Trim() + "'";
                                 string DefaultUnit = slueDefaultUnit.Text == "" ? "NULL" : "'" + slueDefaultUnit.EditValue.ToString() + "'";
 
+                                string ConvertUnit = slueUnit.Text == "" ? "NULL" : "'" + slueUnit.ToString() + "'";
+                                string Factor = txeFactor.Text.Trim() == "" ? "NULL" : "'" + txeFactor.Text.Trim() + "'";
+
                                 string Branch = glueBranch.Text == "" ? "NULL" : "'" + glueBranch.EditValue.ToString() + "'";
 
                                 string StdPrice = txeStdPrice.Text.Trim() == "" ? "0" : txeStdPrice.Text.Trim();
@@ -655,11 +666,11 @@ namespace MDS.Master
                                 if (lblStatus.Text.ToUpper().Trim() == "NEW" || txeID.Text.Trim() == "" || txeID.Text.Trim() == "0")
                                 {
                                     sbSQL.Append("  INSERT INTO Items(MaterialType, Code, Description, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, OIDCUST, BusinessUnit, Season, ClassType, Branch,  ");
-                                    sbSQL.Append("       CostSheetNo, StdPrice, FirstVendor, PurchaseType, PurchaseLoss, TaxBenefits, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, StdCost, DefaultUnit, PathFile, LabTestNo, ApprovedLabDate, QCInspection, ");
+                                    sbSQL.Append("       CostSheetNo, StdPrice, FirstVendor, PurchaseType, PurchaseLoss, TaxBenefits, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, StdCost, DefaultUnit, ConvertUnit, ConvertFactor, PathFile, LabTestNo, ApprovedLabDate, QCInspection, ");
                                     sbSQL.Append("       CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, OIDCOMPANY) ");
                                     sbSQL.Append("  VALUES('" + MaterialType + "', N'" + glueCode.Text.Trim().Replace("'", "''") + "', N'" + txeDescription.Text.Trim().Replace("'", "''") + "', N'" + txeComposition.Text.Trim().Replace("'", "''") + "', N'" + txeWeight.Text.Trim().Replace("'", "''") + "', N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', N'" + txeModelName.Text.Trim().Replace("'", "''") + "', " + OIDCATEGORY + ", " + OIDSTYLE + ", " + OIDCOLOR + ", " + OIDSIZE + ", " + OIDCUST + ",  ");
                                     sbSQL.Append("         N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', N'" + cbeSeason.Text.Trim() + "', N'" + cbeClass.Text.Trim().Replace("'", "''") + "', " + Branch + ", N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', '" + StdPrice + "', " + FirstVendor + ", '" + PurchaseType + "', " + PurchaseLoss + ", '" + TaxBenefits + "', '" + Convert.ToDateTime(dteFirstReceiptDate.Text).ToString("yyyy-MM-dd") + "', '" + slueDefaultVendor.EditValue.ToString() + "', ");
-                                    sbSQL.Append("         " + MinStock + ", " + MaxStock + ", " + StockShelfLife + ", " + StdCost + ", " + DefaultUnit + ", N'" + newFileName + "', N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', '" + Convert.ToDateTime(dteApprovedLabDate.Text).ToString("yyyy-MM-dd") + "', '" + QCInspection + "', ");
+                                    sbSQL.Append("         " + MinStock + ", " + MaxStock + ", " + StockShelfLife + ", " + StdCost + ", " + DefaultUnit + ", " + ConvertUnit + ", " + Factor + ", N'" + newFileName + "', N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', '" + Convert.ToDateTime(dteApprovedLabDate.Text).ToString("yyyy-MM-dd") + "', '" + QCInspection + "', ");
                                     sbSQL.Append("         '" + strCREATE + "', GETDATE(), '" + strUPDATE + "', GETDATE(), '" + this.Company + "') ");
                                 }
                                 else if (lblStatus.Text.ToUpper().Trim() == "EDIT")
@@ -670,7 +681,7 @@ namespace MDS.Master
                                     sbSQL.Append("      OIDSIZE = " + OIDSIZE + ", OIDCUST = " + OIDCUST + ", BusinessUnit = N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', Season = N'" + cbeSeason.Text.Trim() + "', ClassType = N'" + cbeClass.Text.Trim().Replace("'", "''") + "', ");
                                     sbSQL.Append("      Branch = " + Branch + ", CostSheetNo = N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', StdPrice = '" + StdPrice + "', FirstVendor = " + FirstVendor + ", PurchaseType = '" + PurchaseType + "', PurchaseLoss = " + PurchaseLoss + ", ");
                                     sbSQL.Append("      TaxBenefits = '" + TaxBenefits + "', FirstReceiptDate = '" + Convert.ToDateTime(dteFirstReceiptDate.Text).ToString("yyyy-MM-dd") + "', DefaultVendor = '" + slueDefaultVendor.EditValue.ToString() + "', MinStock = " + MinStock + ", MaxStock = " + MaxStock + ", ");
-                                    sbSQL.Append("      StockShelfLife = " + StockShelfLife + ", StdCost = " + StdCost + ", DefaultUnit = " + DefaultUnit + ", PathFile = N'" + newFileName + "', LabTestNo = N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', ");
+                                    sbSQL.Append("      StockShelfLife = " + StockShelfLife + ", StdCost = " + StdCost + ", DefaultUnit = " + DefaultUnit + ", ConvertUnit = " + ConvertUnit + ", ConvertFactor = " + Factor + ", PathFile = N'" + newFileName + "', LabTestNo = N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', ");
                                     sbSQL.Append("      ApprovedLabDate = '" + Convert.ToDateTime(dteApprovedLabDate.Text).ToString("yyyy-MM-dd") + "', QCInspection = '" + QCInspection + "', UpdatedBy = '" + strUPDATE + "', UpdatedDate = GETDATE() ");
                                     sbSQL.Append("  WHERE(OIDITEM = '" + txeID.Text.Trim() + "') ");
                                 }
@@ -835,6 +846,9 @@ namespace MDS.Master
                         string Size = "--";
                         string OIDSIZE = "0";
 
+                        string ConvertUnit = "--";
+                        string OIDCONVERTUNIT = "0";
+
                         for (int i = 4; i < WSHEET.GetDataRange().RowCount; i++)
                         {
                             string VENDOR_TYPE = "";
@@ -899,6 +913,7 @@ namespace MDS.Master
                                 string SEASON = WSHEET.Rows[i][13].DisplayText.ToString().Trim().Replace("'", "''");
                                 string CUSTOMER = WSHEET.Rows[i][14].DisplayText.ToString().Trim().Replace("'", "''");
                                 string UNIT = WSHEET.Rows[i][15].DisplayText.ToString().Trim().Replace("'", "''");
+                                string CONVERTUNIT = WSHEET.Rows[i][19].DisplayText.ToString().Trim().Replace("'", "''");
                                 string PRICE = WSHEET.Rows[i][16].DisplayText.ToString().Trim().Replace("'", "''");
                                 string SUPPLIER = WSHEET.Rows[i][17].DisplayText.ToString().Trim().Replace("'", "''");
                                 string PURCHASE_TYPE = WSHEET.Rows[i][18].DisplayText.ToString().Trim().Replace("'", "''");
@@ -923,13 +938,13 @@ namespace MDS.Master
                                     }
                                 }
 
-                                string MINIMUM = WSHEET.Rows[i][19].DisplayText.ToString().Trim().Replace("'", "''");
+                                string MINIMUM = WSHEET.Rows[i][21].DisplayText.ToString().Trim().Replace("'", "''");
                                 if (IsNumeric(MINIMUM) == false)
                                 {
                                     MINIMUM = "0";
                                 }
 
-                                string MAXIMUM = WSHEET.Rows[i][20].DisplayText.ToString().Trim().Replace("'", "''");
+                                string MAXIMUM = WSHEET.Rows[i][22].DisplayText.ToString().Trim().Replace("'", "''");
                                 if (IsNumeric(MAXIMUM) == false)
                                 {
                                     MAXIMUM = "0";
@@ -1028,10 +1043,29 @@ namespace MDS.Master
                                     OIDUNIT = this.DBC.DBQuery(sbUNIT).getString();
                                 }
 
+                                if (CONVERTUNIT == null) CONVERTUNIT = "";
+                                if (ConvertUnit != CONVERTUNIT.Replace(" ", "").Replace(".", "").Replace(",", ""))
+                                {
+                                    ConvertUnit = CONVERTUNIT.Replace(" ", "").Replace(".", "").Replace(",", "");
+                                    StringBuilder sbUNIT = new StringBuilder();
+                                    sbUNIT.Append("IF NOT EXISTS(SELECT OIDUNIT FROM Unit WHERE (UnitName=N'" + CONVERTUNIT + "')) ");
+                                    sbUNIT.Append(" BEGIN ");
+                                    sbUNIT.Append("   INSERT INTO Unit(UnitName, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate) VALUES(N'" + CONVERTUNIT + "', '" + UserLogin.OIDUser + "', GETDATE(), '" + UserLogin.OIDUser + "', GETDATE()) ");
+                                    sbUNIT.Append(" END  ");
+                                    sbUNIT.Append("SELECT OIDUNIT FROM Unit WHERE (UnitName=N'" + CONVERTUNIT + "')  ");
+                                    OIDCONVERTUNIT = this.DBC.DBQuery(sbUNIT).getString();
+                                }
+
+                                string FACTOR = WSHEET.Rows[i][20].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(FACTOR) == false)
+                                {
+                                    FACTOR = "0";
+                                }
+
                                 sbSQL.Clear();
                                 sbSQL.Append("IF NOT EXISTS(SELECT Code FROM Items WHERE Code = N'" + CODE + "') ");
                                 sbSQL.Append(" BEGIN ");
-                                sbSQL.Append("   INSERT INTO Items(MaterialType, Code, Description, GroupBOI, GroupSection, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, Season, OIDCUST, BusinessUnit, DefaultUnit, StdPrice, FirstVendor, DefaultVendor, PurchaseType, MinStock, MaxStock, Branch, OIDCOMPANY, OIDBranch, OIDDEPT, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate) ");
+                                sbSQL.Append("   INSERT INTO Items(MaterialType, Code, Description, GroupBOI, GroupSection, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, Season, OIDCUST, BusinessUnit, DefaultUnit, ConvertUnit, ConvertFactor, StdPrice, FirstVendor, DefaultVendor, PurchaseType, MinStock, MaxStock, Branch, OIDCOMPANY, OIDBranch, OIDDEPT, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate) ");
                                 sbSQL.Append("   SELECT '" + MATERIAL_TYPE + "' AS MaterialType,  ");
                                 sbSQL.Append("          N'" + CODE + "' AS Code,  ");
                                 sbSQL.Append("          N'" + DESCRIPTION + "' AS Description,  ");
@@ -1049,6 +1083,8 @@ namespace MDS.Master
                                 sbSQL.Append("          '" + OIDCUST + "' AS OIDCUST,  ");
                                 sbSQL.Append("          N'" + UNIT + "' AS BusinessUnit,  ");
                                 sbSQL.Append("          '" + OIDUNIT + "' AS DefaultUnit,  ");
+                                sbSQL.Append("          '" + OIDCONVERTUNIT + "' AS ConvertUnit,  ");
+                                sbSQL.Append("          '" + FACTOR + "' AS ConvertFactor,  ");
                                 sbSQL.Append("          '" + PRICE + "' AS StdPrice,  ");
                                 sbSQL.Append("          '" + OIDVEND + "' AS FirstVendor,  ");
                                 sbSQL.Append("          '" + OIDVEND + "' AS DefaultVendor,  ");
@@ -1083,6 +1119,8 @@ namespace MDS.Master
                                 sbSQL.Append("      OIDCUST='" + OIDCUST + "',  ");
                                 sbSQL.Append("      BusinessUnit=N'" + UNIT + "',  ");
                                 sbSQL.Append("      DefaultUnit='" + OIDUNIT + "',  ");
+                                sbSQL.Append("      ConvertUnit='" + OIDCONVERTUNIT + "',  ");
+                                sbSQL.Append("      ConvertFactor='" + FACTOR + "',  ");
                                 sbSQL.Append("      StdPrice='" + PRICE + "',  ");
                                 sbSQL.Append("      FirstVendor='" + OIDVEND + "',  ");
                                 sbSQL.Append("      DefaultVendor='" + OIDVEND + "',  ");
@@ -1325,7 +1363,7 @@ namespace MDS.Master
             sbSQL.Append("SELECT OIDITEM, MaterialType, Code, Description, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, OIDCUST, BusinessUnit, Season, ClassType, Branch, CostSheetNo,  ");
             sbSQL.Append("       FORMAT(StdPrice, '###0.####') AS StdPrice, FirstVendor, PurchaseType, TaxBenefits, FORMAT(PurchaseLoss, '###0.##') AS PurchaseLoss, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, FORMAT(StdCost, '###0.####') AS StdCost, ");
             sbSQL.Append("       DefaultUnit, PathFile, LabTestNo, ApprovedLabDate, QCInspection, CreatedBy, CreatedDate, ");
-            sbSQL.Append("       UpdatedBy, UpdatedDate ");
+            sbSQL.Append("       UpdatedBy, UpdatedDate, ConvertUnit, ConvertFactor ");
             sbSQL.Append("FROM Items ");
             sbSQL.Append("WHERE (OIDITEM = '" + strCODE + "') ");
             string[] arrItem = this.DBC.DBQuery(sbSQL).getMultipleValue();
@@ -1403,7 +1441,7 @@ namespace MDS.Master
                 txeStockSheifLife.Text = arrItem[27];
                 txeStdCost.Text = arrItem[28];
                 slueDefaultUnit.EditValue = arrItem[29];
-                glueUnit.EditValue = "";
+                slueUnit.EditValue = "";
 
                 if (arrItem[30] != "")
                 {
@@ -1445,6 +1483,9 @@ namespace MDS.Master
                 txeCDATE.Text = arrItem[35];
                 glueUPDATE.EditValue = arrItem[36];
                 txeUDATE.Text = arrItem[37];
+
+                slueUnit.EditValue = arrItem[38];
+                txeFactor.Text = arrItem[39];
 
                 //**************************************
                 if (slueFirstVendor.Text != "")
@@ -2022,13 +2063,10 @@ namespace MDS.Master
 
         private void slueDefaultUnit_EditValueChanged(object sender, EventArgs e)
         {
-            glueUnit.Focus();
+            slueUnit.Focus();
         }
 
-        private void glueUnit_EditValueChanged(object sender, EventArgs e)
-        {
-            btnSelect.Focus();
-        }
+
 
         private void txePath_KeyDown(object sender, KeyEventArgs e)
         {
@@ -2214,6 +2252,7 @@ namespace MDS.Master
             bbiPrintPreview.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
             bbiPrint.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
             bbiExcel.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
+           // layoutControlGroup4.Text = "";
         }
 
         private void gvListItem_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
@@ -2499,6 +2538,19 @@ namespace MDS.Master
                     FUNC.msgWarning("Please close excel file before import.");
                     txeFilePath.Text = "";
                 }
+            }
+        }
+
+        private void slueUnit_EditValueChanged(object sender, EventArgs e)
+        {
+            txeFactor.Focus();
+        }
+
+        private void txeFactor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSelect.Focus();
             }
         }
     }
