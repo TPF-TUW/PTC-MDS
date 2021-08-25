@@ -357,6 +357,13 @@ namespace MDS.Master
             //slueDefaultVendor.Properties.View.Columns["ID"].Visible = false;
             //new ObjDE.setSearchLookUpEdit(slueVendorCode, sbSQL, "Code", "ID").getData(true);
 
+            sbSQL.Clear();
+            sbSQL.Append("SELECT VD.Code, VD.Name, ENT.Name AS Type, VD.OIDVEND AS ID ");
+            sbSQL.Append("FROM   Vendor AS VD INNER JOIN ");
+            sbSQL.Append("       ENUMTYPE AS ENT ON VD.VendorType = ENT.No AND ENT.Module = N'Vendor' ");
+            sbSQL.Append("ORDER BY VD.Name ");
+            new ObjDE.setSearchLookUpEdit(slueVendorCode, sbSQL, "Code", "ID").getData(true);
+
             //SEARCH
             new ObjDE.setSearchLookUpEdit(slueSMaterial, sbMeterial, "MaterialType", "ID").getData(true);
 
@@ -368,11 +375,6 @@ namespace MDS.Master
             slueFirstVendor.Properties.DisplayMember = slueDefaultVendor.Properties.DisplayMember;
             slueFirstVendor.Properties.ValueMember = slueDefaultVendor.Properties.ValueMember;
             //slueFirstVendor.Properties.View.Columns["ID"].Visible = false;
-
-            slueVendorCode.Properties.DataSource = slueDefaultVendor.Properties.DataSource;
-            slueVendorCode.Properties.DisplayMember = slueDefaultVendor.Properties.DisplayMember;
-            slueVendorCode.Properties.ValueMember = slueDefaultVendor.Properties.ValueMember;
-            //slueVendorCode.Properties.View.Columns["ID"].Visible = false;
 
             slueSVendor.Properties.DataSource = slueDefaultVendor.Properties.DataSource;
             slueSVendor.Properties.DisplayMember = slueDefaultVendor.Properties.DisplayMember;
