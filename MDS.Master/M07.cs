@@ -165,7 +165,7 @@ namespace MDS.Master
             txeMatCode.Text = "";
             txeSMPLLotNo.Text = "";
             txePrice.Text = "";
-            txeCurrency.Text = "";
+            slueCurrency.EditValue = "";
             rgPurchase.EditValue = 0;
             rgTax.EditValue = 1;
             txePurchaseLoss.Text = "";
@@ -220,7 +220,7 @@ namespace MDS.Master
             txeMatCode.ReadOnly = false;
             txeSMPLLotNo.ReadOnly = false;
             txePrice.ReadOnly = false;
-            txeCurrency.ReadOnly = false;
+            slueCurrency.ReadOnly = false;
             rgPurchase.ReadOnly = false;
             rgTax.ReadOnly = false;
             txePurchaseLoss.ReadOnly = false;
@@ -336,6 +336,12 @@ namespace MDS.Master
             new ObjDE.setSearchLookUpEdit(slueDefaultUnit, sbSQL, "UnitName", "ID").getData(true);
 
             new ObjDE.setSearchLookUpEdit(slueUnit, sbSQL, "UnitName", "ID").getData(true);
+
+            sbSQL.Clear();
+            sbSQL.Append("SELECT Currency, OIDCURR AS ID ");
+            sbSQL.Append("FROM  Currency ");
+            sbSQL.Append("ORDER BY OIDCURR ");
+            new ObjDE.setSearchLookUpEdit(slueCurrency, sbSQL, "Currency", "ID").getData(true);
 
             //slueUnit.Properties.DataSource = slueDefaultUnit.Properties.DataSource;
             //slueUnit.Properties.DisplayMember = slueDefaultUnit.Properties.DisplayMember;
@@ -755,7 +761,7 @@ namespace MDS.Master
                                                 sbSQL.Append(" VALUES('" + dr["OIDVEND"].ToString() + "', '" + OIDITEM + "',  ");
                                                 if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
                                                 {
-                                                    sbSQL.Append("N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', " + Price + ", N'" + txeCurrency.Text.Trim().Replace("'", "''") + "',  ");
+                                                    sbSQL.Append("N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', " + Price + ", N'" + slueCurrency.EditValue.ToString() + "',  ");
                                                 }
                                                 sbSQL.Append(" " + LotSize + ", " + ProductionLead + ", " + DeliveryLead + ", " + ArrivalLead + ", " + POCancelPeriod + ", " + PurchaseLots1 + ", " + PurchaseLots2 + ", " + PurchaseLots3 + ", N'" + dr["Remark"].ToString().Replace("'", "''") + "')  ");
                                             }
@@ -765,7 +771,7 @@ namespace MDS.Master
                                                 sbSQL.Append("  OIDVEND = '" + dr["OIDVEND"].ToString() + "', OIDITEM = '" + OIDITEM + "', ");
                                                 if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
                                                 {
-                                                    sbSQL.Append("MatDetails = N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', MatCode = N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', SMPLLotNo = N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', Price = " + Price + ", Currency = N'" + txeCurrency.Text.Trim().Replace("'", "''") + "',  ");
+                                                    sbSQL.Append("MatDetails = N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', MatCode = N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', SMPLLotNo = N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', Price = " + Price + ", Currency = N'" + slueCurrency.EditValue.ToString() + "',  ");
                                                 }
                                                 sbSQL.Append("LotSize = " + LotSize + ", ProductionLead = " + ProductionLead + ", DeliveryLead = " + DeliveryLead + ", ArrivalLead = " + ArrivalLead + ", POCancelPeriod = " + POCancelPeriod + ", PurchaseLots1 = " + PurchaseLots1 + ", PurchaseLots2 = " + PurchaseLots2 + ", PurchaseLots3 = " + PurchaseLots3 + ", Remark = N'" + dr["Remark"].ToString().Replace("'", "''") + "'  ");
                                                 sbSQL.Append("WHERE (OIDVENDItem = '" + dr["OIDVENDItem"].ToString() + "') ");
@@ -915,6 +921,8 @@ namespace MDS.Master
                                 string UNIT = WSHEET.Rows[i][15].DisplayText.ToString().Trim().Replace("'", "''");
                                 string CONVERTUNIT = WSHEET.Rows[i][19].DisplayText.ToString().Trim().Replace("'", "''");
                                 string PRICE = WSHEET.Rows[i][16].DisplayText.ToString().Trim().Replace("'", "''");
+                                PRICE = PRICE == "" ? "0" : PRICE;
+                                PRICE = IsNumeric(PRICE) == false ? "0" : PRICE;
                                 string SUPPLIER = WSHEET.Rows[i][17].DisplayText.ToString().Trim().Replace("'", "''");
                                 string PURCHASE_TYPE = WSHEET.Rows[i][18].DisplayText.ToString().Trim().Replace("'", "''");
                                 if (IsNumeric(PURCHASE_TYPE) == false)
@@ -1495,7 +1503,7 @@ namespace MDS.Master
                     txeMatCode.ReadOnly = true;
                     txeSMPLLotNo.ReadOnly = true;
                     txePrice.ReadOnly = true;
-                    txeCurrency.ReadOnly = true;
+                    slueCurrency.ReadOnly = true;
                     rgPurchase.ReadOnly = true;
                     rgTax.ReadOnly = true;
                     txePurchaseLoss.ReadOnly = true;
@@ -1585,7 +1593,7 @@ namespace MDS.Master
             txeMatCode.Text = "";
             txeSMPLLotNo.Text = "";
             txePrice.Text = "";
-            txeCurrency.Text = "";
+            slueCurrency.EditValue = "";
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT TOP (1) MatDetails, MatCode, SMPLLotNo, FORMAT(Price, '###0.####') AS Price, Currency ");
@@ -1598,7 +1606,7 @@ namespace MDS.Master
                 txeMatCode.Text = arrVEND[1];
                 txeSMPLLotNo.Text = arrVEND[2];
                 txePrice.Text = arrVEND[3];
-                txeCurrency.Text = arrVEND[4];
+                slueCurrency.EditValue = arrVEND[4];
             }
 
             txeMatDetails.Focus();
@@ -2004,7 +2012,7 @@ namespace MDS.Master
         {
             if (e.KeyCode == Keys.Enter)
             {
-                txeCurrency.Focus();
+                slueCurrency.Focus();
             }
         }
 

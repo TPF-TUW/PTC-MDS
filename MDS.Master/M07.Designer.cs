@@ -115,7 +115,6 @@
             this.txePurchaseLoss = new DevExpress.XtraEditors.TextEdit();
             this.rgTax = new DevExpress.XtraEditors.RadioGroup();
             this.rgPurchase = new DevExpress.XtraEditors.RadioGroup();
-            this.txeCurrency = new DevExpress.XtraEditors.TextEdit();
             this.txePrice = new DevExpress.XtraEditors.TextEdit();
             this.txeSMPLLotNo = new DevExpress.XtraEditors.TextEdit();
             this.txeMatCode = new DevExpress.XtraEditors.TextEdit();
@@ -290,6 +289,8 @@
             this.layoutControlItem90 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraOpenFileDialog1 = new DevExpress.XtraEditors.XtraOpenFileDialog(this.components);
             this.ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            this.slueCurrency = new DevExpress.XtraEditors.SearchLookUpEdit();
+            this.gridView13 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txeFactor.Properties)).BeginInit();
@@ -351,7 +352,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txePurchaseLoss.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rgTax.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rgPurchase.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txeCurrency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txePrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeSMPLLotNo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeMatCode.Properties)).BeginInit();
@@ -523,6 +523,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slueCurrency.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView13)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -584,7 +586,6 @@
             this.layoutControl1.Controls.Add(this.txePurchaseLoss);
             this.layoutControl1.Controls.Add(this.rgTax);
             this.layoutControl1.Controls.Add(this.rgPurchase);
-            this.layoutControl1.Controls.Add(this.txeCurrency);
             this.layoutControl1.Controls.Add(this.txePrice);
             this.layoutControl1.Controls.Add(this.txeSMPLLotNo);
             this.layoutControl1.Controls.Add(this.txeMatCode);
@@ -617,6 +618,7 @@
             this.layoutControl1.Controls.Add(this.sbBrowse);
             this.layoutControl1.Controls.Add(this.cbeSheet);
             this.layoutControl1.Controls.Add(this.slueUnit);
+            this.layoutControl1.Controls.Add(this.slueCurrency);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 90);
             this.layoutControl1.Name = "layoutControl1";
@@ -1036,7 +1038,7 @@
             // 
             this.lblIDVENDItem.Location = new System.Drawing.Point(9, 393);
             this.lblIDVENDItem.Name = "lblIDVENDItem";
-            this.lblIDVENDItem.Size = new System.Drawing.Size(287, 14);
+            this.lblIDVENDItem.Size = new System.Drawing.Size(70, 14);
             this.lblIDVENDItem.StyleController = this.layoutControl1;
             this.lblIDVENDItem.TabIndex = 81;
             this.lblIDVENDItem.Text = "labelControl1";
@@ -1523,22 +1525,12 @@
             this.rgPurchase.StyleController = this.layoutControl1;
             this.rgPurchase.TabIndex = 37;
             // 
-            // txeCurrency
-            // 
-            this.txeCurrency.Location = new System.Drawing.Point(580, 157);
-            this.txeCurrency.Name = "txeCurrency";
-            this.txeCurrency.Properties.MaxLength = 10;
-            this.txeCurrency.Size = new System.Drawing.Size(233, 20);
-            this.txeCurrency.StyleController = this.layoutControl1;
-            this.txeCurrency.TabIndex = 36;
-            this.txeCurrency.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txeCurrency_KeyDown);
-            // 
             // txePrice
             // 
             this.txePrice.Location = new System.Drawing.Point(580, 133);
             this.txePrice.Name = "txePrice";
-            this.txePrice.Properties.Mask.EditMask = "n";
-            this.txePrice.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+            this.txePrice.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.txePrice.Properties.MaskSettings.Set("mask", "n");
             this.txePrice.Size = new System.Drawing.Size(233, 20);
             this.txePrice.StyleController = this.layoutControl1;
             this.txePrice.TabIndex = 33;
@@ -2068,7 +2060,7 @@
             this.tabbedControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.tabbedControlGroup1.Name = "tabbedControlGroup1";
             this.tabbedControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.tabbedControlGroup1.SelectedTabPage = this.layoutControlGroup13;
+            this.tabbedControlGroup1.SelectedTabPage = this.layoutControlGroup2;
             this.tabbedControlGroup1.Size = new System.Drawing.Size(1094, 634);
             this.tabbedControlGroup1.TabPages.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlGroup13,
@@ -2347,7 +2339,7 @@
             // 
             // layoutControlItem24
             // 
-            this.layoutControlItem24.Control = this.txeCurrency;
+            this.layoutControlItem24.Control = this.slueCurrency;
             this.layoutControlItem24.Location = new System.Drawing.Point(0, 122);
             this.layoutControlItem24.Name = "layoutControlItem24";
             this.layoutControlItem24.Size = new System.Drawing.Size(399, 24);
@@ -3371,6 +3363,27 @@
             this.ribbonPage2.Name = "ribbonPage2";
             this.ribbonPage2.Text = "ribbonPage2";
             // 
+            // slueCurrency
+            // 
+            this.slueCurrency.Location = new System.Drawing.Point(580, 157);
+            this.slueCurrency.Name = "slueCurrency";
+            this.slueCurrency.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.slueCurrency.Properties.MaxLength = 10;
+            this.slueCurrency.Properties.NullText = "";
+            this.slueCurrency.Properties.PopupView = this.gridView13;
+            this.slueCurrency.Size = new System.Drawing.Size(233, 20);
+            this.slueCurrency.StyleController = this.layoutControl1;
+            this.slueCurrency.TabIndex = 36;
+            this.slueCurrency.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txeCurrency_KeyDown);
+            // 
+            // gridView13
+            // 
+            this.gridView13.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView13.Name = "gridView13";
+            this.gridView13.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView13.OptionsView.ShowGroupPanel = false;
+            // 
             // M07
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -3445,7 +3458,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txePurchaseLoss.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rgTax.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rgPurchase.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txeCurrency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txePrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeSMPLLotNo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeMatCode.Properties)).EndInit();
@@ -3617,6 +3629,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slueCurrency.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView13)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3652,7 +3666,6 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraEditors.RadioGroup rgTax;
         private DevExpress.XtraEditors.RadioGroup rgPurchase;
-        private DevExpress.XtraEditors.TextEdit txeCurrency;
         private DevExpress.XtraEditors.TextEdit txePrice;
         private DevExpress.XtraEditors.TextEdit txeSMPLLotNo;
         private DevExpress.XtraEditors.TextEdit txeMatCode;
@@ -3882,5 +3895,7 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem18;
         private DevExpress.XtraEditors.SearchLookUpEdit slueUnit;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView12;
+        private DevExpress.XtraEditors.SearchLookUpEdit slueCurrency;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView13;
     }
 }
