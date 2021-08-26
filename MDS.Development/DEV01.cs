@@ -535,107 +535,107 @@ namespace MDS.Development
 
             //Main Tab
             radioGroup4.ReadOnly = true;
-            radioGroup4.BackColor = Color.White;
-            radioGroup4.ForeColor = Color.Black;
+            //radioGroup4.BackColor = Color.White;
+            //radioGroup4.ForeColor = Color.Black;
 
             dtCustomerApproved_Main.ReadOnly = true;
-            dtCustomerApproved_Main.BackColor = Color.White;
-            dtCustomerApproved_Main.ForeColor = Color.Black;
+            //dtCustomerApproved_Main.BackColor = Color.White;
+            //dtCustomerApproved_Main.ForeColor = Color.Black;
 
             glBranch_Main.ReadOnly = true;
-            glBranch_Main.BackColor = Color.White;
-            glBranch_Main.ForeColor = Color.Black;
+            //glBranch_Main.BackColor = Color.White;
+            //glBranch_Main.ForeColor = Color.Black;
 
             glSaleSection_Main.ReadOnly = true;
-            glSaleSection_Main.BackColor = Color.White;
-            glSaleSection_Main.ForeColor = Color.Black;
+            //glSaleSection_Main.BackColor = Color.White;
+            //glSaleSection_Main.ForeColor = Color.Black;
 
             txtReferenceNo_Main.ReadOnly = true;
-            txtReferenceNo_Main.BackColor = Color.White;
-            txtReferenceNo_Main.ForeColor = Color.Black;
+            //txtReferenceNo_Main.BackColor = Color.White;
+            //txtReferenceNo_Main.ForeColor = Color.Black;
 
             dtRequestDate_Main.ReadOnly = true;
-            dtRequestDate_Main.BackColor = Color.White;
-            dtRequestDate_Main.ForeColor = Color.Black;
+            //dtRequestDate_Main.BackColor = Color.White;
+            //dtRequestDate_Main.ForeColor = Color.Black;
 
             radioGroup1.ReadOnly = true;
-            radioGroup1.BackColor = Color.White;
-            radioGroup1.ForeColor = Color.Black;
+            //radioGroup1.BackColor = Color.White;
+            //radioGroup1.ForeColor = Color.Black;
 
             glSeason_Main.ReadOnly = true;
-            glSeason_Main.BackColor = Color.White;
-            glSeason_Main.ForeColor = Color.Black;
+            //glSeason_Main.BackColor = Color.White;
+            //glSeason_Main.ForeColor = Color.Black;
 
             slCustomer_Main.ReadOnly = true;
-            slCustomer_Main.BackColor = Color.White;
-            slCustomer_Main.ForeColor = Color.Black;
+            //slCustomer_Main.BackColor = Color.White;
+            //slCustomer_Main.ForeColor = Color.Black;
 
             txtContactName_Main.ReadOnly = true;
-            txtContactName_Main.BackColor = Color.White;
-            txtContactName_Main.ForeColor = Color.Black;
+            //txtContactName_Main.BackColor = Color.White;
+            //txtContactName_Main.ForeColor = Color.Black;
 
             dtDeliveryRequest_Main.ReadOnly = true;
-            dtDeliveryRequest_Main.BackColor = Color.White;
-            dtDeliveryRequest_Main.ForeColor = Color.Black;
+            //dtDeliveryRequest_Main.BackColor = Color.White;
+            //dtDeliveryRequest_Main.ForeColor = Color.Black;
 
             glUseFor.ReadOnly = true;
-            glUseFor.BackColor = Color.White;
-            glUseFor.ForeColor = Color.Black;
+            //glUseFor.BackColor = Color.White;
+            //glUseFor.ForeColor = Color.Black;
 
             txtSMPLItemNo_Main.ReadOnly = true;
-            txtSMPLItemNo_Main.BackColor = Color.White;
-            txtSMPLItemNo_Main.ForeColor = Color.Black;
+            //txtSMPLItemNo_Main.BackColor = Color.White;
+            //txtSMPLItemNo_Main.ForeColor = Color.Black;
 
             txtModelName_Main.ReadOnly = true;
-            txtModelName_Main.BackColor = Color.White;
-            txtModelName_Main.ForeColor = Color.Black;
+            //txtModelName_Main.BackColor = Color.White;
+            //txtModelName_Main.ForeColor = Color.Black;
 
             glCategoryDivision_Main.ReadOnly = true;
-            glCategoryDivision_Main.BackColor = Color.White;
-            glCategoryDivision_Main.ForeColor = Color.Black;
+            //glCategoryDivision_Main.BackColor = Color.White;
+            //glCategoryDivision_Main.ForeColor = Color.Black;
 
             slStyleName_Main.ReadOnly = true;
-            slStyleName_Main.BackColor = Color.White;
-            slStyleName_Main.ForeColor = Color.Black;
+            //slStyleName_Main.BackColor = Color.White;
+            //slStyleName_Main.ForeColor = Color.Black;
 
             txtSMPLPatternNo_Main.ReadOnly = true;
-            txtSMPLPatternNo_Main.BackColor = Color.White;
-            txtSMPLPatternNo_Main.ForeColor = Color.Black;
+            //txtSMPLPatternNo_Main.BackColor = Color.White;
+            //txtSMPLPatternNo_Main.ForeColor = Color.Black;
 
             radioGroup3.ReadOnly = true;
-            radioGroup3.BackColor = Color.White;
-            radioGroup3.ForeColor = Color.Black;
+            //radioGroup3.BackColor = Color.White;
+            //radioGroup3.ForeColor = Color.Black;
 
             txtSituation_Main.ReadOnly = true;
-            txtSituation_Main.BackColor = Color.White;
-            txtSituation_Main.ForeColor = Color.Black;
+            //txtSituation_Main.BackColor = Color.White;
+            //txtSituation_Main.ForeColor = Color.Black;
 
             txtStateArrangments_Main.ReadOnly = true;
-            txtStateArrangments_Main.BackColor = Color.White;
-            txtStateArrangments_Main.ForeColor = Color.Black;
+            //txtStateArrangments_Main.BackColor = Color.White;
+            //txtStateArrangments_Main.ForeColor = Color.Black;
 
             radioGroup5.ReadOnly = true;
-            radioGroup5.BackColor = Color.White;
-            radioGroup5.ForeColor = Color.Black;
+            //radioGroup5.BackColor = Color.White;
+            //radioGroup5.ForeColor = Color.Black;
 
             dtACPRBy_Main.ReadOnly = true;
-            dtACPRBy_Main.BackColor = Color.White;
-            dtACPRBy_Main.ForeColor = Color.Black;
+            //dtACPRBy_Main.BackColor = Color.White;
+            //dtACPRBy_Main.ForeColor = Color.Black;
 
             radioGroup6.ReadOnly = true;
-            radioGroup6.BackColor = Color.White;
-            radioGroup6.ForeColor = Color.Black;
+            //radioGroup6.BackColor = Color.White;
+            //radioGroup6.ForeColor = Color.Black;
 
             dtFBPRBy_Main.ReadOnly = true;
-            dtFBPRBy_Main.BackColor = Color.White;
-            dtFBPRBy_Main.ForeColor = Color.Black;
+            //dtFBPRBy_Main.BackColor = Color.White;
+            //dtFBPRBy_Main.ForeColor = Color.Black;
 
             slueUnit.ReadOnly = true;
-            slueUnit.BackColor = Color.White;
-            slueUnit.ForeColor = Color.Black;
+            //slueUnit.BackColor = Color.White;
+            //slueUnit.ForeColor = Color.Black;
 
             txeQtyDF.ReadOnly = true;
-            txeQtyDF.BackColor = Color.White;
+            //txeQtyDF.BackColor = Color.White;
 
             sbUnit.Enabled = false;
             sbColor.Enabled = false;
@@ -648,6 +648,7 @@ namespace MDS.Development
             sbUseFor.Enabled = false;
             simpleButton3.Enabled = false;
             simpleButton4.Enabled = false;
+            picMain.Enabled = false;
 
             //Fabric Tab
             simpleButton5.Enabled = false;
@@ -661,52 +662,56 @@ namespace MDS.Development
             sbDeleteRow.Enabled = false;
 
             txtVendorFBCode_FB.ReadOnly = true;
-            txtVendorFBCode_FB.BackColor = Color.White;
-            txtVendorFBCode_FB.ForeColor = Color.Black;
+            //txtVendorFBCode_FB.BackColor = Color.White;
+            //txtVendorFBCode_FB.ForeColor = Color.Black;
 
             txtSampleLotNo_FB.ReadOnly = true;
-            txtSampleLotNo_FB.BackColor = Color.White;
-            txtSampleLotNo_FB.ForeColor = Color.Black;
+            //txtSampleLotNo_FB.BackColor = Color.White;
+            //txtSampleLotNo_FB.ForeColor = Color.Black;
 
             slVendor_FB.ReadOnly = true;
-            slVendor_FB.BackColor = Color.White;
-            slVendor_FB.ForeColor = Color.Black;
+            //slVendor_FB.BackColor = Color.White;
+            //slVendor_FB.ForeColor = Color.Black;
 
             slFBColor_FB.ReadOnly = true;
-            slFBColor_FB.BackColor = Color.White;
-            slFBColor_FB.ForeColor = Color.Black;
+            //slFBColor_FB.BackColor = Color.White;
+            //slFBColor_FB.ForeColor = Color.Black;
 
             slFBCode_FB.ReadOnly = true;
-            slFBCode_FB.BackColor = Color.White;
-            slFBCode_FB.ForeColor = Color.Black;
+            //slFBCode_FB.BackColor = Color.White;
+            //slFBCode_FB.ForeColor = Color.Black;
 
             txtComposition_FB.ReadOnly = true;
-            txtComposition_FB.BackColor = Color.White;
-            txtComposition_FB.ForeColor = Color.Black;
+            //txtComposition_FB.BackColor = Color.White;
+            //txtComposition_FB.ForeColor = Color.Black;
 
             txtWeightFB_FB.ReadOnly = true;
-            txtWeightFB_FB.BackColor = Color.White;
-            txtWeightFB_FB.ForeColor = Color.Black;
+            //txtWeightFB_FB.BackColor = Color.White;
+            //txtWeightFB_FB.ForeColor = Color.Black;
+            
+            txeRemark_FB.ReadOnly = true;
 
             txtWidthCuttable_FB.ReadOnly = true;
-            txtWidthCuttable_FB.BackColor = Color.White;
-            txtWidthCuttable_FB.ForeColor = Color.Black;
+            //txtWidthCuttable_FB.BackColor = Color.White;
+            //txtWidthCuttable_FB.ForeColor = Color.Black;
 
             txtPrice_FB.ReadOnly = true;
-            txtPrice_FB.BackColor = Color.White;
-            txtPrice_FB.ForeColor = Color.Black;
+            //txtPrice_FB.BackColor = Color.White;
+            //txtPrice_FB.ForeColor = Color.Black;
 
             glCurrency_FB.ReadOnly = true;
-            glCurrency_FB.BackColor = Color.White;
-            glCurrency_FB.ForeColor = Color.Black;
+            //glCurrency_FB.BackColor = Color.White;
+            //glCurrency_FB.ForeColor = Color.Black;
 
             txtTotalWidth_FB.ReadOnly = true;
-            txtTotalWidth_FB.BackColor = Color.White;
-            txtTotalWidth_FB.ForeColor = Color.Black;
+            //txtTotalWidth_FB.BackColor = Color.White;
+            //txtTotalWidth_FB.ForeColor = Color.Black;
 
             txtUsableWidth_FB.ReadOnly = true;
-            txtUsableWidth_FB.BackColor = Color.White;
-            txtUsableWidth_FB.ForeColor = Color.Black;
+            //txtUsableWidth_FB.BackColor = Color.White;
+            //txtUsableWidth_FB.ForeColor = Color.Black;
+
+            picUpload_FB.Enabled = false;
 
             //Material Tab
             gridView6.OptionsBehavior.Editable = false;
@@ -721,56 +726,58 @@ namespace MDS.Development
             btnMatDelete.Enabled = false;
 
             glWorkStation_Mat.ReadOnly = true;
-            glWorkStation_Mat.BackColor = Color.White;
-            glWorkStation_Mat.ForeColor = Color.Black;
+            //glWorkStation_Mat.BackColor = Color.White;
+            //glWorkStation_Mat.ForeColor = Color.Black;
 
             slVendor_Mat.ReadOnly = true;
-            slVendor_Mat.BackColor = Color.White;
-            slVendor_Mat.ForeColor = Color.Black;
+            //slVendor_Mat.BackColor = Color.White;
+            //slVendor_Mat.ForeColor = Color.Black;
 
             txtVendorMatCode_Mat.ReadOnly = true;
-            txtVendorMatCode_Mat.BackColor = Color.White;
-            txtVendorMatCode_Mat.ForeColor = Color.Black;
+            //txtVendorMatCode_Mat.BackColor = Color.White;
+            //txtVendorMatCode_Mat.ForeColor = Color.Black;
 
             txtSampleLotNo_Mat.ReadOnly = true;
-            txtSampleLotNo_Mat.BackColor = Color.White;
-            txtSampleLotNo_Mat.ForeColor = Color.Black;
+            //txtSampleLotNo_Mat.BackColor = Color.White;
+            //txtSampleLotNo_Mat.ForeColor = Color.Black;
 
             txtMatComposition_Mat.ReadOnly = true;
-            txtMatComposition_Mat.BackColor = Color.White;
-            txtMatComposition_Mat.ForeColor = Color.Black;
+            //txtMatComposition_Mat.BackColor = Color.White;
+            //txtMatComposition_Mat.ForeColor = Color.Black;
 
             slMatColor_Mat.ReadOnly = true;
-            slMatColor_Mat.BackColor = Color.White;
-            slMatColor_Mat.ForeColor = Color.Black;
+            //slMatColor_Mat.BackColor = Color.White;
+            //slMatColor_Mat.ForeColor = Color.Black;
 
             slueConsumpUnit.ReadOnly = true;
-            slueConsumpUnit.BackColor = Color.White;
-            slueConsumpUnit.ForeColor = Color.Black;
+            //slueConsumpUnit.BackColor = Color.White;
+            //slueConsumpUnit.ForeColor = Color.Black;
 
             slMatCode_Mat.ReadOnly = true;
-            slMatCode_Mat.BackColor = Color.White;
-            slMatCode_Mat.ForeColor = Color.Black;
+            //slMatCode_Mat.BackColor = Color.White;
+            //slMatCode_Mat.ForeColor = Color.Black;
 
             txtPrice_Mat.ReadOnly = true;
-            txtPrice_Mat.BackColor = Color.White;
-            txtPrice_Mat.ForeColor = Color.Black;
+            //txtPrice_Mat.BackColor = Color.White;
+            //txtPrice_Mat.ForeColor = Color.Black;
 
             glCurrency_Mat.ReadOnly = true;
-            glCurrency_Mat.BackColor = Color.White;
-            glCurrency_Mat.ForeColor = Color.Black;
+            //glCurrency_Mat.BackColor = Color.White;
+            //glCurrency_Mat.ForeColor = Color.Black;
 
             txtSituation_Mat.ReadOnly = true;
-            txtSituation_Mat.BackColor = Color.White;
-            txtSituation_Mat.ForeColor = Color.Black;
+            //txtSituation_Mat.BackColor = Color.White;
+            //txtSituation_Mat.ForeColor = Color.Black;
 
             txtComment_Mat.ReadOnly = true;
-            txtComment_Mat.BackColor = Color.White;
-            txtComment_Mat.ForeColor = Color.Black;
+            //txtComment_Mat.BackColor = Color.White;
+            //txtComment_Mat.ForeColor = Color.Black;
 
             txtRemark_Mat.ReadOnly = true;
-            txtRemark_Mat.BackColor = Color.White;
-            txtRemark_Mat.ForeColor = Color.Black;
+            //txtRemark_Mat.BackColor = Color.White;
+            //txtRemark_Mat.ForeColor = Color.Black;
+
+            picMat.Enabled = false;
         }
 
 
@@ -817,6 +824,7 @@ namespace MDS.Development
             sbUseFor.Enabled = true;
             simpleButton3.Enabled = true;
             simpleButton4.Enabled = true;
+            picMain.Enabled = true;
 
             //Fabric Tab
             simpleButton5.Enabled = true;
@@ -836,11 +844,13 @@ namespace MDS.Development
             slFBCode_FB.ReadOnly = false;
             txtComposition_FB.ReadOnly = false;
             txtWeightFB_FB.ReadOnly = false;
+            txeRemark_FB.ReadOnly = false;
             txtWidthCuttable_FB.ReadOnly = false;
             txtPrice_FB.ReadOnly = false;
             glCurrency_FB.ReadOnly = false;
             txtTotalWidth_FB.ReadOnly = false;
             txtUsableWidth_FB.ReadOnly = false;
+            picUpload_FB.Enabled = true;
 
             //Material Tab
             gridView6.OptionsBehavior.Editable = true;
@@ -867,6 +877,7 @@ namespace MDS.Development
             txtSituation_Mat.ReadOnly = false;
             txtComment_Mat.ReadOnly = false;
             txtRemark_Mat.ReadOnly = false;
+            picMat.Enabled = true;
 
         }
 
@@ -1426,7 +1437,7 @@ namespace MDS.Development
 
                                         if (chkSave == false)
                                         {
-                                            textBox1.Text = sbSQL.ToString();
+                                            //textBox1.Text = sbSQL.ToString();
                                             FUNCT.msgERROR("Found problem on save.\nพบปัญหาในการบันทึกข้อมูล (Tab Fabric)");
                                         }
                                     }
@@ -5255,14 +5266,14 @@ namespace MDS.Development
                 //emptySpaceItem10.AppearanceItemCaption.ForeColor = Color.Maroon;
                 //emptySpaceItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
 
-                emptySpaceItem28.AppearanceItemCaption.ForeColor = Color.Maroon;
-                emptySpaceItem13.AppearanceItemCaption.ForeColor = Color.Maroon;
-                emptySpaceItem22.AppearanceItemCaption.ForeColor = Color.Maroon;
-                emptySpaceItem23.AppearanceItemCaption.ForeColor = Color.Maroon;
+                layoutControlItem4.AppearanceItemCaption.ForeColor = Color.Maroon;
+                layoutControlItem5.AppearanceItemCaption.ForeColor = Color.Maroon;
+                layoutControlItem8.AppearanceItemCaption.ForeColor = Color.Maroon;
+                layoutControlItem13.AppearanceItemCaption.ForeColor = Color.Maroon;
                 //emptySpaceItem5.AppearanceItemCaption.ForeColor = Color.Maroon;
-                emptySpaceItem11.AppearanceItemCaption.ForeColor = Color.Maroon;
-                emptySpaceItem21.AppearanceItemCaption.ForeColor = Color.Maroon;
-                emptySpaceItem24.AppearanceItemCaption.ForeColor = Color.Maroon;
+                //emptySpaceItem11.AppearanceItemCaption.ForeColor = Color.Maroon;
+                //emptySpaceItem21.AppearanceItemCaption.ForeColor = Color.Maroon;
+                //emptySpaceItem24.AppearanceItemCaption.ForeColor = Color.Maroon;
 
                 layoutControlItem68.AppearanceItemCaption.ForeColor = Color.Maroon;
                 layoutControlItem69.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -5271,14 +5282,14 @@ namespace MDS.Development
                 //emptySpaceItem10.Text = "* " + emptySpaceItem10.Text;
                 //emptySpaceItem25.Text = "* " + emptySpaceItem25.Text;
 
-                emptySpaceItem28.Text = "* " + emptySpaceItem28.Text;
-                emptySpaceItem13.Text = "* " + emptySpaceItem13.Text;
-                emptySpaceItem22.Text = "* " + emptySpaceItem22.Text;
-                emptySpaceItem23.Text = "* " + emptySpaceItem23.Text;
+                layoutControlItem4.Text = "* " + layoutControlItem4.Text;
+                layoutControlItem5.Text = "* " + layoutControlItem5.Text;
+                layoutControlItem8.Text = "* " + layoutControlItem8.Text;
+                layoutControlItem13.Text = "* " + layoutControlItem13.Text;
                 //emptySpaceItem5.Text = "* " + emptySpaceItem5.Text;
-                emptySpaceItem11.Text = "* " + emptySpaceItem11.Text;
-                emptySpaceItem21.Text = "* " + emptySpaceItem21.Text;
-                emptySpaceItem24.Text = "* " + emptySpaceItem24.Text;
+                //emptySpaceItem11.Text = "* " + emptySpaceItem11.Text;
+                //emptySpaceItem21.Text = "* " + emptySpaceItem21.Text;
+                //emptySpaceItem24.Text = "* " + emptySpaceItem24.Text;
 
                 layoutControlItem68.Text = "* " + layoutControlItem68.Text;
                 layoutControlItem69.Text = "* " + layoutControlItem69.Text;
@@ -5291,14 +5302,14 @@ namespace MDS.Development
                 //emptySpaceItem10.AppearanceItemCaption.ForeColor = Color.Maroon;
                 //emptySpaceItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
 
-                emptySpaceItem28.AppearanceItemCaption.ForeColor = Color.Empty;
-                emptySpaceItem13.AppearanceItemCaption.ForeColor = Color.Empty;
-                emptySpaceItem22.AppearanceItemCaption.ForeColor = Color.Empty;
-                emptySpaceItem23.AppearanceItemCaption.ForeColor = Color.Empty;
+                layoutControlItem4.AppearanceItemCaption.ForeColor = Color.Empty;
+                layoutControlItem5.AppearanceItemCaption.ForeColor = Color.Empty;
+                layoutControlItem8.AppearanceItemCaption.ForeColor = Color.Empty;
+                layoutControlItem13.AppearanceItemCaption.ForeColor = Color.Empty;
                 //emptySpaceItem5.AppearanceItemCaption.ForeColor = Color.Empty;
-                emptySpaceItem11.AppearanceItemCaption.ForeColor = Color.Empty;
-                emptySpaceItem21.AppearanceItemCaption.ForeColor = Color.Empty;
-                emptySpaceItem24.AppearanceItemCaption.ForeColor = Color.Empty;
+                //emptySpaceItem11.AppearanceItemCaption.ForeColor = Color.Empty;
+                //emptySpaceItem21.AppearanceItemCaption.ForeColor = Color.Empty;
+                //emptySpaceItem24.AppearanceItemCaption.ForeColor = Color.Empty;
 
                 layoutControlItem68.AppearanceItemCaption.ForeColor = Color.Empty;
                 layoutControlItem69.AppearanceItemCaption.ForeColor = Color.Empty;
@@ -5307,14 +5318,14 @@ namespace MDS.Development
                 //emptySpaceItem10.Text = "* " + emptySpaceItem10.Text;
                 //emptySpaceItem25.Text = "* " + emptySpaceItem25.Text;
 
-                emptySpaceItem28.Text = emptySpaceItem28.Text.Replace("* ", "");
-                emptySpaceItem13.Text = emptySpaceItem13.Text.Replace("* ", "");
-                emptySpaceItem22.Text = emptySpaceItem22.Text.Replace("* ", "");
-                emptySpaceItem23.Text = emptySpaceItem23.Text.Replace("* ", "");
+                layoutControlItem4.Text = layoutControlItem4.Text.Replace("* ", "");
+                layoutControlItem5.Text = layoutControlItem5.Text.Replace("* ", "");
+                layoutControlItem8.Text = layoutControlItem8.Text.Replace("* ", "");
+                layoutControlItem13.Text = layoutControlItem13.Text.Replace("* ", "");
                 //emptySpaceItem5.Text = emptySpaceItem5.Text.Replace("* ", "");
-                emptySpaceItem11.Text = emptySpaceItem11.Text.Replace("* ", "");
-                emptySpaceItem21.Text = emptySpaceItem21.Text.Replace("* ", "");
-                emptySpaceItem24.Text = emptySpaceItem24.Text.Replace("* ", "");
+                //emptySpaceItem11.Text = emptySpaceItem11.Text.Replace("* ", "");
+                //emptySpaceItem21.Text = emptySpaceItem21.Text.Replace("* ", "");
+                //emptySpaceItem24.Text = emptySpaceItem24.Text.Replace("* ", "");
 
                 layoutControlItem68.Text = layoutControlItem68.Text.Replace("* ", "");
                 layoutControlItem69.Text = layoutControlItem69.Text.Replace("* ", "");
