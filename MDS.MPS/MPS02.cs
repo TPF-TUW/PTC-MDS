@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using DBConnection;
+using DBConnect;
 using System.Windows.Forms;
 using DevExpress.LookAndFeel;
 using DevExpress.Utils.Extensions;
@@ -31,6 +31,10 @@ namespace MDS.MPS
         List<TransportationMethod> transportationMethod;
         public LogIn UserLogin { get; set; }
         public int Company { get; set; }
+
+        public string ConnectionString { get; set; }
+        string CONNECT_STRING = "";
+        DatabaseConnect DBC;
 
         public MPS02()
         {
@@ -63,6 +67,28 @@ namespace MDS.MPS
 
         private void XtraForm1_Load(object sender, EventArgs e)
         {
+            //***** SET CONNECT DB ********
+            if (this.ConnectionString != null)
+            {
+                if (this.ConnectionString != "")
+                {
+                    CONNECT_STRING = this.ConnectionString;
+                }
+            }
+
+            this.DBC = new DatabaseConnect(CONNECT_STRING);
+
+            if (this.DBC.chkCONNECTION_STING() == false)
+            {
+                this.DBC.setCONNECTION_STRING_INIFILE();
+                if (this.DBC.chkCONNECTION_STING() == false)
+                {
+                    return;
+                }
+            }
+            new ObjDE.setDatabase(this.DBC);
+            //*****************************
+
             gluePoDocumentStatus.Properties.DataSource = documentStatuses;
             gluePoDocumentStatus.Properties.DisplayMember = "Status";
             gluePoDocumentStatus.Properties.ValueMember = "ID";
@@ -108,7 +134,7 @@ namespace MDS.MPS
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT No AS ID, Name AS Incoterms FROM ENUMTYPE WHERE (Module = 'CODO') ORDER BY OIDENUM ");
-            new ObjDevEx.setGridLookUpEdit(glueDoIncoterms, sbSQL, "Incoterms", "ID").getData();
+            new ObjDE.setGridLookUpEdit(glueDoIncoterms, sbSQL, "Incoterms", "ID").getData();
 
             gluePoBusinessUnit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             gluePoBusinessUnit.Properties.AcceptEditorTextAsNewValue = DevExpress.Utils.DefaultBoolean.True;
@@ -155,7 +181,7 @@ namespace MDS.MPS
             sbSQL.Append("       PO.OriginalSalesPrice, PO.Approver, PO.ApprovalDate, PO.OIDBillto, VD.Name, VD.Address1, VD.Address2, VD.Address3, VD.TelephoneNo, ");
             sbSQL.Append("       PO.PaymentTerms, PO.OIDCURR, CUR.Currency, PO.Remark, PO.AllocationOrderNumber ");
             sbSQL.Append("ORDER BY PO.OrderNo, PO.RevisionNo ");
-            DataTable dtPO = new DBQuery(sbSQL).getDataTable();
+            DataTable dtPO = this.DBC.DBQuery(sbSQL).getDataTable();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT PO.OrderNo AS [PO Order No.], PO.RevisionNo AS [Revision No.], PO.OIDCOLOR, PC.ColorNo AS ColorCode, PC.ColorName AS Color, PO.OIDSIZE, PS.SizeNo AS SizeCode, PS.SizeName AS Size, ");
@@ -164,7 +190,7 @@ namespace MDS.MPS
             sbSQL.Append("       ProductColor AS PC ON PO.OIDCOLOR = PC.OIDCOLOR LEFT OUTER JOIN ");
             sbSQL.Append("       ProductSize AS PS ON PO.OIDSIZE = PS.OIDSIZE ");
             sbSQL.Append("ORDER BY PO.OrderNo, PO.RevisionNo, PO.OID ");
-            DataTable dtPO2 = new DBQuery(sbSQL).getDataTable();
+            DataTable dtPO2 = this.DBC.DBQuery(sbSQL).getDataTable();
 
             DataSet dsPOS = new DataSet();
             dsPOS.Tables.Add(dtPO);
@@ -209,7 +235,7 @@ namespace MDS.MPS
             sbSQL.Append("       DO.TransportationMethod, DO.PortCode, PC.PortName, PC.City, PC.Country, DO.Incoterms, DO.Forwarder, DO.OIDVEND, VD.Name, ");
             sbSQL.Append("       DO.ETAWH, DO.ContractedETD  ");
             sbSQL.Append("ORDER BY [DO No.], [PO Order No.], [Revision No.]");
-            DataTable dtDO = new DBQuery(sbSQL).getDataTable();
+            DataTable dtDO = this.DBC.DBQuery(sbSQL).getDataTable();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT DO.DONo AS [DO No.], DO.OrderNo AS [PO Order No.], DO.RevisionNo AS [Revision No.],  ");
@@ -219,7 +245,7 @@ namespace MDS.MPS
             sbSQL.Append("       ProductColor AS PC ON DO.OIDCOLOR = PC.OIDCOLOR LEFT OUTER JOIN ");
             sbSQL.Append("       ProductSize AS PS ON DO.OIDSIZE = PS.OIDSIZE ");
             sbSQL.Append("ORDER BY [DO No.], [PO Order No.], [Revision No.], DO.OIDDO");
-            DataTable dtDO2 = new DBQuery(sbSQL).getDataTable();
+            DataTable dtDO2 = this.DBC.DBQuery(sbSQL).getDataTable();
 
             DataSet dsDOS = new DataSet();
             dsDOS.Tables.Add(dtDO);
@@ -256,7 +282,7 @@ namespace MDS.MPS
             sbSQL.Append("FROM Vendor ");
             sbSQL.Append("WHERE (VendorType = 6) ");
             sbSQL.Append("ORDER BY Code ");
-            new ObjDevEx.setSearchLookUpEdit(sluePoOIDBillto, sbSQL, "Supplier", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(sluePoOIDBillto, sbSQL, "Supplier", "ID").getData();
             sluePoOIDBillto.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
             slueDoOIDVEND.Properties.DataSource = sluePoOIDBillto.Properties.DataSource;
             slueDoOIDVEND.Properties.DisplayMember = "Supplier";
@@ -268,7 +294,7 @@ namespace MDS.MPS
             sbSQL.Append("FROM   ItemCustomer AS ITC LEFT OUTER JOIN ");
             sbSQL.Append("       Customer AS CUS ON ITC.OIDCUST = CUS.OIDCUST ");
             sbSQL.Append("ORDER BY ITC.ItemCode ");
-            new ObjDevEx.setSearchLookUpEdit(sluePoItemCode, sbSQL, "ItemCode", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(sluePoItemCode, sbSQL, "ItemCode", "ID").getData();
             sluePoItemCode.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
             slueDoItemCode.Properties.DataSource = sluePoItemCode.Properties.DataSource;
             slueDoItemCode.Properties.DisplayMember = "ItemCode";
@@ -279,52 +305,52 @@ namespace MDS.MPS
             sbSQL.Append("SELECT PortCode, PortName, City, Country, OIDPORT AS ID ");
             sbSQL.Append("FROM   PortAndCity ");
             sbSQL.Append("ORDER BY PortCode ");
-            new ObjDevEx.setSearchLookUpEdit(slueDoPortCode, sbSQL, "PortCode", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(slueDoPortCode, sbSQL, "PortCode", "ID").getData();
             slueDoPortCode.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
 
             sbSQL.Clear();
             sbSQL.Append("SELECT Code, Name AS Customer, OIDCUST AS ID ");
             sbSQL.Append("FROM Customer ");
             sbSQL.Append("ORDER BY Code ");
-            new ObjDevEx.setSearchLookUpEdit(sluePoOIDCUST, sbSQL, "Customer", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(sluePoOIDCUST, sbSQL, "Customer", "ID").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT DISTINCT BusinessUnit ");
             sbSQL.Append("FROM COPO ");
             sbSQL.Append("ORDER BY BusinessUnit");
-            new ObjDevEx.setGridLookUpEdit(gluePoBusinessUnit, sbSQL, "BusinessUnit", "BusinessUnit").getData();
+            new ObjDE.setGridLookUpEdit(gluePoBusinessUnit, sbSQL, "BusinessUnit", "BusinessUnit").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT SeasonNo AS [Season No.], SeasonName AS [Season Name] ");
             sbSQL.Append("FROM Season ");
             sbSQL.Append("ORDER BY OIDSEASON");
-            new ObjDevEx.setGridLookUpEdit(gluePoSeason, sbSQL, "Season No.", "Season No.").getData();
+            new ObjDE.setGridLookUpEdit(gluePoSeason, sbSQL, "Season No.", "Season No.").getData();
 
             sbSQL.Clear();
             DevExpress.XtraEditors.SearchLookUpEdit sluePoOIDCOLOR = new DevExpress.XtraEditors.SearchLookUpEdit();
             sbSQL.Append("SELECT ColorNo, ColorName, OIDCOLOR AS ID ");
             sbSQL.Append("FROM ProductColor ");
             sbSQL.Append("ORDER BY ColorNo");
-            new ObjDevEx.setSearchLookUpEdit(sluePoOIDCOLOR, sbSQL, "ColorNo", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(sluePoOIDCOLOR, sbSQL, "ColorNo", "ID").getData();
 
             sbSQL.Clear();
             DevExpress.XtraEditors.SearchLookUpEdit sluePoOIDSIZE = new DevExpress.XtraEditors.SearchLookUpEdit();
             sbSQL.Append("SELECT SizeNo, SizeName, OIDSIZE AS ID ");
             sbSQL.Append("FROM ProductSize ");
             sbSQL.Append("ORDER BY SizeNo");
-            new ObjDevEx.setSearchLookUpEdit(sluePoOIDSIZE, sbSQL, "SizeNo", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(sluePoOIDSIZE, sbSQL, "SizeNo", "ID").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT Currency, OIDCURR AS ID ");
             sbSQL.Append("FROM Currency ");
             sbSQL.Append("ORDER BY OIDCURR");
-            new ObjDevEx.setGridLookUpEdit(gluePoOIDCURR, sbSQL, "Currency", "ID").getData();
+            new ObjDE.setGridLookUpEdit(gluePoOIDCURR, sbSQL, "Currency", "ID").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT Name, Description, OIDPayment AS ID ");
             sbSQL.Append("FROM PaymentTerm ");
             sbSQL.Append("ORDER BY OIDPayment ");
-            new ObjDevEx.setSearchLookUpEdit(sluePoPaymentTerms, sbSQL, "Name", "Name").getData();
+            new ObjDE.setSearchLookUpEdit(sluePoPaymentTerms, sbSQL, "Name", "Name").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT DISTINCT PO.OrderNo + '_' + CONVERT(NVARCHAR, PO.RevisionNo) AS POID, PO.OrderNo AS [PO. Order No.], PO.RevisionNo AS [Revision No.], ST.Status, PO.Season, CUS.Name AS Customer, IC.ItemName ");
@@ -333,7 +359,7 @@ namespace MDS.MPS
             sbSQL.Append("       ItemCustomer AS IC ON PO.ItemCode = IC.OIDCSITEM INNER JOIN ");
             sbSQL.Append("       (" + sbSTATUS.ToString() + ") AS ST ON PO.DocumentStatus = ST.ID ");
             sbSQL.Append("ORDER BY [PO. Order No.] ");
-            new ObjDevEx.setSearchLookUpEdit(slueDoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
+            new ObjDE.setSearchLookUpEdit(slueDoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
             slueDoOrderNo.Properties.PopulateViewColumns();
             slueDoOrderNo.Properties.View.Columns["POID"].Visible = false;
 
@@ -423,7 +449,7 @@ namespace MDS.MPS
             //*** PO ***
             gluePoDocumentStatus.EditValue = 0;
 
-            //txePoOID.Text = new DBQuery("SELECT CASE WHEN ISNULL(MAX(OID), '') = '' THEN 1 ELSE MAX(OID) + 1 END AS NewNo FROM COPO").getString();
+            //txePoOID.Text = this.DBC.DBQuery("SELECT CASE WHEN ISNULL(MAX(OID), '') = '' THEN 1 ELSE MAX(OID) + 1 END AS NewNo FROM COPO").getString();
             txePoOrderNo.Text = "";
             spePoRevisionNo.Value = 0;
             txePoLot.Text = "";
@@ -812,7 +838,7 @@ namespace MDS.MPS
 
                                             try
                                             {
-                                                bool chkSAVE = new DBQuery(sbSQL).runSQL();
+                                                bool chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                                                 if (chkSAVE == true)
                                                 {
                                                     if (gluePoDocumentStatus.EditValue.ToString() == "0" || gluePoDocumentStatus.EditValue.ToString() == "1") //New & Revise
@@ -824,7 +850,7 @@ namespace MDS.MPS
                                                         sbSQL.Append("       ItemCustomer AS IC ON PO.ItemCode = IC.OIDCSITEM INNER JOIN ");
                                                         sbSQL.Append("       (" + sbSTATUS.ToString() + ") AS ST ON PO.DocumentStatus = ST.ID ");
                                                         sbSQL.Append("ORDER BY [PO. Order No.] ");
-                                                        new ObjDevEx.setSearchLookUpEdit(slueDoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
+                                                        new ObjDE.setSearchLookUpEdit(slueDoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
                                                         slueDoOrderNo.Properties.PopulateViewColumns();
                                                         slueDoOrderNo.Properties.View.Columns["POID"].Visible = false;
                                                         speDoRevisionNo.Value = 0;
@@ -963,7 +989,7 @@ namespace MDS.MPS
                                             {
                                                 string chkPO = PONO;
                                                 string chkREVISE = RevisionNo;
-                                                string[] arrChk = new DBQuery("SELECT TOP(1) OrderNo, RevisionNo FROM CODO WHERE (DONo = N'" + DONO + "')").getMultipleValue();
+                                                string[] arrChk = this.DBC.DBQuery("SELECT TOP(1) OrderNo, RevisionNo FROM CODO WHERE (DONo = N'" + DONO + "')").getMultipleValue();
                                                 if (arrChk.Length > 0)
                                                 {
                                                     chkPO = arrChk[0];
@@ -1047,7 +1073,7 @@ namespace MDS.MPS
 
                                         try
                                         {
-                                            bool chkSAVE = new DBQuery(sbSQL).runSQL();
+                                            bool chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                                             if (chkSAVE == true)
                                             {
                                                 SetNewDO();
@@ -1152,7 +1178,7 @@ namespace MDS.MPS
                                         sbCUST.Append("   INSERT INTO Customer(Code, Name, ShortName) VALUES(N'" + CustomerCode + "', N'" + strCustomer + "', N'" + CustomerShort + "') ");
                                         sbCUST.Append(" END ");
                                         sbCUST.Append("SELECT TOP(1) OIDCUST FROM Customer WHERE Name LIKE N'%" + Customer + "%' ");
-                                        OIDCUST = new DBQuery(sbCUST).getString();
+                                        OIDCUST = this.DBC.DBQuery(sbCUST).getString();
                                     }
                                     string RevisedDate = WSHEETPO.Rows[i][8].DisplayText.ToString().Trim();
                                     RevisedDate = RevisedDate != "" ? "'" + Convert.ToDateTime(RevisedDate).ToString("yyyy-MM-dd") + "'" : "NULL";
@@ -1169,7 +1195,7 @@ namespace MDS.MPS
                                         sbCUST.Append("   INSERT INTO Vendor(Code, Name, VendorType) VALUES(N'" + VendCode + "', N'" + strBillto + "', 6) ");
                                         sbCUST.Append(" END ");
                                         sbCUST.Append("SELECT TOP(1) OIDVEND FROM Vendor WHERE (REPLACE(REPLACE(REPLACE(Name, ' ', ''), '.', ''), ',', '') LIKE N'" + Billto + "%') ");
-                                        OIDBillto = new DBQuery(sbCUST).getString();
+                                        OIDBillto = this.DBC.DBQuery(sbCUST).getString();
                                     }
 
                                     string strPaymentTerms = WSHEETPO.Rows[i][23].DisplayText.ToString().ToUpper().Trim().Replace("'", "''");
@@ -1184,7 +1210,7 @@ namespace MDS.MPS
                                     //    sbTERMS.Append("   INSERT INTO PaymentTerm(Name) VALUES(N'" + TermsName + "') ");
                                     //    sbTERMS.Append(" END ");
                                     //    sbTERMS.Append("SELECT TOP(1) OIDPayment FROM PaymentTerm WHERE (REPLACE(REPLACE(REPLACE(REPLACE(Name, ' ', ''), '.', ''), ',', ''), '/', '') LIKE N'" + PaymentTerms + "%') ");
-                                    //    OIDPaymentTerms = new DBQuery(sbTERMS).getString();
+                                    //    OIDPaymentTerms = this.DBC.DBQuery(sbTERMS).getString();
                                     //}
 
                                     string strCurrency = WSHEETPO.Rows[i][24].DisplayText.ToString().ToUpper().Trim().Replace("'", "''");
@@ -1199,7 +1225,7 @@ namespace MDS.MPS
                                         sbCURR.Append("   INSERT INTO Currency(Currency) VALUES(N'" + CurrName + "') ");
                                         sbCURR.Append(" END ");
                                         sbCURR.Append("SELECT TOP(1) OIDCURR FROM Currency WHERE (REPLACE(REPLACE(REPLACE(REPLACE(Currency, ' ', ''), '.', ''), ',', ''), '/', '') LIKE N'" + Currency + "%') ");
-                                        OIDCURR = new DBQuery(sbCURR).getString();
+                                        OIDCURR = this.DBC.DBQuery(sbCURR).getString();
                                     }
 
                                     string OrderPlanNumber = WSHEETPO.Rows[i][26].DisplayText.ToString().ToUpper().Trim().Replace("'", "''");
@@ -1218,7 +1244,7 @@ namespace MDS.MPS
                                     sbSTYLE.Append("       INSERT INTO ProductStyle(StyleName) VALUES(N'" + strStyle + "') ");
                                     sbSTYLE.Append("  END ");
                                     sbSTYLE.Append("SELECT OIDSTYLE FROM ProductStyle WHERE(StyleName = N'" + strStyle + "') ");
-                                    string OIDSTYLE = new DBQuery(sbSTYLE).getString();
+                                    string OIDSTYLE = this.DBC.DBQuery(sbSTYLE).getString();
 
                                     if (ItemCode != strItemCode)
                                     {
@@ -1240,7 +1266,7 @@ namespace MDS.MPS
                                         sbITEM.Append("   WHERE (OIDCUST='" + OIDCUST + "') AND (ItemCode = N'" + strItemCode + "')  ");
                                         sbITEM.Append(" END ");
                                         sbITEM.Append("SELECT TOP(1) OIDCSITEM FROM ItemCustomer WHERE (OIDCUST='" + OIDCUST + "') AND (ItemCode = N'" + strItemCode + "') ");
-                                        OIDITEM = new DBQuery(sbITEM).getString();
+                                        OIDITEM = this.DBC.DBQuery(sbITEM).getString();
                                     }
 
                                     string strColorCode = WSHEETPO.Rows[i][47].DisplayText.ToString().ToUpper().Trim().Replace("'", "''");
@@ -1261,7 +1287,7 @@ namespace MDS.MPS
                                         sbCOLOR.Append("   INSERT INTO ProductColor(ColorNo, ColorName) VALUES(N'" + CCode + "', N'" + CName + "') ");
                                         sbCOLOR.Append(" END ");
                                         sbCOLOR.Append("SELECT TOP(1) OIDCOLOR FROM ProductColor WHERE (REPLACE(REPLACE(REPLACE(REPLACE(ColorNo, ' ', ''), '.', ''), ',', ''), '/', '') LIKE N'" + CCode + "%') ");
-                                        OIDCOLOR = new DBQuery(sbCOLOR).getString();
+                                        OIDCOLOR = this.DBC.DBQuery(sbCOLOR).getString();
                                     }
 
 
@@ -1283,7 +1309,7 @@ namespace MDS.MPS
                                         sbCOLOR.Append("   INSERT INTO ProductSize(SizeNo, SizeName) VALUES(N'" + SCode + "', N'" + SName + "') ");
                                         sbCOLOR.Append(" END ");
                                         sbCOLOR.Append("SELECT TOP(1) OIDSIZE FROM ProductSize WHERE (REPLACE(REPLACE(REPLACE(REPLACE(SizeNo, ' ', ''), '.', ''), ',', ''), '/', '') LIKE N'" + SCode + "%') ");
-                                        OIDSIZE = new DBQuery(sbCOLOR).getString();
+                                        OIDSIZE = this.DBC.DBQuery(sbCOLOR).getString();
                                     }
 
                                     string PatternDimensionCode = WSHEETPO.Rows[i][51].DisplayText.ToString().ToUpper().Trim().Replace("'", "''");
@@ -1353,7 +1379,7 @@ namespace MDS.MPS
                                     //MessageBox.Show(sbSQL.ToString());
                                     try
                                     {
-                                        chkSAVE = new DBQuery(sbSQL).runSQL();
+                                        chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                                         if (chkSAVE == false)
                                         {
                                             break;
@@ -1465,7 +1491,7 @@ namespace MDS.MPS
                         strItemCode = strItemCode.Length > 20 ? strItemCode.Substring(0, 20) : strItemCode;
                         StringBuilder sbITEM = new StringBuilder();
                         sbITEM.Append("SELECT TOP(1) OIDCSITEM FROM ItemCustomer WHERE (ItemCode = N'" + strItemCode + "') ");
-                        OIDITEM = new DBQuery(sbITEM).getString();
+                        OIDITEM = this.DBC.DBQuery(sbITEM).getString();
                     }
                     string ETAWH = WSHEETDO.Rows[i][6].DisplayText.ToString().Trim();
                     ETAWH = ETAWH != "" ? "'" + Convert.ToDateTime(ETAWH).ToString("yyyy-MM-dd") + "'" : "NULL";
@@ -1485,7 +1511,7 @@ namespace MDS.MPS
                     string OIDVEND = WSHEETDO.Rows[i][17].DisplayText.ToString().Trim();
                     OIDVEND = WSHEETDO.Rows[i][18].DisplayText.ToString().Trim();
                     OIDVEND = OIDVEND.Replace(" ", "").Replace(".", "").Replace(",", "");
-                    OIDVEND = new DBQuery("SELECT OIDVEND FROM Vendor WHERE(REPLACE(REPLACE(REPLACE(Name, ' ', ''), '.', ''), ',', '') = '" + OIDVEND + "')").getString();
+                    OIDVEND = this.DBC.DBQuery("SELECT OIDVEND FROM Vendor WHERE(REPLACE(REPLACE(REPLACE(Name, ' ', ''), '.', ''), ',', '') = '" + OIDVEND + "')").getString();
 
                     string SetCode = WSHEETDO.Rows[i][23].DisplayText.ToString().Trim();
                     string QuantityBox = WSHEETDO.Rows[i][24].DisplayText.ToString().Trim();
@@ -1501,7 +1527,7 @@ namespace MDS.MPS
                         sbCOLOR.Append("   INSERT INTO ProductColor(ColorNo, ColorName) VALUES(N'" + strCOLOR + "', N'" + strCOLORNAME + "') ");
                         sbCOLOR.Append(" END ");
                         sbCOLOR.Append("SELECT TOP(1) OIDCOLOR FROM ProductColor WHERE (ColorNo = N'" + strCOLOR + "') ");
-                        OIDCOLOR = new DBQuery(sbCOLOR).getString();
+                        OIDCOLOR = this.DBC.DBQuery(sbCOLOR).getString();
                     }
 
                     string strSIZE = WSHEETDO.Rows[i][28].DisplayText.ToString().Trim();
@@ -1515,7 +1541,7 @@ namespace MDS.MPS
                         sbSIZE.Append("   INSERT INTO ProductSize(SizeNo, SizeName) VALUES(N'" + strSIZE + "', N'" + strSIZENAME + "') ");
                         sbSIZE.Append(" END ");
                         sbSIZE.Append("SELECT TOP(1) OIDSIZE FROM ProductSize WHERE (SizeNo = N'" + strSIZE + "') ");
-                        OIDSIZE = new DBQuery(sbSIZE).getString();
+                        OIDSIZE = this.DBC.DBQuery(sbSIZE).getString();
                     }
 
                     string PatternDimensionCode = WSHEETDO.Rows[i][27].DisplayText.ToString().Trim();
@@ -1563,7 +1589,7 @@ namespace MDS.MPS
                     //MessageBox.Show(sbSQL.ToString());
                     try
                     {
-                        chkSAVE = new DBQuery(sbSQL).runSQL();
+                        chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                         if (chkSAVE == false)
                         {
                             break;
@@ -1786,7 +1812,7 @@ namespace MDS.MPS
                 {
                     StringBuilder sbSQL = new StringBuilder();
                     sbSQL.Append("SELECT TOP(1) OrderNo FROM COPO WHERE (OrderNo = N'" + PO + "') ");
-                    if (new DBQuery(sbSQL).getString() != "")
+                    if (this.DBC.DBQuery(sbSQL).getString() != "")
                     {
                         chkDup = false;
                     }
@@ -1795,7 +1821,7 @@ namespace MDS.MPS
                 {
                     StringBuilder sbSQL = new StringBuilder();
                     sbSQL.Append("SELECT TOP(1) OrderNo FROM COPO WHERE (OrderNo = N'" + PO + "') AND (RevisionNo = '" + spePoRevisionNo.Value.ToString() + "') ");
-                    if (new DBQuery(sbSQL).getString() != "")
+                    if (this.DBC.DBQuery(sbSQL).getString() != "")
                     {
                         chkDup = false;
                     }
@@ -1942,7 +1968,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT COUNT(OID) AS COUNT_ID ");
                 sbSQL.Append("FROM COPO ");
                 sbSQL.Append("WHERE (OrderNo = N'" + PONO + "') ");
-                if (new DBQuery(sbSQL).getInt() > 0)
+                if (this.DBC.DBQuery(sbSQL).getInt() > 0)
                     chkDup = false;
                 else
                 {
@@ -1980,7 +2006,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT COUNT(OIDDO) AS COUNT_ID ");
                 sbSQL.Append("FROM CODO ");
                 sbSQL.Append("WHERE (OrderNo = N'" + PONO + "') AND (DONo = N'" + DONO + "') ");
-                if (new DBQuery(sbSQL).getInt() > 0)
+                if (this.DBC.DBQuery(sbSQL).getInt() > 0)
                     chkDup = false;
                 else
                 {
@@ -2042,12 +2068,12 @@ namespace MDS.MPS
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT DISTINCT PO.OrderNo + '_' + CONVERT(NVARCHAR, PO.RevisionNo) AS POID, PO.OrderNo AS [PO. Order No.], PO.RevisionNo AS [Revision No.], ST.Status, PO.Season, CUS.Name AS Customer, IC.ItemName ");
-            sbSQL.Append("FROM   COPO AS PO INNER JOIN ");
-            sbSQL.Append("       Customer AS CUS ON PO.OIDCUST = CUS.OIDCUST INNER JOIN ");
-            sbSQL.Append("       ItemCustomer AS IC ON PO.ItemCode = IC.OIDCSITEM INNER JOIN ");
+            sbSQL.Append("FROM   COPO AS PO LEFT OUTER JOIN ");
+            sbSQL.Append("       Customer AS CUS ON PO.OIDCUST = CUS.OIDCUST LEFT OUTER JOIN ");
+            sbSQL.Append("       ItemCustomer AS IC ON PO.ItemCode = IC.OIDCSITEM LEFT OUTER JOIN ");
             sbSQL.Append("       (" + sbSTATUS.ToString() + ") AS ST ON PO.DocumentStatus = ST.ID ");
             sbSQL.Append("ORDER BY [PO. Order No.] ");
-
+      
             if (gluePoDocumentStatus.Text.ToString() == "") //null
             {
                 layoutControlItem5.Visibility = LayoutVisibility.Always; //textEdit
@@ -2114,7 +2140,7 @@ namespace MDS.MPS
                 }
                 else
                 {
-                    new ObjDevEx.setSearchLookUpEdit(sluePoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
+                    new ObjDE.setSearchLookUpEdit(sluePoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
 
                     sluePoOrderNo.Properties.PopulateViewColumns();
                     sluePoOrderNo.Properties.View.Columns["POID"].Visible = false;
@@ -2158,7 +2184,7 @@ namespace MDS.MPS
 
                         spePoRevisionNo.ReadOnly = true;
                         txePoLot.ReadOnly = false;
-                        
+
                         dtePoRevisedDate.EditValue = null;
                         dtePoRevisedDate.ReadOnly = false;
 
@@ -2284,8 +2310,8 @@ namespace MDS.MPS
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT DISTINCT DO.DONo AS [DO No.], DO.OrderNo AS [PO. Order No.], DO.RevisionNo AS [Revision No.], ST.Status, IC.ItemName ");
-            sbSQL.Append("FROM   CODO AS DO INNER JOIN ");
-            sbSQL.Append("       ItemCustomer AS IC ON DO.ItemCode = IC.OIDCSITEM INNER JOIN ");
+            sbSQL.Append("FROM   CODO AS DO LEFT OUTER JOIN ");
+            sbSQL.Append("       ItemCustomer AS IC ON DO.ItemCode = IC.OIDCSITEM LEFT OUTER JOIN ");
             sbSQL.Append("       (" + sbSTATUS.ToString() + ") AS ST ON DO.DocStatus = ST.ID ");
             sbSQL.Append("ORDER BY [DO No.] ");
 
@@ -2334,7 +2360,7 @@ namespace MDS.MPS
                 }
                 else
                 {
-                    new ObjDevEx.setSearchLookUpEdit(slueDoDONo, sbSQL, "DO No.", "DO No.").getData();
+                    new ObjDE.setSearchLookUpEdit(slueDoDONo, sbSQL, "DO No.", "DO No.").getData();
 
                     if (glueDoDocStatus.EditValue.ToString() == "1") //Revise
                     {
@@ -2462,7 +2488,7 @@ namespace MDS.MPS
                 sbSQL.Append("FROM Customer AS CT LEFT OUTER JOIN ");
                 sbSQL.Append("     Currency AS CC ON CT.PaymentCurrency = CC.Currency ");
                 sbSQL.Append("WHERE (CT.OIDCUST = '" + sluePoOIDCUST.EditValue.ToString() + "') ");
-                string[] arrCUS = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrCUS = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrCUS.Length > 0)
                 {
                     sluePoPaymentTerms.EditValue = arrCUS[0];
@@ -2506,7 +2532,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT ItemCode, ItemName, FabricWidth, FBComposition ");
                 sbSQL.Append("FROM   ItemCustomer ");
                 sbSQL.Append("WHERE (OIDCSITEM = '" + sluePoItemCode.EditValue.ToString() + "') ");
-                string[] arrITEM = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrITEM = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrITEM.Length > 0)
                 {
                     txePoItemName.Text = arrITEM[1];
@@ -2551,7 +2577,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT Address1 + ' ' + Address2 + ' ' + Address3 + ' ' + City + ' ' + Country AS Address, TelephoneNo ");
                 sbSQL.Append("FROM   Vendor ");
                 sbSQL.Append("WHERE (VendorType = 6) AND (OIDVEND = '" + sluePoOIDBillto.EditValue.ToString() + "') ");
-                string[] arrVEND = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrVEND = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrVEND.Length > 0)
                 {
                     txePoAddress.Text = arrVEND[0];
@@ -2596,7 +2622,7 @@ namespace MDS.MPS
                 sbSQL.Append("       ProductSize AS PS ON COPO.OIDSIZE = PS.OIDSIZE ");
                 sbSQL.Append("WHERE (COPO.OrderNo = N'" + PONO + "') ");
                 sbSQL.Append("ORDER BY COPO.OID ");
-                new ObjDevEx.setGridControl(gcEntryDO, gvEntryDO, sbSQL).getData(false, false, false, true);
+                new ObjDE.setGridControl(gcEntryDO, gvEntryDO, sbSQL).getData(false, false, false, true);
             }
         }
 
@@ -2651,7 +2677,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT PortCode, PortName, WHName, Address, Telephone, PersonInCharge ");
                 sbSQL.Append("FROM   PortAndCity ");
                 sbSQL.Append("WHERE (OIDPORT = '" + PortID + "') ");
-                string[] arrPort = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrPort = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrPort.Length > 0)
                 {
                     txeDoPortName.Text = arrPort[1];
@@ -2863,7 +2889,7 @@ namespace MDS.MPS
             sbSQL.Append("SELECT ColorName ");
             sbSQL.Append("FROM   ProductColor ");
             sbSQL.Append("WHERE (OIDCOLOR = '" + strID + "') ");
-            string[] arrITEM = new DBQuery(sbSQL).getMultipleValue();
+            string[] arrITEM = this.DBC.DBQuery(sbSQL).getMultipleValue();
 
             int rowHandle = gvEntryPO.FocusedRowHandle;
             if (arrITEM.Length > 0)
@@ -2884,7 +2910,7 @@ namespace MDS.MPS
             sbSQL.Append("SELECT SizeName ");
             sbSQL.Append("FROM   ProductSize ");
             sbSQL.Append("WHERE (OIDSIZE = '" + strID + "') ");
-            string[] arrITEM = new DBQuery(sbSQL).getMultipleValue();
+            string[] arrITEM = this.DBC.DBQuery(sbSQL).getMultipleValue();
 
             int rowHandle = gvEntryPO.FocusedRowHandle;
             if (arrITEM.Length > 0)
@@ -2905,7 +2931,7 @@ namespace MDS.MPS
             //sbSQL.Append("SELECT Address1 + ' ' + Address2 + ' ' + Address3 + ' ' + City + ' ' + Country AS Address, TelephoneNo AS Telephone ");
             //sbSQL.Append("FROM   Vendor ");
             //sbSQL.Append("WHERE (VendorType = 6) AND (OIDVEND = '" + strID + "') ");
-            //string[] arrITEM = new DBQuery(sbSQL).getMultipleValue();
+            //string[] arrITEM = this.DBC.DBQuery(sbSQL).getMultipleValue();
 
             //int rowHandle = gvEntryPO.FocusedRowHandle;
             //if (arrITEM.Length > 0)
@@ -3019,7 +3045,7 @@ namespace MDS.MPS
                 }
                 else if(slueDoDONo.Text.Trim() != "")
                 {
-                    speDoRevisionNo.Value = new DBQuery("SELECT TOP(1) RevisionNo FROm CODO WHERE (DONo = N'" + slueDoDONo.Text.Trim() + "')").getInt();
+                    speDoRevisionNo.Value = this.DBC.DBQuery("SELECT TOP(1) RevisionNo FROm CODO WHERE (DONo = N'" + slueDoDONo.Text.Trim() + "')").getInt();
                     DONO = slueDoDONo.EditValue.ToString().ToUpper().Trim();
                 }
                 LoadDOPO(slueDoOrderNo.Text, speDoRevisionNo.Value.ToString(), DONO);
@@ -3042,7 +3068,7 @@ namespace MDS.MPS
                 else
                 {
                     //spePoRevisionNo.Value = Convert.ToInt32(value) + 1;
-                    spePoRevisionNo.Value = new DBQuery("SELECT MAX(RevisionNo)+1 AS Revise FROM COPO WHERE (OrderNo = N'" + sluePoOrderNo.Text.Trim() + "') ").getInt();
+                    spePoRevisionNo.Value = this.DBC.DBQuery("SELECT MAX(RevisionNo)+1 AS Revise FROM COPO WHERE (OrderNo = N'" + sluePoOrderNo.Text.Trim() + "') ").getInt();
                     dtePoRevisedDate.EditValue = DateTime.Now;
                     LoadPORevision(sluePoOrderNo.Text);
                 }
@@ -3064,7 +3090,7 @@ namespace MDS.MPS
                     sbSQL.Append("AND (RevisionNo = '" + REVISE + "') ");
                 else
                     sbSQL.Append("AND (RevisionNo = (SELECT MAX(RevisionNo) AS RevisionNo FROM COPO WHERE (OrderNo = N'" + PONO + "'))) ");
-                string[] arrPO = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrPO = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrPO.Length > 0)
                 {
                     txePoLot.Text = arrPO[0];
@@ -3114,7 +3140,7 @@ namespace MDS.MPS
                     else
                         sbSQL.Append("AND (PO.RevisionNo = (SELECT MAX(RevisionNo) AS RevisionNo FROM COPO WHERE (OrderNo = N'" + PONO + "'))) ");
                     sbSQL.Append("ORDER BY PO.OID ");
-                    new ObjDevEx.setGridControl(gcEntryPO, gvEntryPO, sbSQL).getData(false, false, false, true);
+                    new ObjDE.setGridControl(gcEntryPO, gvEntryPO, sbSQL).getData(false, false, false, true);
                 }
             }
         }
@@ -3133,15 +3159,37 @@ namespace MDS.MPS
             DONO = DONO.ToUpper().Trim();
             if (DONO != "")
             {
+                slueDoDONo.EditValue = DONO;
+
                 StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT DISTINCT PO.OrderNo + '_' + CONVERT(NVARCHAR, PO.RevisionNo) AS POID, PO.OrderNo AS [PO. Order No.], PO.RevisionNo AS [Revision No.], ST.Status, PO.Season, CUS.Name AS Customer, IC.ItemName ");
+                sbSQL.Append("FROM   COPO AS PO INNER JOIN ");
+                sbSQL.Append("       CODO AS DO ON PO.OrderNo = DO.OrderNo LEFT OUTER JOIN ");
+                sbSQL.Append("       Customer AS CUS ON PO.OIDCUST = CUS.OIDCUST LEFT OUTER JOIN ");
+                sbSQL.Append("       ItemCustomer AS IC ON PO.ItemCode = IC.OIDCSITEM LEFT OUTER JOIN ");
+                sbSQL.Append("       (" + sbSTATUS.ToString() + ") AS ST ON PO.DocumentStatus = ST.ID ");
+                sbSQL.Append("WHERE (DO.DONo = N'" + DONO + "') ");
+                sbSQL.Append("ORDER BY [PO. Order No.] ");
+                new ObjDE.setSearchLookUpEdit(slueDoOrderNo, sbSQL, "PO. Order No.", "POID").getData();
+
+                sbSQL.Clear();
+                //sbSQL.Append("IF EXISTS(SELECT OIDDO FROM CODO WHERE DONo = N'" + DONO + "') ");
+                //sbSQL.Append(" BEGIN ");
+                //sbSQL.Append("  SELECT TOP(1) OrderNo + '_' + CONVERT(NVARCHAR, RevisionNo) AS POID, RevisionNo, ItemCode, TransportationMethod, PortCode, ");
+                //sbSQL.Append("         Incoterms, Forwarder, OIDVEND, ETAWH, ContractedETD, UpdatedBy, UpdatedDate, OrderNo AS [PO Order No.] ");
+                //sbSQL.Append("  FROM CODO ");
+                //sbSQL.Append("  WHERE (DONo = N'" + DONO + "') ");
+                //sbSQL.Append(" END ");
                 sbSQL.Append("IF EXISTS(SELECT OIDDO FROM CODO WHERE DONo = N'" + DONO + "') ");
                 sbSQL.Append(" BEGIN ");
-                sbSQL.Append("  SELECT TOP(1) OrderNo + '_' + CONVERT(NVARCHAR, RevisionNo) AS POID, RevisionNo, ItemCode, TransportationMethod, PortCode, ");
-                sbSQL.Append("         Incoterms, Forwarder, OIDVEND, ETAWH, ContractedETD, UpdatedBy, UpdatedDate ");
-                sbSQL.Append("  FROM CODO ");
-                sbSQL.Append("  WHERE (DONo = N'" + DONO + "') ");
+                sbSQL.Append("  SELECT TOP(1) DO.OrderNo + '_' + CONVERT(NVARCHAR, DO.RevisionNo) AS POID, DO.RevisionNo, DO.ItemCode, DO.TransportationMethod, DO.PortCode, ");
+                sbSQL.Append("         DO.Incoterms, DO.Forwarder, DO.OIDVEND, DO.ETAWH, DO.ContractedETD, DO.UpdatedBy, DO.UpdatedDate, PO.OrderNo + '_' + CONVERT(NVARCHAR, PO.RevisionNo) AS POID ");
+                sbSQL.Append("  FROM CODO AS DO LEFT OUTER JOIN ");
+                sbSQL.Append("       COPO AS PO ON PO.OrderNo = DO.OrderNo ");
+                sbSQL.Append("  WHERE (DO.DONo = N'" + DONO + "') ");
                 sbSQL.Append(" END ");
-                string[] arrDO = new DBQuery(sbSQL).getMultipleValue();
+                // MessageBox.Show(sbSQL.ToString());
+                string[] arrDO = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 //MessageBox.Show(arrDO.Length.ToString());
                 if (arrDO.Length > 0)
                 {
@@ -3165,6 +3213,7 @@ namespace MDS.MPS
 
                     txeCREATE.Text = arrDO[10];
                     txeDATE.Text = arrDO[11];
+                    slueDoOrderNo.EditValue = arrDO[12];
                 }
             }
 
@@ -3182,7 +3231,7 @@ namespace MDS.MPS
             {
                 StringBuilder sbPO = new StringBuilder();
                 sbPO.Append("SELECT TOP(1) PO.ItemCode, IC.ItemName FROM COPO AS PO LEFT OUTER JOIN ItemCustomer AS IC ON PO.ItemCode = IC.OIDCSITEM WHERE (PO.OrderNo = N'" + PONO + "') AND (PO.RevisionNo = '" + REVISE + "') ");
-                string[] arrPO = new DBQuery(sbPO).getMultipleValue();
+                string[] arrPO = this.DBC.DBQuery(sbPO).getMultipleValue();
                 if (arrPO.Length > 0)
                 {
                     slueDoItemCode.EditValue = arrPO[0];
@@ -3219,7 +3268,8 @@ namespace MDS.MPS
                     sbSQL.Append("ORDER BY PO.OID ");
                 }
                 //MessageBox.Show(sbSQL.ToString());
-                new ObjDevEx.setGridControl(gcEntryDO, gvEntryDO, sbSQL).getData(false, false, false, true);
+                textBox1.Text = sbSQL.ToString();
+                new ObjDE.setGridControl(gcEntryDO, gvEntryDO, sbSQL).getData(false, false, false, true);
             }
         }
 
@@ -3266,7 +3316,7 @@ namespace MDS.MPS
             {
                 StringBuilder sbSQL = new StringBuilder();
                 sbSQL.Append("SELECT TOP(1) DONo FROM CODO WHERE (DONo = N'" + DO + "') ");
-                if (new DBQuery(sbSQL).getString() != "")
+                if (this.DBC.DBQuery(sbSQL).getString() != "")
                 {
                     chkDup = false;
                 }
@@ -3310,10 +3360,15 @@ namespace MDS.MPS
                 if (dtDO.Rows.Count > 0)
                 {
                     DataRow drDO = dtDO.Rows[info.RowHandle];
-                    string DOID = drDO["OID DO"].ToString();
+                    //string DOID = drDO["OID DO"].ToString();
+                    string DONO = drDO["DO No."].ToString();
+                    string PONO = drDO["PO Order No."].ToString();
+                    string REVISE = drDO["Revision No."].ToString();
                     tabbedControlGroup3.SelectedTabPage = layoutControlGroup5;
                     tabbedControlGroup4.SelectedTabPage = layoutControlGroup9;
                     glueDoDocStatus.EditValue = 2;
+                
+                    LOADDO(DONO);
                     //LoadForecast("Edit", ID);
                 }
             }

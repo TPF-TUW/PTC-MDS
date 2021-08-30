@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using DBConnection;
+using DBConnect;
 using System.Windows.Forms;
 using DevExpress.LookAndFeel;
 using DevExpress.Utils.Extensions;
@@ -27,6 +27,13 @@ namespace MDS.MPS
         DataTable dtINPUT = new DataTable();
         public LogIn UserLogin { get; set; }
         public int Company { get; set; }
+
+
+        public string ConnectionString { get; set; }
+        string CONNECT_STRING = "";
+        DatabaseConnect DBC;
+
+
         public MPS01()
         {
             InitializeComponent();
@@ -42,6 +49,28 @@ namespace MDS.MPS
 
         private void XtraForm1_Load(object sender, EventArgs e)
         {
+            //***** SET CONNECT DB ********
+            if (this.ConnectionString != null)
+            {
+                if (this.ConnectionString != "")
+                {
+                    CONNECT_STRING = this.ConnectionString;
+                }
+            }
+
+            this.DBC = new DatabaseConnect(CONNECT_STRING);
+
+            if (this.DBC.chkCONNECTION_STING() == false)
+            {
+                this.DBC.setCONNECTION_STRING_INIFILE();
+                if (this.DBC.chkCONNECTION_STING() == false)
+                {
+                    return;
+                }
+            }
+            new ObjDE.setDatabase(this.DBC);
+            //*****************************
+
             sbSTATUS.Clear();
             sbSTATUS.Append("SELECT '1' AS ID, 'Ph1 - New Order' AS Status ");
             sbSTATUS.Append("UNION ALL ");
@@ -142,7 +171,7 @@ namespace MDS.MPS
             sbSQL.Append(sbSTATUS);
             sbSQL.Append("       ) AS STS ON COF.Status = STS.ID ");
             sbSQL.Append("ORDER BY COF.ProductionPlanID ");
-            new ObjDevEx.setGridControl(gcFO, gvFO, sbSQL).getData(false, false, false, true);
+            new ObjDE.setGridControl(gcFO, gvFO, sbSQL).getData(false, false, false, true);
 
             gvFO.Columns["ID"].Visible = false;
             gvFO.Columns["Customer ID"].Visible = false;
@@ -164,39 +193,39 @@ namespace MDS.MPS
 
         private void LoadData()
         {
-            new ObjDevEx.setGridLookUpEdit(glueStatus, sbSTATUS, "Status", "ID").getData();
+            new ObjDE.setGridLookUpEdit(glueStatus, sbSTATUS, "Status", "ID").getData();
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT Code, Name AS Supplier, OIDVEND AS ID ");
             sbSQL.Append("FROM Vendor ");
             sbSQL.Append("WHERE (VendorType = 6) ");
             sbSQL.Append("ORDER BY Code ");
-            new ObjDevEx.setSearchLookUpEdit(slueSupplier, sbSQL, "Supplier", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(slueSupplier, sbSQL, "Supplier", "ID").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT Code, Name AS Customer, OIDCUST AS ID ");
             sbSQL.Append("FROM Customer ");
             sbSQL.Append("ORDER BY Code ");
-            new ObjDevEx.setSearchLookUpEdit(slueCustomer, sbSQL, "Customer", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(slueCustomer, sbSQL, "Customer", "ID").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT ITC.ItemCode, ITC.ItemName, CUS.Name AS Customer, ITC.StyleNo AS [StyleNo.], ITC.Season, ITC.OIDCSITEM AS ID ");
             sbSQL.Append("FROM   ItemCustomer AS ITC LEFT OUTER JOIN ");
             sbSQL.Append("       Customer AS CUS ON ITC.OIDCUST = CUS.OIDCUST ");
             sbSQL.Append("ORDER BY ITC.ItemCode ");
-            new ObjDevEx.setSearchLookUpEdit(slueItemCode, sbSQL, "ItemCode", "ID").getData();
+            new ObjDE.setSearchLookUpEdit(slueItemCode, sbSQL, "ItemCode", "ID").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT DISTINCT BusinessUnit ");
             sbSQL.Append("FROM COForecast ");
             sbSQL.Append("ORDER BY BusinessUnit");
-            new ObjDevEx.setGridLookUpEdit(glueUnit, sbSQL, "BusinessUnit", "BusinessUnit").getData();
+            new ObjDE.setGridLookUpEdit(glueUnit, sbSQL, "BusinessUnit", "BusinessUnit").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT SeasonNo AS [Season No.], SeasonName AS [Season Name] ");
             sbSQL.Append("FROM Season ");
             sbSQL.Append("ORDER BY OIDSEASON");
-            new ObjDevEx.setGridLookUpEdit(glueSeason, sbSQL, "Season No.", "Season No.").getData();
+            new ObjDE.setGridLookUpEdit(glueSeason, sbSQL, "Season No.", "Season No.").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT TransportMethod ");
@@ -218,7 +247,7 @@ namespace MDS.MPS
             sbSQL.Append("    WHEN 'Truck' THEN '3' ");
             sbSQL.Append("    ELSE TransportMethod ");
             sbSQL.Append("END ");
-            new ObjDevEx.setGridLookUpEdit(glueTransport, sbSQL, "TransportMethod", "TransportMethod").getData();
+            new ObjDE.setGridLookUpEdit(glueTransport, sbSQL, "TransportMethod", "TransportMethod").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT LogisticsType ");
@@ -237,7 +266,7 @@ namespace MDS.MPS
             sbSQL.Append("    WHEN 'MDC' THEN '2' ");
             sbSQL.Append("    ELSE LogisticsType ");
             sbSQL.Append("END ");
-            new ObjDevEx.setGridLookUpEdit(glueLogisticsType, sbSQL, "LogisticsType", "LogisticsType").getData();
+            new ObjDE.setGridLookUpEdit(glueLogisticsType, sbSQL, "LogisticsType", "LogisticsType").getData();
 
             //*** SET GRIDCONTROL COLUMN *****
             repositoryItemSearchLookUpEdit1.DataSource = slueCustomer.Properties.DataSource;
@@ -288,7 +317,7 @@ namespace MDS.MPS
             lblStatus.Text = "* Add Forecast";
             lblStatus.ForeColor = Color.Green;
 
-            txeID.Text = new DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDFC), '') = '' THEN 1 ELSE MAX(OIDFC) + 1 END AS NewNo FROM COForecast").getString();
+            txeID.Text = this.DBC.DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDFC), '') = '' THEN 1 ELSE MAX(OIDFC) + 1 END AS NewNo FROM COForecast").getString();
             txePlanID.Text = "";
             slueCustomer.EditValue = "";
             dteOrderDate.EditValue = DateTime.Now;
@@ -593,7 +622,7 @@ namespace MDS.MPS
                                 //MessageBox.Show(sbSQL.ToString());
                                 try
                                 {
-                                    bool chkSAVE = new DBQuery(sbSQL).runSQL();
+                                    bool chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                                     if (chkSAVE == true)
                                     {
                                         FUNC.msgInfo("Save complete.");
@@ -662,7 +691,7 @@ namespace MDS.MPS
                                     sbCUST.Append("   INSERT INTO Customer(Code, Name, ShortName) VALUES(N'" + CustomerCode + "', N'" + strCustomer + "', N'" + CustomerShort + "') ");
                                     sbCUST.Append(" END ");
                                     sbCUST.Append("SELECT TOP(1) OIDCUST FROM Customer WHERE Name LIKE N'%" + Customer + "%' ");
-                                    OIDCUST = new DBQuery(sbCUST).getString();
+                                    OIDCUST = this.DBC.DBQuery(sbCUST).getString();
                                 }
 
                                 string ItemCode = WSHEET.Rows[i][6].DisplayText.ToString().Trim().Replace("'", "''");
@@ -678,7 +707,7 @@ namespace MDS.MPS
                                 sbSTYLE.Append("       INSERT INTO ProductStyle(StyleName) VALUES(N'" + strStyle + "') ");
                                 sbSTYLE.Append("  END ");
                                 sbSTYLE.Append("SELECT OIDSTYLE FROM ProductStyle WHERE(StyleName = N'" + strStyle + "') ");
-                                string OIDSTYLE = new DBQuery(sbSTYLE).getString();
+                                string OIDSTYLE = this.DBC.DBQuery(sbSTYLE).getString();
 
                                 string Season = WSHEET.Rows[i][1].DisplayText.ToString().Trim() + WSHEET.Rows[i][2].DisplayText.ToString().Trim();
                                 string Supplier = WSHEET.Rows[i][19].DisplayText.ToString().Trim().Replace("'", "''"); //Raw Material Supplier Code
@@ -855,7 +884,7 @@ namespace MDS.MPS
                                 //MessageBox.Show(sbSQL.ToString());
                                 try
                                 {
-                                    chkSAVE = new DBQuery(sbSQL).runSQL();
+                                    chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                                     if (chkSAVE == false)
                                     {
                                         break;
@@ -885,7 +914,7 @@ namespace MDS.MPS
                         //    //MessageBox.Show(sbSQL.ToString());
                         //    try
                         //    {
-                        //        chkSAVE = new DBQuery(sbSQL).runSQL();
+                        //        chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
                         //        if (chkSAVE == true)
                         //        {
                         //            FUNC.msgInfo("Save complete.");
@@ -999,7 +1028,7 @@ namespace MDS.MPS
         //        {
         //            StringBuilder sbSQL = new StringBuilder();
         //            sbSQL.Append("SELECT TOP(1) PortCode FROM PortAndCity WHERE (PortCode = N'" + txeCode.Text.Trim().Trim().Replace("'", "''") + "') ");
-        //            if (new DBQuery(sbSQL).getString() != "")
+        //            if (this.DBC.DBQuery(sbSQL).getString() != "")
         //            {
         //                txeCode.Text = "";
         //                txeCode.Focus();
@@ -1013,7 +1042,7 @@ namespace MDS.MPS
         //            sbSQL.Append("SELECT TOP(1) OIDPORT ");
         //            sbSQL.Append("FROM PortAndCity ");
         //            sbSQL.Append("WHERE (PortCode = N'" + txeCode.Text.Trim().Trim().Replace("'", "''") + "') ");
-        //            string strCHK = new DBQuery(sbSQL).getString();
+        //            string strCHK = this.DBC.DBQuery(sbSQL).getString();
         //            if (strCHK != "" && strCHK != txeID.Text.Trim())
         //            {
         //                txeCode.Text = "";
@@ -1036,7 +1065,7 @@ namespace MDS.MPS
         //        {
         //            StringBuilder sbSQL = new StringBuilder();
         //            sbSQL.Append("SELECT TOP(1) PortName FROM PortAndCity WHERE (PortName = N'" + txeName.Text.Trim().Replace("'", "''") + "') ");
-        //            if (new DBQuery(sbSQL).getString() != "")
+        //            if (this.DBC.DBQuery(sbSQL).getString() != "")
         //            {
         //                txeName.Text = "";
         //                txeName.Focus();
@@ -1050,7 +1079,7 @@ namespace MDS.MPS
         //            sbSQL.Append("SELECT TOP(1) OIDPORT ");
         //            sbSQL.Append("FROM PortAndCity ");
         //            sbSQL.Append("WHERE (PortName = N'" + txeName.Text.Trim().Replace("'", "''") + "') ");
-        //            string strCHK = new DBQuery(sbSQL).getString();
+        //            string strCHK = this.DBC.DBQuery(sbSQL).getString();
         //            if (strCHK != "" && strCHK != txeID.Text.Trim())
         //            {
         //                txeName.Text = "";
@@ -1240,7 +1269,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT ItemName, StyleNo ");
                 sbSQL.Append("FROM ItemCustomer ");
                 sbSQL.Append("WHERE (OIDCSITEM = N'" + slueItemCode.EditValue.ToString() + "') ");
-                string[] arrITEM = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrITEM = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrITEM.Length > 0)
                 {
                     txeItemName.Text = arrITEM[0];
@@ -1263,7 +1292,7 @@ namespace MDS.MPS
                     sbSQL.Append("FROM   ItemCustomer AS ITC LEFT OUTER JOIN ");
                     sbSQL.Append("       Customer AS CUS ON ITC.OIDCUST = CUS.OIDCUST ");
                     sbSQL.Append("WHERE (ITC.ItemCode = '" + strITEM + "') ");
-                    string[] arrITEM = new DBQuery(sbSQL).getMultipleValue();
+                    string[] arrITEM = this.DBC.DBQuery(sbSQL).getMultipleValue();
                     if (arrITEM.Length > 0)
                     {
                         gvINPUT.SetRowCellValue(e.RowHandle, "ItemName", arrITEM[1]);
@@ -1364,7 +1393,7 @@ namespace MDS.MPS
                 {
                     StringBuilder sbSQL = new StringBuilder();
                     sbSQL.Append("SELECT TOP(1) ProductionPlanID FROM COForecast WHERE (ProductionPlanID = N'" + txePlanID.Text.Trim().Trim().Replace("'", "''") + "') ");
-                    if (new DBQuery(sbSQL).getString() != "")
+                    if (this.DBC.DBQuery(sbSQL).getString() != "")
                     {
                         txePlanID.Text = "";
                         txePlanID.Focus();
@@ -1378,7 +1407,7 @@ namespace MDS.MPS
                     sbSQL.Append("SELECT TOP(1) OIDFC ");
                     sbSQL.Append("FROM COForecast ");
                     sbSQL.Append("WHERE (ProductionPlanID = N'" + txePlanID.Text.Trim().Trim().Replace("'", "''") + "') ");
-                    string strCHK = new DBQuery(sbSQL).getString();
+                    string strCHK = this.DBC.DBQuery(sbSQL).getString();
                     if (strCHK != "" && strCHK != txeID.Text.Trim())
                     {
                         txePlanID.Text = "";
@@ -1654,7 +1683,7 @@ namespace MDS.MPS
                 sbSQL.Append("SELECT COUNT(OIDFC) AS COUNT_ID ");
                 sbSQL.Append("FROM COForecast ");
                 sbSQL.Append("WHERE (ProductionPlanID = N'" + PlanID + "') ");
-                if (new DBQuery(sbSQL).getInt() > 0)
+                if (this.DBC.DBQuery(sbSQL).getInt() > 0)
                     chkDup = false;
                 else
                 {
@@ -1755,7 +1784,7 @@ namespace MDS.MPS
                 sbSQL.Append("      TrimActualOrderQty, POOrderNO, POUpdateDate, POActualOrderQty, OrderQTYOld, CreateBy, CreateDate, UpdateBy, Updatedate ");
                 sbSQL.Append("FROM  COForecast ");
                 sbSQL.Append("WHERE (OIDFC = '" + ID + "') ");
-                string[] arrFC = new DBQuery(sbSQL).getMultipleValue();
+                string[] arrFC = this.DBC.DBQuery(sbSQL).getMultipleValue();
                 if (arrFC.Length > 0)
                 {
                     if (typeLoad == "New")
@@ -1763,7 +1792,7 @@ namespace MDS.MPS
                         lblStatus.Text = "* Add Forecast";
                         lblStatus.ForeColor = Color.Green;
 
-                        txeID.Text = new DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDFC), '') = '' THEN 1 ELSE MAX(OIDFC) + 1 END AS NewNo FROM COForecast").getString();
+                        txeID.Text = this.DBC.DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDFC), '') = '' THEN 1 ELSE MAX(OIDFC) + 1 END AS NewNo FROM COForecast").getString();
                         txePlanID.Text = "";
 
                         sbClearTable.Enabled = true;
