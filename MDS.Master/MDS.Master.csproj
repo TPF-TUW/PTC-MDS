@@ -69,7 +69,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category.cs" />
+    <Compile Include="_Item.cs" />
+    <Compile Include="_Branch.cs" />
+    <Compile Include="_Category.cs" />
+    <Compile Include="_Colour.cs" />
+    <Compile Include="_Company.cs" />
+    <Compile Include="_Customer.cs" />
+    <Compile Include="_Department.cs" />
     <Compile Include="M01.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,6 +230,10 @@
     <Compile Include="ShowImage.Designer.cs">
       <DependentUpon>ShowImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="_Size.cs" />
+    <Compile Include="_Style.cs" />
+    <Compile Include="_Unit.cs" />
+    <Compile Include="_Vendor.cs" />
     <EmbeddedResource Include="M01.resx">
       <DependentUpon>M01.cs</DependentUpon>
     </EmbeddedResource>

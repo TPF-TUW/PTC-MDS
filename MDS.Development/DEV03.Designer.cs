@@ -200,6 +200,8 @@
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lblUser = new System.Windows.Forms.Label();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -351,6 +353,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl
@@ -384,6 +387,7 @@
             this.ribbonControl.ShowApplicationButton = DevExpress.Utils.DefaultBoolean.False;
             this.ribbonControl.Size = new System.Drawing.Size(1118, 160);
             this.ribbonControl.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
+            this.ribbonControl.Click += new System.EventHandler(this.ribbonControl_Click);
             // 
             // bbiPrintPreview
             // 
@@ -543,6 +547,7 @@
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.lblUser);
             this.layoutControl1.Controls.Add(this.radioGroup2);
             this.layoutControl1.Controls.Add(this.radioGroup1);
             this.layoutControl1.Controls.Add(this.txtUpdateDate);
@@ -1275,9 +1280,15 @@
             this.gvListof_Bom.GridControl = this.gcListof_Bom;
             this.gvListof_Bom.Name = "gvListof_Bom";
             this.gvListof_Bom.OptionsFind.AlwaysVisible = true;
+            this.gvListof_Bom.OptionsSelection.CheckBoxSelectorColumnWidth = 20;
+            this.gvListof_Bom.OptionsSelection.MultiSelect = true;
+            this.gvListof_Bom.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+            this.gvListof_Bom.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.False;
             this.gvListof_Bom.OptionsView.ColumnAutoWidth = false;
+            this.gvListof_Bom.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
             this.gvListof_Bom.OptionsView.EnableAppearanceEvenRow = true;
             this.gvListof_Bom.OptionsView.EnableAppearanceOddRow = true;
+            this.gvListof_Bom.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.gvListof_Bom.OptionsView.ShowGroupPanel = false;
             // 
             // rdoStatus
@@ -1348,7 +1359,7 @@
             this.tabbed_Master.Location = new System.Drawing.Point(0, 0);
             this.tabbed_Master.Name = "tabbed_Master";
             this.tabbed_Master.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.tabbed_Master.SelectedTabPage = this.layoutControlGroup3;
+            this.tabbed_Master.SelectedTabPage = this.layoutControlGroup2;
             this.tabbed_Master.Size = new System.Drawing.Size(1114, 606);
             this.tabbed_Master.TabPages.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlGroup2,
@@ -2044,7 +2055,8 @@
             this.layoutControlItem5,
             this.emptySpaceItem22,
             this.layoutControlItem54,
-            this.layoutControlItem55});
+            this.layoutControlItem55,
+            this.layoutControlItem6});
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
@@ -2065,7 +2077,7 @@
             this.emptySpaceItem22.AllowHotTrack = false;
             this.emptySpaceItem22.Location = new System.Drawing.Point(584, 0);
             this.emptySpaceItem22.Name = "emptySpaceItem22";
-            this.emptySpaceItem22.Size = new System.Drawing.Size(510, 38);
+            this.emptySpaceItem22.Size = new System.Drawing.Size(202, 38);
             this.emptySpaceItem22.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem54
@@ -2117,6 +2129,26 @@
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(1104, 572);
             this.layoutControlGroup1.Text = "Marking";
+            // 
+            // lblUser
+            // 
+            this.lblUser.Font = new System.Drawing.Font("Tahoma", 11.25F);
+            this.lblUser.ForeColor = System.Drawing.Color.Navy;
+            this.lblUser.Location = new System.Drawing.Point(800, 35);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(304, 34);
+            this.lblUser.TabIndex = 70;
+            this.lblUser.Text = "Login : ";
+            this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.lblUser;
+            this.layoutControlItem6.Location = new System.Drawing.Point(786, 0);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(308, 38);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
             // 
             // DEV03
             // 
@@ -2281,6 +2313,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2457,5 +2490,7 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem13;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem17;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem15;
+        private System.Windows.Forms.Label lblUser;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

@@ -12,6 +12,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraLayout.Utils;
 using TheepClass;
+using DBConnect;
 
 namespace MDS.Development
 {
@@ -24,9 +25,16 @@ namespace MDS.Development
         goClass.ctool ct    = new goClass.ctool();
         hardQuery q         = new hardQuery();
         private Functionality.Function FUNC = new Functionality.Function();
-        
+
+        int chkReadWrite = 0;
+
         public LogIn UserLogin { get; set; }
         public int Company { get; set; }
+
+        public string ConnectionString { get; set; }
+
+        string CONNECT_STRING = "";
+        DatabaseConnect DBC;
 
         public DEV03()
         {
@@ -137,22 +145,92 @@ namespace MDS.Development
         private void XtraForm1_Load(object sender, EventArgs e)
         {
             UserLookAndFeel.Default.StyleChanged += MyStyleChanged;
-            IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
-            db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
-            dtfinfo = clinfo.DateTimeFormat;
+            //IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
+            //db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
+            //dtfinfo = clinfo.DateTimeFormat;
 
-            //bbiNew.PerformClick(); 
+            ////bbiNew.PerformClick(); 
 
-            // Set Tabbed
-            tabbed_Master.SelectedTabPageIndex = 0;
-            tabbedBom.SelectedTabPageIndex = 0;
+            //// Set Tabbed
+            //tabbed_Master.SelectedTabPageIndex = 0;
+            //tabbedBom.SelectedTabPageIndex = 0;
 
-            //q.get_sl_smplNo(sl_smplNo);
-            //q.get_sl_Customer(sl_Customer);
-            //q.get_gl_Season(gl_Season);
-            q.get_gcListof_Bom(gcListof_Bom); gvListof_Bom.OptionsBehavior.Editable = false;
-            GetBranch();
-         }
+            ////q.get_sl_smplNo(sl_smplNo);
+            ////q.get_sl_Customer(sl_Customer);
+            ////q.get_gl_Season(gl_Season);
+            //q.get_gcListof_Bom(gcListof_Bom); gvListof_Bom.OptionsBehavior.Editable = false;
+            //GetBranch();
+
+            //***** SET CONNECT DB ********
+            if (this.ConnectionString != null)
+            {
+                if (this.ConnectionString != "")
+                {
+                    CONNECT_STRING = this.ConnectionString;
+                }
+            }
+
+            this.DBC = new DatabaseConnect(CONNECT_STRING);
+
+            if (this.DBC.chkCONNECTION_STING() == false)
+            {
+                this.DBC.setCONNECTION_STRING_INIFILE();
+                if (this.DBC.chkCONNECTION_STING() == false)
+                {
+                    return;
+                }
+            }
+            new ObjDE.setDatabase(this.DBC);
+            //******************************
+
+            lblUser.Text = "Login : " + UserLogin.FullName;
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'DEV03') ");
+            chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
+
+            if (chkReadWrite == 0)
+            {
+                ribbonPageGroup1.Visible = false;
+                //rpgManage.Visible = false;
+
+                layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //simpleButton2.Enabled = false;
+                //simpleButton3.Enabled = false;
+                //simpleButton4.Enabled = false;
+                //sbColor.Enabled = false;
+                //sbSize.Enabled = false;
+                //sbFBColor.Enabled = false;
+                //sbTempCode.Enabled = false;
+                //sbMTColor.Enabled = false;
+                //sbTempCodeMat.Enabled = false;
+                //btnOpenImg_Main.Enabled = false;
+                //sbDelete_S.Enabled = false;
+                //sbClear.Enabled = false;
+                //simpleButton5.Enabled = false;
+                //sbDelete_F.Enabled = false;
+                //sbMatClear.Enabled = false;
+                //btnUploadMat.Enabled = false;
+                //simpleButton1.Enabled = false;
+
+                //sbUseFor.Enabled = false;
+                //sbUnit.Enabled = false;
+
+                //sbPart.Enabled = false;
+                //sbFBSupplier.Enabled = false;
+
+                //sbMTSupplier.Enabled = false;
+            }
+
+            LoadListBOM();
+        }
+
+        private void LoadListBOM()
+        {
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.Append("");
+            new ObjDE.setGridControl(gcListof_Bom, gvListof_Bom, sbSQL).getData(false, false, false, true);
+        }
+
         private void LoadData()
         {
             //StringBuilder sbSQL = new StringBuilder();
@@ -431,6 +509,11 @@ namespace MDS.Development
             }
         }
         private void sleCustomerEntry_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ribbonControl_Click(object sender, EventArgs e)
         {
 
         }

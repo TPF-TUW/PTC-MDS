@@ -2262,7 +2262,8 @@ namespace MDS.Master
             bbiPrintPreview.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
             bbiPrint.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
             bbiExcel.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
-           // layoutControlGroup4.Text = "";
+            // layoutControlGroup4.Text = "";
+
         }
 
         private void gvListItem_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)

@@ -129,7 +129,7 @@ namespace MDS.Development
             lblUser.Text = "Login : " + UserLogin.FullName;
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'DEV01') ");
-            chkReadWrite = DBC.DBQuery(sbSQL).getInt();
+            chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
 
             //MessageBox.Show(chkReadWrite.ToString());
             if (chkReadWrite == 0)
@@ -1294,7 +1294,9 @@ namespace MDS.Development
                                         Price = Price == "" ? Price = "0" : Price;
                                         string Currency = rFB["Currency"].ToString();                   Currency = Currency.Trim() == "" ? "NULL" : "'" + Currency.Trim() + "'";
                                         string TTWidth = rFB["TTWidth"].ToString();
+                                        TTWidth = TTWidth == "" ? "0" : TTWidth;
                                         string UsableWidth = rFB["UsableWidth"].ToString();
+                                        UsableWidth = UsableWidth == "" ? "0" : UsableWidth;
                                         string Remark = rFB["Remark"].ToString();
                                         string PicFile = rFB["PicFile"].ToString();
                                         string PathFile = "NULL";
@@ -1431,13 +1433,14 @@ namespace MDS.Development
                                     if (sbSQL.Length > 0)
                                     {
                                         //MessageBox.Show("C");
-                                        chkSave = DBC.DBQuery(sbSQL.ToString()).runSQL();
+                                        //textBox1.Text = sbSQL.ToString();
+                                        chkSave = this.DBC.DBQuery(sbSQL.ToString()).runSQL();
                                         pbcSAVE.PerformStep();
                                         pbcSAVE.Update();
 
                                         if (chkSave == false)
                                         {
-                                            //textBox1.Text = sbSQL.ToString();
+                                            //MessageBox.Show(sbSQL.ToString());
                                             FUNCT.msgERROR("Found problem on save.\nพบปัญหาในการบันทึกข้อมูล (Tab Fabric)");
                                         }
                                     }
