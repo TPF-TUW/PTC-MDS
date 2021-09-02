@@ -192,6 +192,12 @@
     </Compile>
     <Compile Include="hQuery.cs" />
     <Compile Include="IniFile.cs" />
+    <Compile Include="DEV05.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DEV05.Designer.cs">
+      <DependentUpon>DEV05.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowImage.cs">
@@ -241,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DEV04.resx">
       <DependentUpon>DEV04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DEV05.resx">
+      <DependentUpon>DEV05.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
