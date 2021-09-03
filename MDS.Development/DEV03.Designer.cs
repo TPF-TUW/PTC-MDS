@@ -1370,7 +1370,7 @@
             this.tabbed_Master.Location = new System.Drawing.Point(0, 0);
             this.tabbed_Master.Name = "tabbed_Master";
             this.tabbed_Master.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.tabbed_Master.SelectedTabPage = this.layoutControlGroup2;
+            this.tabbed_Master.SelectedTabPage = this.layoutControlGroup3;
             this.tabbed_Master.Size = new System.Drawing.Size(1114, 606);
             this.tabbed_Master.TabPages.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlGroup2,
