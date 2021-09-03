@@ -12,6 +12,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraLayout.Utils;
 using TheepClass;
+using DBConnect;
 
 namespace MDS.Development
 {
@@ -24,9 +25,16 @@ namespace MDS.Development
         //goClass.ctool ct    = new goClass.ctool();
         //hardQuery q         = new hardQuery();
         private Functionality.Function FUNC = new Functionality.Function();
-        
+
+        int chkReadWrite = 0;
+
         public LogIn UserLogin { get; set; }
         //public int Company { get; set; }
+
+        public string ConnectionString { get; set; }
+
+        string CONNECT_STRING = "";
+        DatabaseConnect DBC;
 
         public DEV03()
         {
@@ -208,27 +216,19 @@ namespace MDS.Development
         private void XtraForm1_Load(object sender, EventArgs e)
         {
             UserLookAndFeel.Default.StyleChanged += MyStyleChanged;
-            IniFile ini = new IniFile(@"\\192.168.101.3\Software_tuw\PTC-MDS\FileConfig\Configue.ini");
+            IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
             db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
             dtfinfo = clinfo.DateTimeFormat;
-            try
-            {
-                NewData();
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
             //bbiNew.PerformClick(); 
 
-            // Set Tabbed
-            tabbed_Master.SelectedTabPageIndex = 0;
-            tabbedBom.SelectedTabPageIndex = 0;
+            LoadListBOM();
+        }
 
             //q.get_sl_smplNo(sl_smplNo);
             //q.get_sl_Customer(sl_Customer);
             //q.get_gl_Season(gl_Season);
-            q.get_gcListof_Bom(gridControl1); gridView1.OptionsBehavior.Editable = false;
+            q.get_gcListof_Bom(gcListof_Bom); gvListof_Bom.OptionsBehavior.Editable = false;
             GetBranch();
          }
         private void LoadData()
@@ -509,6 +509,11 @@ namespace MDS.Development
             }
         }
         private void sleCustomerEntry_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ribbonControl_Click(object sender, EventArgs e)
         {
 
         }
