@@ -21,15 +21,15 @@ namespace MDS.Development
         cDatabase db;
         CultureInfo clinfo = new CultureInfo("en-US");
         DateTimeFormatInfo dtfinfo;
-        //goClass.dbConn db1   = new goClass.dbConn();
-        //goClass.ctool ct    = new goClass.ctool();
-        //hardQuery q         = new hardQuery();
+        goClass.dbConn db1   = new goClass.dbConn();
+        goClass.ctool ct    = new goClass.ctool();
+        hardQuery q         = new hardQuery();
         private Functionality.Function FUNC = new Functionality.Function();
 
         int chkReadWrite = 0;
 
         public LogIn UserLogin { get; set; }
-        //public int Company { get; set; }
+        public int Company { get; set; }
 
         public string ConnectionString { get; set; }
 
@@ -40,50 +40,49 @@ namespace MDS.Development
         {
             InitializeComponent();
         }
+
         private void NewData()
         {
             try
             {
-                ClearSampleRequestDetail();
-                ClearBOMDetail();
-                //gleBranchEntry.Properties.DataSource = null;
-                //gleSeasonEntry.Properties.DataSource = null;
-                //sleCustomerEntry.Properties.DataSource = null;
-                //sleSmplNoEntry.Properties.DataSource = null;
+                gleBranchEntry.Properties.DataSource = null;
+                gleSeasonEntry.Properties.DataSource = null;
+                sleCustomerEntry.Properties.DataSource = null;
+                sleSmplNoEntry.Properties.DataSource = null;
 
-                //gridControl2.DataSource = null;
+                gcListof_SMPL.DataSource = null;
 
-                //txtCreateBy.Text = "";
-                //txtCreateDate.Text = "";
-                //txtUpdateBy.Text = "";
-                //txtUpdateDate.Text = "";
+                txtCreateBy.Text = "";
+                txtCreateDate.Text = "";
+                txtUpdateBy.Text = "";
+                txtUpdateDate.Text = "";
 
-                //gridControl3.DataSource = null;
+                gcListof_SMPLDetail.DataSource = null;
 
-                //txtBomNo.Text = "";
-                //txtReviseNo.Text = "";
-                //dtpLastDate.EditValue = DateTime.Today;
-                //txtSmplNo_Header.Text = "";
-                //txtPatternNo.Text = "";
-                //txtPatternSizeZone.Text = "";
-                //txtModelName.Text = "";
-                //txtStyleName.Text = "";
-                //txtCategory.Text = "";
-                //txtSeason_Header.Text = "";
-                //txtCustomer_Header.Text = "";
-                //txtFGProductCode.Text = "";
-                //txtColor.Properties.DataSource = null;
-                //txtSize.Properties.DataSource = null;
-                //gleUnit.Properties.DataSource = null;
-                //txtUnitCost.Text = "0";
-                //optStatus.SelectedIndex = -1 ;
-                //txtCostsheetNo.Text = "";
-                //treeBom.DataSource = null;
+                txtBomNo.Text = "";
+                txtReviseNo.Text = "";
+                dtLastDate.EditValue = DateTime.Today;
+                txtSmplNo_Header.Text = "";
+                txtPatternNo.Text = "";
+                txtPatternSizeZone.Text = "";
+                txtModelName.Text = "";
+                txtStyleName.Text = "";
+                txtCategory.Text = "";
+                txtSeason_Header.Text = "";
+                txtCustomer_Header.Text = "";
+                txtFGProductCode.Text = "";
+                sl_Color.Properties.DataSource = null;
+                sl_Size.Properties.DataSource = null;
+                gl_Unit.Properties.DataSource = null;
+                txtUnitCost.Text = "0";
+                rdoStatus.SelectedIndex = -1 ;
+                txtCostsheetNo.Text = "";
+                treeBom.DataSource = null;
 
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
             }
 
             //txeName.Text = "";
@@ -100,137 +99,138 @@ namespace MDS.Development
 
             //////txeID.Focus();
         }
-        private void SaveData()
-        { 
-        
-        }
 
-        private void ClearBOMList() 
+        private void GetBranch()
         {
-            gridControl1.DataSource = null;
+            string strSQL = "SELECT OIDBRANCH,NAME FROM BRANCHS";
+            DataTable dt= db.GetDataTable(strSQL);
+            gleBranchEntry.Properties.DataSource = dt;
+            gleBranchEntry.Properties.DisplayMember = "NAME";
+            gleBranchEntry.Properties.ValueMember = "OIDBRANCH";
+            gleBranchEntry.Properties.PopulateViewColumns();
+            gleBranchEntry.Properties.View.Columns["OIDBRANCH"].Visible = false;
+            gleBranchEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
         }
-        private void ClearSampleRequestDetail()
+        private void GetSeason(int oidBranch)
         {
-            gridControl2.DataSource = null;
-            txtCreateBy.Text = "";
-            txtCreateDate.Text = "";
-            txtUpdateBy.Text = "";
-            txtUpdateDate.Text = "";
-        }
-        private void ClearBOMDetail()
-        {
-            gridControl3.DataSource = null;
-            //Header
-            txtBomNo.Text = "";
-            txtReviseNo.Text = "";
-            dtpLastDate.EditValue = DateTime.Today;
-            txtSmplNo_Header.Text = "";
-            txtPatternNo.Text = "";
-            txtPatternSizeZone.Text = "";
-            txtItemNo.Text = "";
-            txtModelName.Text = "";
-            txtStyleName.Text = "";
-            txtCategory.Text = "";
-            txtSeason_Header.Text = "";
-            txtCustomer_Header.Text = "";
-            txtFGProductCode.Text = "";
-            txtColor.Text = "";
-            txtSize.Text = "";
-            gleUnit.EditValue = null;
-            txtUnitCost.Text = "";
-            optStatus.SelectedIndex = -1;
-            txtCostsheetNo.Text = "";
-            treeBom.DataSource = null;
-            //Details
-            txtListNo.Text = "";
-            gleMaterialType.EditValue = null;
-            sleItemNo.EditValue = null;
-            sleMatColor.EditValue = null;
-            glematSize.EditValue = null;
-            txtComposition.Text = "";
-            gleCurrency.EditValue = null;
-            txtPrice.Text = "";
-            txtConsumption.Text = "";
-            txtCost.Text = "";
-            sleVendor.EditValue = null;
-            txtVendMatCode.Text = "";
-            txtSmplLotNo.Text = "";
-            gleWorkStation.EditValue = null;
-            txtMatLoss.Text = "";
-            gleMatUnit.EditValue = null;
-
-        }
-        private void GetBOMList()
-        {
-            string strSQL = "EXEC SPDEV03_GETBOM";
+            string strSQL = "SELECT DISTINCT SEASON FROM SMPLREQUEST WHERE OIDBRANCH="+oidBranch;
             DataTable dt = db.GetDataTable(strSQL);
-            gridControl1.DataSource = dt;
-            gridView1.OptionsView.EnableAppearanceEvenRow = true;
-            gridView1.OptionsView.EnableAppearanceOddRow = true;
-            gridView1.OptionsView.ColumnAutoWidth = false;
-            gridView1.BestFitColumns();
-
+            gleSeasonEntry.Properties.DataSource = dt;
+            gleSeasonEntry.Properties.DisplayMember = "SEASON";
+            gleSeasonEntry.Properties.ValueMember = "SEASON";
+            gleSeasonEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
         }
-        //private void GetBranch()
-        //{
-        //    string strSQL = "SELECT OIDBRANCH,NAME FROM BRANCHS";
-        //    DataTable dt= db.GetDataTable(strSQL);
-        //    gleBranchEntry.Properties.DataSource = dt;
-        //    gleBranchEntry.Properties.DisplayMember = "NAME";
-        //    gleBranchEntry.Properties.ValueMember = "OIDBRANCH";
-        //    gleBranchEntry.Properties.PopulateViewColumns();
-        //    gleBranchEntry.Properties.View.Columns["OIDBRANCH"].Visible = false;
-        //    gleBranchEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
-        //}
-        //private void GetSeason(int oidBranch)
-        //{
-        //    string strSQL = "SELECT DISTINCT SEASON FROM SMPLREQUEST WHERE OIDBRANCH="+oidBranch;
-        //    DataTable dt = db.GetDataTable(strSQL);
-        //    gleSeasonEntry.Properties.DataSource = dt;
-        //    gleSeasonEntry.Properties.DisplayMember = "SEASON";
-        //    gleSeasonEntry.Properties.ValueMember = "SEASON";
-        //    gleSeasonEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
-        //}
-        //private void GetCustomer(int oidBranch,string season)
-        //{
-        //    string strSQL = "SELECT OIDCUST,NAME FROM CUSTOMER WHERE OIDBRANCH="+oidBranch+" AND SEASON='"+season+"'";
-        //    DataTable dt = db.GetDataTable(strSQL);
-        //    sleCustomerEntry.Properties.DataSource = dt;
-        //    sleCustomerEntry.Properties.DisplayMember = "NAME";
-        //    sleCustomerEntry.Properties.ValueMember = "OIDCUST";
-        //    sleCustomerEntry.Properties.PopulateViewColumns();
-        //    sleCustomerEntry.Properties.View.Columns["OIDCUST"].Visible = false;
-        //    sleCustomerEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
-        //}
-        //private void GetSampleRequest(int oidBranch,string season,int oidCust)
-        //{
-        //    string strSQL = "SELECT ";
-        //}
+        private void GetCustomer(int oidBranch,string season)
+        {
+            string strSQL = "SELECT OIDCUST,NAME FROM CUSTOMER WHERE OIDBRANCH="+oidBranch+" AND SEASON='"+season+"'";
+            DataTable dt = db.GetDataTable(strSQL);
+            sleCustomerEntry.Properties.DataSource = dt;
+            sleCustomerEntry.Properties.DisplayMember = "NAME";
+            sleCustomerEntry.Properties.ValueMember = "OIDCUST";
+            sleCustomerEntry.Properties.PopulateViewColumns();
+            sleCustomerEntry.Properties.View.Columns["OIDCUST"].Visible = false;
+            sleCustomerEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
+        }
+        private void GetSampleRequest(int oidBranch,string season,int oidCust)
+        {
+            string strSQL = "SELECT ";
+        }
+
         private void MyStyleChanged(object sender, EventArgs e)
         {
             UserLookAndFeel userLookAndFeel = (UserLookAndFeel)sender;
             cUtility.SaveRegistry(@"Software\MDS", "SkinName", userLookAndFeel.SkinName);
             cUtility.SaveRegistry(@"Software\MDS", "SkinPalette", userLookAndFeel.ActiveSvgPaletteName);
         }
-        
         private void XtraForm1_Load(object sender, EventArgs e)
         {
             UserLookAndFeel.Default.StyleChanged += MyStyleChanged;
-            IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
-            db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
-            dtfinfo = clinfo.DateTimeFormat;
+            //IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
+            //db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
+            //dtfinfo = clinfo.DateTimeFormat;
 
-            //bbiNew.PerformClick(); 
+            ////bbiNew.PerformClick(); 
+
+            //// Set Tabbed
+            //tabbed_Master.SelectedTabPageIndex = 0;
+            //tabbedBom.SelectedTabPageIndex = 0;
+
+            ////q.get_sl_smplNo(sl_smplNo);
+            ////q.get_sl_Customer(sl_Customer);
+            ////q.get_gl_Season(gl_Season);
+            //q.get_gcListof_Bom(gcListof_Bom); gvListof_Bom.OptionsBehavior.Editable = false;
+            //GetBranch();
+
+            //***** SET CONNECT DB ********
+            if (this.ConnectionString != null)
+            {
+                if (this.ConnectionString != "")
+                {
+                    CONNECT_STRING = this.ConnectionString;
+                }
+            }
+
+            this.DBC = new DatabaseConnect(CONNECT_STRING);
+
+            if (this.DBC.chkCONNECTION_STING() == false)
+            {
+                this.DBC.setCONNECTION_STRING_INIFILE();
+                if (this.DBC.chkCONNECTION_STING() == false)
+                {
+                    return;
+                }
+            }
+            new ObjDE.setDatabase(this.DBC);
+            //******************************
+
+            lblUser.Text = "Login : " + UserLogin.FullName;
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'DEV03') ");
+            chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
+
+            if (chkReadWrite == 0)
+            {
+                ribbonPageGroup1.Visible = false;
+                //rpgManage.Visible = false;
+
+                layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //simpleButton2.Enabled = false;
+                //simpleButton3.Enabled = false;
+                //simpleButton4.Enabled = false;
+                //sbColor.Enabled = false;
+                //sbSize.Enabled = false;
+                //sbFBColor.Enabled = false;
+                //sbTempCode.Enabled = false;
+                //sbMTColor.Enabled = false;
+                //sbTempCodeMat.Enabled = false;
+                //btnOpenImg_Main.Enabled = false;
+                //sbDelete_S.Enabled = false;
+                //sbClear.Enabled = false;
+                //simpleButton5.Enabled = false;
+                //sbDelete_F.Enabled = false;
+                //sbMatClear.Enabled = false;
+                //btnUploadMat.Enabled = false;
+                //simpleButton1.Enabled = false;
+
+                //sbUseFor.Enabled = false;
+                //sbUnit.Enabled = false;
+
+                //sbPart.Enabled = false;
+                //sbFBSupplier.Enabled = false;
+
+                //sbMTSupplier.Enabled = false;
+            }
 
             LoadListBOM();
         }
 
-            //q.get_sl_smplNo(sl_smplNo);
-            //q.get_sl_Customer(sl_Customer);
-            //q.get_gl_Season(gl_Season);
-            q.get_gcListof_Bom(gcListof_Bom); gvListof_Bom.OptionsBehavior.Editable = false;
-            GetBranch();
-         }
+        private void LoadListBOM()
+        {
+            StringBuilder sbSQL = new StringBuilder();
+            sbSQL.Append("");
+            new ObjDE.setGridControl(gcListof_Bom, gvListof_Bom, sbSQL).getData(false, false, false, true);
+        }
+
         private void LoadData()
         {
             //StringBuilder sbSQL = new StringBuilder();
