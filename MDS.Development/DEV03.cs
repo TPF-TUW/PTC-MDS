@@ -5,9 +5,11 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Data;
 using DevExpress.LookAndFeel;
+using DevExpress.Utils;
 using DevExpress.Utils.Extensions;
 using System.Drawing;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraLayout.Utils;
@@ -45,96 +47,133 @@ namespace MDS.Development
         {
             try
             {
-                gleBranchEntry.Properties.DataSource = null;
-                gleSeasonEntry.Properties.DataSource = null;
-                sleCustomerEntry.Properties.DataSource = null;
-                sleSmplNoEntry.Properties.DataSource = null;
-
-                gcListof_SMPL.DataSource = null;
-
-                txtCreateBy.Text = "";
-                txtCreateDate.Text = "";
-                txtUpdateBy.Text = "";
-                txtUpdateDate.Text = "";
-
-                gcListof_SMPLDetail.DataSource = null;
-
-                txtBomNo.Text = "";
-                txtReviseNo.Text = "";
-                dtLastDate.EditValue = DateTime.Today;
-                txtSmplNo_Header.Text = "";
-                txtPatternNo.Text = "";
-                txtPatternSizeZone.Text = "";
-                txtModelName.Text = "";
-                txtStyleName.Text = "";
-                txtCategory.Text = "";
-                txtSeason_Header.Text = "";
-                txtCustomer_Header.Text = "";
-                txtFGProductCode.Text = "";
-                sl_Color.Properties.DataSource = null;
-                sl_Size.Properties.DataSource = null;
-                gl_Unit.Properties.DataSource = null;
-                txtUnitCost.Text = "0";
-                rdoStatus.SelectedIndex = -1 ;
-                txtCostsheetNo.Text = "";
-                treeBom.DataSource = null;
-
+                ClearSampleRequestDetail();
+                ClearBOMDetail();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
             }
 
-            //txeName.Text = "";
-            //lblStatus.Text = "* Add Payment Term";
-            //lblStatus.ForeColor = Color.Green;
 
-            //txeID.Text = new DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDPayment), '') = '' THEN 1 ELSE MAX(OIDPayment) + 1 END AS NewNo FROM PaymentTerm").getString();
-            //txeDescription.Text = "";
-            //txeDueDate.Text = "";
-            //rgStatus.SelectedIndex = -1;
-
-            //txeCREATE.Text = "0";
-            //txeDATE.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
-            //////txeID.Focus();
         }
 
-        private void GetBranch()
+        private void ClearBomList()
         {
-            string strSQL = "SELECT OIDBRANCH,NAME FROM BRANCHS";
-            DataTable dt= db.GetDataTable(strSQL);
-            gleBranchEntry.Properties.DataSource = dt;
-            gleBranchEntry.Properties.DisplayMember = "NAME";
-            gleBranchEntry.Properties.ValueMember = "OIDBRANCH";
-            gleBranchEntry.Properties.PopulateViewColumns();
-            gleBranchEntry.Properties.View.Columns["OIDBRANCH"].Visible = false;
-            gleBranchEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
+
         }
-        private void GetSeason(int oidBranch)
+        private void ClearSampleRequestDetail()
         {
-            string strSQL = "SELECT DISTINCT SEASON FROM SMPLREQUEST WHERE OIDBRANCH="+oidBranch;
+            gridControl2.DataSource = null;
+            txtCreateBy.Text = "";
+            txtCreateDate.Text = "";
+            txtUpdateBy.Text = "";
+            txtUpdateDate.Text = "";
+        }
+        private void ClearBOMDetail()
+        {
+            gridControl3.DataSource = null;
+
+            txtBomNo.Text = "";
+            txtReviseNo.Text = "";
+            dtpLastDate.EditValue = DateTime.Today;
+            txtSmplNo_Header.Text = "";
+            txtPatternNo.Text = "";
+            txtPatternSizeZone.Text = "";
+            txtModelName.Text = "";
+            txtStyleName.Text = "";
+            txtCategory.Text = "";
+            txtSeason_Header.Text = "";
+            txtCustomer_Header.Text = "";
+            txtFGProductCode.Text = "";
+            txtColor.Text = "";
+            txtSize.Text = "";
+            gl_Unit.Properties.DataSource = null;
+            txtUnitCost.Text = "0";
+            rdoStatus.SelectedIndex = -1;
+            txtCostsheetNo.Text = "";
+            treeBom.DataSource = null;
+        }
+        private void GetBOMList()
+        {
+            string strSQL = "EXEC spDEV03_GetBOM";
             DataTable dt = db.GetDataTable(strSQL);
-            gleSeasonEntry.Properties.DataSource = dt;
-            gleSeasonEntry.Properties.DisplayMember = "SEASON";
-            gleSeasonEntry.Properties.ValueMember = "SEASON";
-            gleSeasonEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
+            gridControl1.DataSource = dt;
+            if (dt == null) return;
+            gridView1.Columns["BOMNO"].Caption = "BOM No.";
+            gridView1.Columns["REVISIONNO"].Caption = "Revise";
+            gridView1.Columns["SMPLITEM"].Caption = "SMPL Item";
+            gridView1.Columns["SMPLNO"].Caption = "SMPL No.";
+            gridView1.Columns["SEASON"].Caption = "Season";
+            gridView1.Columns["CUSTOMER"].Caption = "Customer";
+            gridView1.Columns["ITEM"].Caption = "Item";
+            gridView1.Columns["CATEGORYNAME"].Caption = "Category";
+            gridView1.Columns["STYLENAME"].Caption = "Style";
+            gridView1.Columns["SMPLPATTERNNO"].Caption = "Pattern No.";
+            gridView1.Columns["USERNAME"].Caption = "Created By";
+            gridView1.OptionsView.EnableAppearanceEvenRow = true;
+            gridView1.OptionsView.EnableAppearanceOddRow = true;
+            gridView1.OptionsView.ColumnAutoWidth = false;
+            gridView1.BestFitColumns();
         }
-        private void GetCustomer(int oidBranch,string season)
+        private void GetSampleRequest(int oidSMPL)
         {
-            string strSQL = "SELECT OIDCUST,NAME FROM CUSTOMER WHERE OIDBRANCH="+oidBranch+" AND SEASON='"+season+"'";
+            string strSQL = "EXEC spDEV03_GetSampleRequest " + oidSMPL;
             DataTable dt = db.GetDataTable(strSQL);
-            sleCustomerEntry.Properties.DataSource = dt;
-            sleCustomerEntry.Properties.DisplayMember = "NAME";
-            sleCustomerEntry.Properties.ValueMember = "OIDCUST";
-            sleCustomerEntry.Properties.PopulateViewColumns();
-            sleCustomerEntry.Properties.View.Columns["OIDCUST"].Visible = false;
-            sleCustomerEntry.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
+            gridControl2.DataSource = dt;
+            if (dt == null) return;
+            foreach(DataRow dr in dt.Rows)
+            {
+                txtCreateBy.Text = dr["CREATEDBY"].ToString();
+                txtCreateDate.Text = dr["CREATEDDATE"].ToString();
+                txtUpdateBy.Text = dr["UPDATEDBY"].ToString();
+                txtUpdateDate.Text = dr["UPDATEDDATE"].ToString();
+            }
+            gridView2.Columns["OIDSMPLDT"].Caption = "ID";
+            gridView2.Columns["SMPLITEM"].Caption = "Item No.";
+            gridView2.Columns["COLORNAME"].Caption = "Color";
+            gridView2.Columns["SIZENAME"].Caption = "Size";
+            gridView2.Columns["OIDSMPLDT"].Visible = false;
+            gridView2.Columns["OIDSMPL"].Visible = false;
+            gridView2.Columns["OIDCOLOR"].Visible = false;
+            gridView2.Columns["OIDSIZE"].Visible = false;
+            gridView2.Columns["CREATEDBY"].Visible = false;
+            gridView2.Columns["CREATEDDATE"].Visible = false;
+            gridView2.Columns["UPDATEDBY"].Visible = false;
+            gridView2.Columns["UPDATEDDATE"].Visible = false;
+            gridView2.OptionsView.EnableAppearanceEvenRow = true;
+            gridView2.OptionsView.EnableAppearanceOddRow = true;
+            gridView2.OptionsView.ColumnAutoWidth = false;
+            gridView2.BestFitColumns();
+
         }
-        private void GetSampleRequest(int oidBranch,string season,int oidCust)
+        private void GetBOMDetail(int oidSMPL,int oidSize,int oidColor)
         {
-            string strSQL = "SELECT ";
+            string strSQL = "EXEC spDEV03_GetBOMDetail "+oidSMPL+","+oidSize+","+oidColor ;
+            DataTable dt = db.GetDataTable(strSQL);
+            if (dt == null) return;
+            foreach (DataRow dr in dt.Rows)
+            {
+                txtBomNo.EditValue = dr["BOMNO"];
+                txtReviseNo.EditValue = dr["REVISIONNO"];
+                dtpLastDate.EditValue = dr["ISSUEDATE"] == System.DBNull.Value ? (DateTime?)null : (DateTime)dr["ISSUEDATE"];
+                txtSmplNo_Header.EditValue = dr["SMPLNO"];
+                txtPatternNo.EditValue = dr["SMPLPATTERNNO"];
+                txtPatternSizeZone.EditValue = dr["PATTERNSIZEZONE"];
+                txtItemNo.EditValue = dr["SMPLITEM"];
+                txtModelName.EditValue = dr["MODELNAME"];
+                txtStyleName.EditValue = dr["STYLENAME"];
+                txtCategory.EditValue = dr["CATEGORYNAME"];
+                txtSeason_Header.EditValue = dr["SEASON"];
+                txtCustomer_Header.EditValue = dr["SHORTNAME"];
+
+            }
+
         }
+
+
+
+        
 
         private void MyStyleChanged(object sender, EventArgs e)
         {
@@ -142,93 +181,91 @@ namespace MDS.Development
             cUtility.SaveRegistry(@"Software\MDS", "SkinName", userLookAndFeel.SkinName);
             cUtility.SaveRegistry(@"Software\MDS", "SkinPalette", userLookAndFeel.ActiveSvgPaletteName);
         }
-        private void XtraForm1_Load(object sender, EventArgs e)
+        private void DEV03_Load(object sender, EventArgs e)
         {
             UserLookAndFeel.Default.StyleChanged += MyStyleChanged;
-            //IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
-            //db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
-            //dtfinfo = clinfo.DateTimeFormat;
-
-            ////bbiNew.PerformClick(); 
-
-            //// Set Tabbed
-            //tabbed_Master.SelectedTabPageIndex = 0;
-            //tabbedBom.SelectedTabPageIndex = 0;
-
-            ////q.get_sl_smplNo(sl_smplNo);
-            ////q.get_sl_Customer(sl_Customer);
-            ////q.get_gl_Season(gl_Season);
-            //q.get_gcListof_Bom(gcListof_Bom); gvListof_Bom.OptionsBehavior.Editable = false;
-            //GetBranch();
-
-            //***** SET CONNECT DB ********
-            if (this.ConnectionString != null)
+            IniFile ini = new IniFile(@"\\192.168.101.3\Software_tuw\PTC-MDS\FileConfig\Configue.ini");
+            db = new cDatabase("Server=" + ini.Read("Server", "ConnectionString") + ";uid=" + ini.Read("Uid", "ConnectionString") + ";pwd=" + ini.Read("Pwd", "ConnectionString") + ";database=" + ini.Read("Database", "ConnectionString"));
+            dtfinfo = clinfo.DateTimeFormat;
+            try
             {
-                if (this.ConnectionString != "")
-                {
-                    CONNECT_STRING = this.ConnectionString;
-                }
+                NewData();
+                GetBOMList();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            this.DBC = new DatabaseConnect(CONNECT_STRING);
 
-            if (this.DBC.chkCONNECTION_STING() == false)
-            {
-                this.DBC.setCONNECTION_STRING_INIFILE();
-                if (this.DBC.chkCONNECTION_STING() == false)
-                {
-                    return;
-                }
-            }
-            new ObjDE.setDatabase(this.DBC);
+            ////***** SET CONNECT DB ********
+            //if (this.ConnectionString != null)
+            //{
+            //    if (this.ConnectionString != "")
+            //    {
+            //        CONNECT_STRING = this.ConnectionString;
+            //    }
+            //}
+
+            //this.DBC = new DatabaseConnect(CONNECT_STRING);
+
+            //if (this.DBC.chkCONNECTION_STING() == false)
+            //{
+            //    this.DBC.setCONNECTION_STRING_INIFILE();
+            //    if (this.DBC.chkCONNECTION_STING() == false)
+            //    {
+            //        return;
+            //    }
+            //}
+            //new ObjDE.setDatabase(this.DBC);
             //******************************
 
             lblUser.Text = "Login : " + UserLogin.FullName;
-            StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'DEV03') ");
-            chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
+            //StringBuilder sbSQL = new StringBuilder();
+            //sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'DEV03') ");
+            //chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
 
-            if (chkReadWrite == 0)
-            {
-                ribbonPageGroup1.Visible = false;
-                //rpgManage.Visible = false;
+            //if (chkReadWrite == 0)
+            //{
+            //    ribbonPageGroup1.Visible = false;
+            //    //rpgManage.Visible = false;
 
-                layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                //simpleButton2.Enabled = false;
-                //simpleButton3.Enabled = false;
-                //simpleButton4.Enabled = false;
-                //sbColor.Enabled = false;
-                //sbSize.Enabled = false;
-                //sbFBColor.Enabled = false;
-                //sbTempCode.Enabled = false;
-                //sbMTColor.Enabled = false;
-                //sbTempCodeMat.Enabled = false;
-                //btnOpenImg_Main.Enabled = false;
-                //sbDelete_S.Enabled = false;
-                //sbClear.Enabled = false;
-                //simpleButton5.Enabled = false;
-                //sbDelete_F.Enabled = false;
-                //sbMatClear.Enabled = false;
-                //btnUploadMat.Enabled = false;
-                //simpleButton1.Enabled = false;
+            //    layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //    //simpleButton2.Enabled = false;
+            //    //simpleButton3.Enabled = false;
+            //    //simpleButton4.Enabled = false;
+            //    //sbColor.Enabled = false;
+            //    //sbSize.Enabled = false;
+            //    //sbFBColor.Enabled = false;
+            //    //sbTempCode.Enabled = false;
+            //    //sbMTColor.Enabled = false;
+            //    //sbTempCodeMat.Enabled = false;
+            //    //btnOpenImg_Main.Enabled = false;
+            //    //sbDelete_S.Enabled = false;
+            //    //sbClear.Enabled = false;
+            //    //simpleButton5.Enabled = false;
+            //    //sbDelete_F.Enabled = false;
+            //    //sbMatClear.Enabled = false;
+            //    //btnUploadMat.Enabled = false;
+            //    //simpleButton1.Enabled = false;
 
-                //sbUseFor.Enabled = false;
-                //sbUnit.Enabled = false;
+            //    //sbUseFor.Enabled = false;
+            //    //sbUnit.Enabled = false;
 
-                //sbPart.Enabled = false;
-                //sbFBSupplier.Enabled = false;
+            //    //sbPart.Enabled = false;
+            //    //sbFBSupplier.Enabled = false;
 
-                //sbMTSupplier.Enabled = false;
-            }
+            //    //sbMTSupplier.Enabled = false;
+            //}
 
-            LoadListBOM();
+            //LoadListBOM();
         }
 
         private void LoadListBOM()
         {
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("");
-            new ObjDE.setGridControl(gcListof_Bom, gvListof_Bom, sbSQL).getData(false, false, false, true);
+            new ObjDE.setGridControl(gridControl1, gridView1, sbSQL).getData(false, false, false, true);
         }
 
         private void LoadData()
@@ -480,34 +517,7 @@ namespace MDS.Development
             }
         }
 
-        private void gleBranchEntry_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (gleBranchEntry.EditValue == null)
-                    return;
-                else
-                    GetSeason((int)gleBranchEntry.EditValue);
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void gleSeasonEntry_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (gleSeasonEntry.EditValue == null)
-                    return;
-                else
-                    GetCustomer((int)gleBranchEntry.EditValue, gleSeasonEntry.EditValue.ToString());
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+
         private void sleCustomerEntry_EditValueChanged(object sender, EventArgs e)
         {
 
@@ -516,6 +526,52 @@ namespace MDS.Development
         private void ribbonControl_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void gridView1_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        {
+            if (e.Info.IsRowIndicator) e.Info.DisplayText = (e.RowHandle + 1).ToString();
+            gridView1.IndicatorWidth = 45;
+        }
+        private void gridView2_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        {
+            if (e.Info.IsRowIndicator) e.Info.DisplayText = (e.RowHandle + 1).ToString();
+            gridView2.IndicatorWidth = 45;
+        }
+        private void gridView1_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
+        private void gridView2_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
+        private void gridView1_DoubleClick(object sender, EventArgs e)
+        {
+            DXMouseEventArgs ea = e as DXMouseEventArgs;
+            GridView view = sender as GridView;
+            GridHitInfo info = view.CalcHitInfo(ea.Location);
+            if (info.InRow || info.InRowCell)
+            {
+                //string colCaption = info.Column == null ? "N/A" : info.Column.GetCaption();
+                ClearSampleRequestDetail();
+                ClearBOMDetail();
+                GetSampleRequest(Convert.ToInt32(view.GetRowCellValue(info.RowHandle,"OIDSMPL" )));
+                tabbed_Master.SelectedTabPageIndex = 1;
+                //MessageBox.Show(string.Format("DoubleClick on row: {0}, column: {1}.", info.RowHandle, colCaption));
+            }
+        }
+        private void gridView2_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                ClearBOMDetail();
+                GetBOMDetail(Convert.ToInt32(gridView2.GetRowCellValue(e.RowHandle, "OIDSMPL")), Convert.ToInt32(gridView2.GetRowCellValue(e.RowHandle, "OIDSIZE")), Convert.ToInt32(gridView2.GetRowCellValue(e.RowHandle, "OIDCOLOR")));
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
