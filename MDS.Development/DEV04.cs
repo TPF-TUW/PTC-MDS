@@ -20,12 +20,6 @@ namespace MDS.Development
         DataTable dtFB = new DataTable();
         public LogIn UserLogin { get; set; }
         public int Company { get; set; }
-        int chkReadWrite = 0;
-        public string ConnectionString { get; set; }
-
-        string CONNECT_STRING = "";
-
-        DatabaseConnect DBC;
 
         public DEV04()
         {
@@ -214,67 +208,6 @@ namespace MDS.Development
 
         private void XtraForm1_Load(object sender, EventArgs e)
         {
-            //***** SET CONNECT DB ********
-            if (this.ConnectionString != null)
-            {
-                if (this.ConnectionString != "")
-                {
-                    CONNECT_STRING = this.ConnectionString;
-                }
-            }
-
-            this.DBC = new DatabaseConnect(CONNECT_STRING);
-
-            if (this.DBC.chkCONNECTION_STING() == false)
-            {
-                this.DBC.setCONNECTION_STRING_INIFILE();
-                if (this.DBC.chkCONNECTION_STING() == false)
-                {
-                    return;
-                }
-            }
-            new ObjDE.setDatabase(this.DBC);
-            //******************************
-
-            lblUser.Text = "Login : " + UserLogin.FullName;
-            StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("SELECT TOP (1) ReadWriteStatus FROM FunctionAccess WHERE (OIDUser = '" + UserLogin.OIDUser + "') AND(FunctionNo = 'DEV01') ");
-            chkReadWrite = this.DBC.DBQuery(sbSQL).getInt();
-
-            //MessageBox.Show(chkReadWrite.ToString());
-            if (chkReadWrite == 0)
-            {
-                ribbonPageGroup1.Visible = false;
-               // rpgManage.Visible = false;
-
-                layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                //simpleButton2.Enabled = false;
-                //simpleButton3.Enabled = false;
-                //simpleButton4.Enabled = false;
-                //sbColor.Enabled = false;
-                //sbSize.Enabled = false;
-                //sbFBColor.Enabled = false;
-                //sbTempCode.Enabled = false;
-                //sbMTColor.Enabled = false;
-                //sbTempCodeMat.Enabled = false;
-                //btnOpenImg_Main.Enabled = false;
-                //sbDelete_S.Enabled = false;
-                //sbClear.Enabled = false;
-                //simpleButton5.Enabled = false;
-                //sbDelete_F.Enabled = false;
-                //sbMatClear.Enabled = false;
-                //btnUploadMat.Enabled = false;
-                //simpleButton1.Enabled = false;
-
-                //sbUseFor.Enabled = false;
-                //sbUnit.Enabled = false;
-
-                //sbPart.Enabled = false;
-                //sbFBSupplier.Enabled = false;
-
-                //sbMTSupplier.Enabled = false;
-            }
-
             LoadData();
             NewData();
 
@@ -284,7 +217,7 @@ namespace MDS.Development
             CreateBands(out gridBand1, out gridBand2);
             CreateColumns(gridBand1, gridBand2);
 
-            sbSQL.Clear();
+            StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT 'S' AS bcSize, 'FDSSTRKJ91' AS bcFabric, 'Nan Yang' AS bcVendor, 'Body' As bcGarmentPart, '03 Gray' As bcColorNo, '03 GRAY(BC07)-F142C' AS bcColorName, '167.0' AS bcWidthAll, '162.0' As bcWidthUse, '275.550' AS bcGM, '0.1758' AS bcM1P, '0.0484' AS bcKg1P, '565.00' AS bcPrice, '3.0%' AS bcLoss, '2.1664' AS BCS1, '' AS BCS2, '' AS BCS3, '' AS BCS4 ");
             sbSQL.Append("UNION ALL ");
             sbSQL.Append("SELECT 'M' AS bcSize, 'FDSSTRKJ91' AS bcFabric, 'Nan Yang' AS bcVendor, 'Body' As bcGarmentPart, '03 Gray' As bcColorNo, '03 GRAY(BC07)-F142C' AS bcColorName, '167.0' AS bcWidthAll, '162.0' As bcWidthUse, '275.550' AS bcGM, '0.1758' AS bcM1P, '0.0484' AS bcKg1P, '565.00' AS bcPrice, '3.0%' AS bcLoss, '' AS BCS1, '31.9491' AS BCS2, '' AS BCS3, '' AS BCS4 ");
@@ -292,7 +225,7 @@ namespace MDS.Development
             sbSQL.Append("SELECT 'S' AS bcSize, 'FDSSTRKJ91' AS bcFabric, 'Nan Yang' AS bcVendor, 'Body' As bcGarmentPart, '16 Red' As bcColorNo, '16K RED-F142C' AS bcColorName, '167.0' AS bcWidthAll, '162.0' As bcWidthUse, '275.550' AS bcGM, '0.1758' AS bcM1P, '0.0484' AS bcKg1P, '565.00' AS bcPrice, '3.0%' AS bcLoss, '' AS BCS1, '' AS BCS2, '22.8821' AS BCS3, '' AS BCS4 ");
             sbSQL.Append("UNION ALL ");
             sbSQL.Append("SELECT 'M' AS bcSize, 'FDSSTRKJ91' AS bcFabric, 'Nan Yang' AS bcVendor, 'Body' As bcGarmentPart, '16 Red' As bcColorNo, '16K RED-F142C' AS bcColorName, '167.0' AS bcWidthAll, '162.0' As bcWidthUse, '275.550' AS bcGM, '0.1758' AS bcM1P, '0.0484' AS bcKg1P, '565.00' AS bcPrice, '3.0%' AS bcLoss, '' AS BCS1, '' AS BCS2, '' AS BCS3, '25.9551' AS BCS4 ");
-            new ObjDE.setGridControl(bgcFabric, bgvFabric, sbSQL).getData();
+            new ObjDevEx.setGridControl(bgcFabric, bgvFabric, sbSQL).getData();
             bgvFabric.OptionsView.ColumnAutoWidth = false;
             bgvFabric.BestFitColumns();
             //List<string> listSize = new List<string>();
@@ -366,7 +299,7 @@ namespace MDS.Development
             ////sbSQL.Append("SELECT 'F' AS CsType, 'S' AS CSSize, 'FDSSTRKJ91', 'Nan Yang', 'Body', '03 Gray', '03 GRAY(BC07)-F142C', '167.0', '162.0', '275.550', '0.1758', '0.0484', '565.00', '3.0%', '2.1664', '', '', '' ");
             ////sbSQL.Append("UNION ALL ");
             ////sbSQL.Append("SELECT 'A' AS CsType, 'S' AS CSSize, 'FDSSTRKJ91', 'Nan Yang', 'Body', '03 Gray', '03 GRAY(BC07)-F142C', '167.0', '162.0', '275.550', '0.1758', '0.0484', '565.00', '3.0%', '2.1664', '', '', '' ");
-            ////new ObjDE.setGridControl(gcFabric, gvFabric, sbSQL).getData();
+            ////new ObjDevEx.setGridControl(gcFabric, gvFabric, sbSQL).getData();
 
             ////DataTable dtFABRIC = dtFB;
 
@@ -397,7 +330,7 @@ namespace MDS.Development
                 sbSQL.Append("WHERE (B.OIDBOM = 0)  ");
             sbSQL.Append("ORDER BY B.OIDBOM ");
 
-            new ObjDE.setGridControl(gcBOM, gvBOM, sbSQL).getData(false, false , false, true);
+            new ObjDevEx.setGridControl(gcBOM, gvBOM, sbSQL).getData(false, false , false, true);
             gvBOM.Columns["OIDSIZE"].Visible = false;
             gvBOM.Columns["OIDColor"].Visible = false;
             gvBOM.Columns["ID"].Visible = false;
@@ -409,23 +342,6 @@ namespace MDS.Development
             NewData();
         }
 
-        private void LoadCostSheetList()
-        {
-            StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("SELECT    '-' AS Status, CS.OIDCOST, CS.CostSheetNo, CS.OIDCUST, CS.RequestDate, CUS.Name AS Customer, CS.Season, ");
-            sbSQL.Append("          CS.OIDSTYLE, PS.StyleName, PS.OIDGCATEGORY, GC.CategoryName, CS.PatternNo, CS.SewingPrice, CS.FOBPrice ");
-            sbSQL.Append("FROM      CostSheet AS CS LEFT OUTER JOIN ");
-            sbSQL.Append("          Customer AS CUS ON CS.OIDCUST = CUS.OIDCUST LEFT OUTER JOIN ");
-            sbSQL.Append("          ProductStyle AS PS ON CS.OIDSTYLE = PS.OIDSTYLE LEFT OUTER JOIN ");
-            sbSQL.Append("          GarmentCategory AS GC ON PS.OIDGCATEGORY = GC.OIDGCATEGORY ");
-            sbSQL.Append("ORDER BY CS.OIDCOST ");
-            new ObjDE.setGridControl(gcList, gvList, sbSQL).getData(false, false, true, true);
-            gvList.Columns["OIDCOST"].Visible = false;
-            gvList.Columns["OIDCUST"].Visible = false;
-            gvList.Columns["OIDSTYLE"].Visible = false;
-            gvList.Columns["OIDGCATEGORY"].Visible = false;
-        }
-
         private void LoadData()
         {
             glueZone.Properties.DataSource = PZone;
@@ -435,24 +351,20 @@ namespace MDS.Development
 
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT DISTINCT Season FROM BOM ORDER BY Season");
-            new ObjDE.setGridLookUpEdit(glueSeason, sbSQL, "Season", "Season").getData();
+            new ObjDevEx.setGridLookUpEdit(glueSeason, sbSQL, "Season", "Season").getData();
 
             sbSQL.Clear();
             sbSQL.Append("SELECT PS.StyleName, GC.CategoryName, PS.OIDSTYLE AS ID ");
             sbSQL.Append("FROM   ProductStyle AS PS INNER JOIN ");
             sbSQL.Append("       GarmentCategory AS GC ON PS.OIDGCATEGORY = GC.OIDGCATEGORY ");
             sbSQL.Append("ORDER BY PS.StyleName");
-            new ObjDE.setSearchLookUpEdit(slueStyle, sbSQL, "StyleName", "ID").getData();
+            new ObjDevEx.setSearchLookUpEdit(slueStyle, sbSQL, "StyleName", "ID").getData();
 
             LoadBOM();
-            LoadCostSheetList();
         }
 
         private void NewData()
         {
-            if (rgDocUser.EditValue == null)
-                rgDocUser.EditValue = 0;
-
             txeCostSheet.Text = "";
             dteDate.EditValue = DateTime.Now;
             glueSeason.EditValue = "";
@@ -519,7 +431,7 @@ namespace MDS.Development
             //    sbSQL.Append("       Customer AS CUS ON B.OIDCUST = CUS.OIDCUST LEFT OUTER JOIN ");
             //    sbSQL.Append("       Items AS IT ON B.OIDITEM = IT.OIDITEM ");
             //    sbSQL.Append("WHERE (B.OIDBOM = '" + gvBOM.GetRowCellValue(e.RowHandle, "ID").ToString() + "') ");
-            //    string[] arrBOM = this.DBC.DBQuery(sbSQL).getMultipleValue();
+            //    string[] arrBOM = DB.DBQuery(sbSQL).getMultipleValue();
             //    if (arrBOM.Length > 0)
             //    {
             //        txeCustomer.Text = arrBOM[1];
