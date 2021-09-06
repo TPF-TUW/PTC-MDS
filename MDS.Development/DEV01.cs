@@ -6322,36 +6322,39 @@ namespace MDS.Development
 
             if (this.New_Color != "" && this.New_Size != "")
             {
-                bool chkDRQ = false;
-                //เช็คก่อนว่าใน gcQtyRequired ยังมีสีก่อนเปลี่ยนอยู่หรือป่าว ถ้ามี(chkRQ=true)ไม่ต้องแก้ใน gcList_Fabric แต่ถ้าไม่มีแล้ว(chkRQ=false)ให้แก้ไขใน gridControl8 ด้วย
-                DataTable dtDRQ = (DataTable)gcQtyRequired.DataSource;
-                if (dtDRQ != null)
+                if (gvQtyRequired.RowCount > 1)
                 {
-                    int xRow = 0;
-                    foreach (DataRow drDRQ in dtDRQ.Rows)
+                    bool chkDRQ = false;
+                    //เช็คก่อนว่าใน gcQtyRequired ยังมีสีก่อนเปลี่ยนอยู่หรือป่าว ถ้ามี(chkRQ=true)ไม่ต้องแก้ใน gcList_Fabric แต่ถ้าไม่มีแล้ว(chkRQ=false)ให้แก้ไขใน gridControl8 ด้วย
+                    DataTable dtDRQ = (DataTable)gcQtyRequired.DataSource;
+                    if (dtDRQ != null)
                     {
-                        if (xRow != e.RowHandle)
+                        int xRow = 0;
+                        foreach (DataRow drDRQ in dtDRQ.Rows)
                         {
-                            string chkColor = drDRQ["Color"].ToString();
-                            string chkSize = drDRQ["Size"].ToString();
-                            if (this.New_Color == chkColor && this.New_Size == chkSize)
+                            if (xRow != e.RowHandle)
                             {
-                                chkDRQ = true;
-                                break;
+                                string chkColor = drDRQ["Color"].ToString();
+                                string chkSize = drDRQ["Size"].ToString();
+                                if (this.New_Color == chkColor && this.New_Size == chkSize)
+                                {
+                                    chkDRQ = true;
+                                    break;
+                                }
                             }
+                            xRow++;
                         }
-                        xRow++;
                     }
-                }
 
-                if (chkDRQ == true)
-                {
-                    FUNCT.msgWarning("Cannot enter the same color and size !!");
-                    if (e.Column.FieldName == "Color")
-                        gvQtyRequired.SetRowCellValue(e.RowHandle, "Color", this.BF_Color);
-                    if (e.Column.FieldName == "Size")
-                        gvQtyRequired.SetRowCellValue(e.RowHandle, "Size", this.BF_Size);
+                    if (chkDRQ == true)
+                    {
+                        FUNCT.msgWarning("Cannot enter the same color and size !!");
+                        if (e.Column.FieldName == "Color")
+                            gvQtyRequired.SetRowCellValue(e.RowHandle, "Color", this.BF_Color);
+                        if (e.Column.FieldName == "Size")
+                            gvQtyRequired.SetRowCellValue(e.RowHandle, "Size", this.BF_Size);
 
+                    }
                 }
             }
         }

@@ -587,16 +587,16 @@ namespace MDS.Master
                                     }
                                 }
 
-                                if (chkVendor == false)
-                                {
-                                    FUNC.msgWarning("Please add vendor:'" + slueFirstVendor.Text.Trim() + "' to vendor details.");
-                                    tabbedControlGroup1.SelectedTabPage = layoutControlGroup2;
-                                    slueVendorCode.EditValue = slueFirstVendor.EditValue;
-                                    slueVendorCode.Focus();
-                                    chkPASS = false;
-                                }
-                                else
-                                {
+                                //if (chkVendor == false)
+                                //{
+                                //    FUNC.msgWarning("Please add vendor:'" + slueFirstVendor.Text.Trim() + "' to vendor details.");
+                                //    tabbedControlGroup1.SelectedTabPage = layoutControlGroup2;
+                                //    slueVendorCode.EditValue = slueFirstVendor.EditValue;
+                                //    slueVendorCode.Focus();
+                                //    chkPASS = false;
+                                //}
+                                //else
+                                //{
                                     if (slueFirstVendor.EditValue.ToString() != slueDefaultVendor.EditValue.ToString())
                                     {
                                         chkVendor = false;
@@ -618,7 +618,7 @@ namespace MDS.Master
                                             chkPASS = true;
                                         }
                                     }
-                                }
+                               // }
                             }
 
                             if (chkPASS == true)
