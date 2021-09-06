@@ -1229,7 +1229,7 @@ namespace MDS.Development
 
                         if (sbSQL.Length > 0)
                         {
-                            //MessageBox.Show("B");
+                            //MessageBox.Show(sbSQL.ToString());
                             chkSave = DBC.DBQuery(sbSQL.ToString()).runSQL();
                             pbcSAVE.PerformStep();
                             pbcSAVE.Update();

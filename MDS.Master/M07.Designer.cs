@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(M07));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txeFactor = new DevExpress.XtraEditors.TextEdit();
@@ -1037,7 +1038,7 @@
             // 
             this.lblIDVENDItem.Location = new System.Drawing.Point(9, 393);
             this.lblIDVENDItem.Name = "lblIDVENDItem";
-            this.lblIDVENDItem.Size = new System.Drawing.Size(70, 14);
+            this.lblIDVENDItem.Size = new System.Drawing.Size(287, 14);
             this.lblIDVENDItem.StyleController = this.layoutControl1;
             this.lblIDVENDItem.TabIndex = 81;
             this.lblIDVENDItem.Text = "labelControl1";
@@ -2080,7 +2081,7 @@
             this.tabbedControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.tabbedControlGroup1.Name = "tabbedControlGroup1";
             this.tabbedControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.tabbedControlGroup1.SelectedTabPage = this.layoutControlGroup2;
+            this.tabbedControlGroup1.SelectedTabPage = this.lcgImport;
             this.tabbedControlGroup1.Size = new System.Drawing.Size(1094, 634);
             this.tabbedControlGroup1.TabPages.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlGroup13,

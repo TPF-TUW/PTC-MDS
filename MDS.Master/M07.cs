@@ -930,6 +930,7 @@ namespace MDS.Master
                                 PRICE = IsNumeric(PRICE) == false ? "0" : PRICE;
                                 string SUPPLIER = WSHEET.Rows[i][17].DisplayText.ToString().Trim().Replace("'", "''");
                                 string PURCHASE_TYPE = WSHEET.Rows[i][18].DisplayText.ToString().Trim().Replace("'", "''");
+
                                 if (IsNumeric(PURCHASE_TYPE) == false)
                                 {
                                     string chkPTYPE = PURCHASE_TYPE.Trim().ToUpper().Replace(" ", "");
@@ -951,17 +952,67 @@ namespace MDS.Master
                                     }
                                 }
 
-                                string MINIMUM = WSHEET.Rows[i][21].DisplayText.ToString().Trim().Replace("'", "''");
+                                string MINIMUM = WSHEET.Rows[i][19].DisplayText.ToString().Trim().Replace("'", "''");
                                 if (IsNumeric(MINIMUM) == false)
                                 {
                                     MINIMUM = "0";
                                 }
 
-                                string MAXIMUM = WSHEET.Rows[i][22].DisplayText.ToString().Trim().Replace("'", "''");
+                                string MAXIMUM = WSHEET.Rows[i][20].DisplayText.ToString().Trim().Replace("'", "''");
                                 if (IsNumeric(MAXIMUM) == false)
                                 {
                                     MAXIMUM = "0";
                                 }
+
+                                string LOT_SIZE = WSHEET.Rows[i][21].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(LOT_SIZE) == false)
+                                {
+                                    LOT_SIZE = "0";
+                                }
+
+                                string PRODUCTION_LEAD = WSHEET.Rows[i][22].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(PRODUCTION_LEAD) == false)
+                                {
+                                    PRODUCTION_LEAD = "0";
+                                }
+
+                                string ARRIVAL_LEAD = WSHEET.Rows[i][23].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(ARRIVAL_LEAD) == false)
+                                {
+                                    ARRIVAL_LEAD = "0";
+                                }
+
+                                string DELIVERY_LEAD = WSHEET.Rows[i][24].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(DELIVERY_LEAD) == false)
+                                {
+                                    DELIVERY_LEAD = "0";
+                                }
+
+                                string PO_CANCEL = WSHEET.Rows[i][25].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(PO_CANCEL) == false)
+                                {
+                                    PO_CANCEL = "0";
+                                }
+
+                                string FIRST_LOTS = WSHEET.Rows[i][26].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(FIRST_LOTS) == false)
+                                {
+                                    FIRST_LOTS = "0";
+                                }
+
+                                string SECOND_LOTS = WSHEET.Rows[i][27].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(SECOND_LOTS) == false)
+                                {
+                                    SECOND_LOTS = "0";
+                                }
+
+                                string THIRD_LOTS = WSHEET.Rows[i][28].DisplayText.ToString().Trim().Replace("'", "''");
+                                if (IsNumeric(THIRD_LOTS) == false)
+                                {
+                                    THIRD_LOTS = "0";
+                                }
+
+                                string REMARK = WSHEET.Rows[i][29].DisplayText.ToString().Trim().Replace("'", "''");
 
                                 if (SUPPLIER == null) SUPPLIER = "";
                                 if (Vendor != SUPPLIER.Replace(" ", "").Replace(".", "").Replace(",", ""))
@@ -974,6 +1025,7 @@ namespace MDS.Master
                                     sbVENDOR.Append(" END  ");
                                     sbVENDOR.Append("SELECT OIDVEND FROM Vendor WHERE (Name=N'" + SUPPLIER + "')  ");
                                     OIDVEND = this.DBC.DBQuery(sbVENDOR).getString();
+
                                 }
 
                                 if (CATEGORY == null) CATEGORY = "";
@@ -1146,15 +1198,31 @@ namespace MDS.Master
                                 sbSQL.Append("      OIDDEPT='" + UserLogin.OIDDept + "',  ");
                                 sbSQL.Append("      UpdatedBy='" + UserLogin.OIDUser + "',  ");
                                 sbSQL.Append("      UpdatedDate = GETDATE()  ");
-                                sbSQL.Append("    WHERE(Code = N'" + CODE + "') ");
+                                sbSQL.Append("    WHERE (Code = N'" + CODE + "') ");
                                 sbSQL.Append(" END   ");
-
+                                sbSQL.Append("SELECT OIDITEM FROM Items WHERE (Code = N'" + CODE + "')  ");
+                                
                                 //memoEdit1.EditValue = sbSQL.ToString();
                                 //break;
                                 //MessageBox.Show(sbSQL.ToString());
                                 try
                                 {
-                                    chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
+                                    string OIDITEM = this.DBC.DBQuery(sbSQL).getString();
+                                    //Item Vendor
+                                    StringBuilder sbIV = new StringBuilder();
+                                    sbIV.Append("IF NOT EXISTS(SELECT OIDVEND FROM ItemVendor WHERE (OIDVEND=N'" + OIDVEND + "') AND (OIDITEM = '" + OIDITEM + "')) ");
+                                    sbIV.Append(" BEGIN ");
+                                    sbIV.Append("   INSERT INTO ItemVendor(OIDVEND, OIDITEM, LotSize, ProductionLead, DeliveryLead, ArrivalLead, POCancelPeriod, PurchaseLots1, PurchaseLots2, PurchaseLots3, Remark) ");
+                                    sbIV.Append("   VALUES('" + OIDVEND + "', '" + OIDITEM + "',  '" + LOT_SIZE + "', '" + PRODUCTION_LEAD + "', '" + DELIVERY_LEAD + "', '" + ARRIVAL_LEAD + "', '" + PO_CANCEL + "', '" + FIRST_LOTS + "', '" + SECOND_LOTS + "', '" + THIRD_LOTS + "', N'" + REMARK + "')  ");
+                                    sbIV.Append(" END  ");
+                                    sbIV.Append("ELSE  ");
+                                    sbIV.Append(" BEGIN ");
+                                    sbIV.Append("    UPDATE ItemVendor SET ");
+                                    sbIV.Append("      LotSize='" + LOT_SIZE + "', ProductionLead='" + PRODUCTION_LEAD + "', DeliveryLead='" + DELIVERY_LEAD + "', ArrivalLead='" + ARRIVAL_LEAD + "', POCancelPeriod='" + PO_CANCEL + "', PurchaseLots1='" + FIRST_LOTS + "', PurchaseLots2='" + SECOND_LOTS + "', PurchaseLots3='" + THIRD_LOTS + "', Remark=N'" + REMARK + "'  ");
+                                    sbIV.Append("    WHERE (OIDVENDItem = (SELECT TOP(1) OIDVENDItem FROM ItemVendor WHERE (OIDVEND = '" + OIDVEND + "') AND (OIDITEM = '" + OIDITEM + "')))  ");
+                                    sbIV.Append(" END  ");
+                     
+                                    chkSAVE = this.DBC.DBQuery(sbIV).runSQL();
                                     if (chkSAVE == false)
                                     {
                                         break;
