@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(M07));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txeFactor = new DevExpress.XtraEditors.TextEdit();
@@ -291,6 +290,8 @@
             this.layoutControlItem90 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraOpenFileDialog1 = new DevExpress.XtraEditors.XtraOpenFileDialog(this.components);
             this.ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            this.sbExam = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem86 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txeFactor.Properties)).BeginInit();
@@ -525,10 +526,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem86)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.sbExam);
             this.layoutControl1.Controls.Add(this.txeFactor);
             this.layoutControl1.Controls.Add(this.labelControl1);
             this.layoutControl1.Controls.Add(this.pbcSave);
@@ -3291,11 +3294,12 @@
             this.lcgImport.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem85,
             this.lciPregressSave,
-            this.emptySpaceItem13,
             this.layoutControlItem88,
             this.layoutControlItem89,
             this.layoutControlItem87,
-            this.layoutControlItem90});
+            this.layoutControlItem90,
+            this.layoutControlItem86,
+            this.emptySpaceItem13});
             this.lcgImport.Location = new System.Drawing.Point(0, 0);
             this.lcgImport.Name = "lcgImport";
             this.lcgImport.Size = new System.Drawing.Size(1084, 600);
@@ -3329,7 +3333,7 @@
             this.emptySpaceItem13.AllowHotTrack = false;
             this.emptySpaceItem13.Location = new System.Drawing.Point(748, 24);
             this.emptySpaceItem13.Name = "emptySpaceItem13";
-            this.emptySpaceItem13.Size = new System.Drawing.Size(336, 26);
+            this.emptySpaceItem13.Size = new System.Drawing.Size(240, 26);
             this.emptySpaceItem13.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem88
@@ -3383,6 +3387,29 @@
             // 
             this.ribbonPage2.Name = "ribbonPage2";
             this.ribbonPage2.Text = "ribbonPage2";
+            // 
+            // sbExam
+            // 
+            this.sbExam.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("sbExam.ImageOptions.Image")));
+            this.sbExam.Location = new System.Drawing.Point(997, 33);
+            this.sbExam.Name = "sbExam";
+            this.sbExam.Size = new System.Drawing.Size(92, 22);
+            this.sbExam.StyleController = this.layoutControl1;
+            this.sbExam.TabIndex = 107;
+            this.sbExam.Text = "Example File";
+            this.sbExam.Click += new System.EventHandler(this.sbExam_Click);
+            // 
+            // layoutControlItem86
+            // 
+            this.layoutControlItem86.Control = this.sbExam;
+            this.layoutControlItem86.Location = new System.Drawing.Point(988, 24);
+            this.layoutControlItem86.MaxSize = new System.Drawing.Size(96, 26);
+            this.layoutControlItem86.MinSize = new System.Drawing.Size(96, 26);
+            this.layoutControlItem86.Name = "layoutControlItem86";
+            this.layoutControlItem86.Size = new System.Drawing.Size(96, 26);
+            this.layoutControlItem86.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem86.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem86.TextVisible = false;
             // 
             // M07
             // 
@@ -3631,6 +3658,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem89)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem90)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem86)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3897,5 +3925,7 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView12;
         private DevExpress.XtraEditors.SearchLookUpEdit slueCurrency;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView13;
+        private DevExpress.XtraEditors.SimpleButton sbExam;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem86;
     }
 }

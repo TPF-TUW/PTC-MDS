@@ -2637,5 +2637,11 @@ namespace MDS.Master
                 btnSelect.Focus();
             }
         }
+
+        private void sbExam_Click(object sender, EventArgs e)
+        {
+            string pathFile = @"\\192.168.101.3\Software_tuw\PTC-MDS\ImportFile\Item\Import-Item-Exam.xlsx";
+            System.Diagnostics.Process.Start(pathFile);
+        }
     }
 }
