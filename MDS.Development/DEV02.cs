@@ -114,8 +114,8 @@ namespace MDS.Development
             sbSQL.Append("           UNION ALL ");
             sbSQL.Append("           SELECT DISTINCT US.OIDUSER AS ID, US.FullName AS UserAccount, BN.Name AS Branch, DP.Name AS Department ");
             sbSQL.Append("           FROM   SMPLRequest AS SRQ INNER JOIN ");
-            sbSQL.Append("                  Users AS US ON SRQ.CreatedBy = US.OIDUSER INNER JOIN ");
-            sbSQL.Append("                  Branchs AS BN ON US.OIDBranch = BN.OIDBranch INNER JOIN ");
+            sbSQL.Append("                  Users AS US ON SRQ.CreatedBy = US.OIDUSER LEFT OUTER JOIN ");
+            sbSQL.Append("                  Branchs AS BN ON US.OIDBranch = BN.OIDBranch LEFT OUTER JOIN ");
             sbSQL.Append("                  Departments AS DP ON US.OIDDEPT = DP.OIDDEPT ");
             sbSQL.Append("           WHERE  (SRQ.Status = '0') ");
             sbSQL.Append("           AND    (SRQ.SMPLStatus = '1') ");
@@ -160,11 +160,11 @@ namespace MDS.Development
             sbSQL.Append("       SUBSTRING((SELECT GarmentParts + ', ' AS 'data()' FROM(SELECT DISTINCT GP.OIDGParts, GP.GarmentParts FROM SMPLQuantityRequired AS SQR INNER JOIN SMPLRequestFabric AS SFB ON SQR.OIDSMPLDT = SFB.OIDSMPLDT AND SQR.OIDSMPL = SRQ.OIDSMPL  INNER JOIN SMPLRequestFabricParts AS SFBP ON SFB.OIDSMPLFB = SFBP.OIDSMPLFB AND SFB.OIDSMPLDT = SFBP.OIDSMPLDT INNER JOIN GarmentParts AS GP ON SFBP.OIDGParts = GP.OIDGParts) AS FParts FOR XML PATH('')), 1, LEN((SELECT GarmentParts + ', ' AS 'data()' FROM(SELECT DISTINCT GP.OIDGParts, GP.GarmentParts FROM SMPLQuantityRequired AS SQR INNER JOIN SMPLRequestFabric AS SFB ON SQR.OIDSMPLDT = SFB.OIDSMPLDT AND SQR.OIDSMPL = SRQ.OIDSMPL  INNER JOIN SMPLRequestFabricParts AS SFBP ON SFB.OIDSMPLFB = SFBP.OIDSMPLFB AND SFB.OIDSMPLDT = SFBP.OIDSMPLDT INNER JOIN GarmentParts AS GP ON SFBP.OIDGParts = GP.OIDGParts) AS FParts FOR XML PATH(''))) -1) AS FabricParts, ");
             sbSQL.Append("       CUS.Name AS Customer, BN.Name AS Branch, DP.Name AS Department, (SELECT TOP(1) FullName FROM Users WHERE OIDUSER = SRQ.CreatedBy) AS CreatedBy, SRQ.CreatedDate, (SELECT TOP(1) FullName FROM Users WHERE OIDUSER = SRQ.UpdatedBy) AS UpdatedBy, SRQ.UpdatedDate ");
             sbSQL.Append("FROM   SMPLRequest AS SRQ INNER JOIN ");
-            sbSQL.Append("       SMPLUseFor AS SUF ON SRQ.UseFor = SUF.OIDUF INNER JOIN ");
-            sbSQL.Append("       GarmentCategory AS GC ON SRQ.OIDCATEGORY = GC.OIDGCATEGORY INNER JOIN ");
-            sbSQL.Append("       ProductStyle AS PS ON SRQ.OIDSTYLE = PS.OIDSTYLE INNER JOIN ");
-            sbSQL.Append("       Customer AS CUS ON SRQ.OIDCUST = CUS.OIDCUST INNER JOIN ");
-            sbSQL.Append("       Branchs AS BN ON SRQ.OIDBranch = BN.OIDBranch INNER JOIN ");
+            sbSQL.Append("       SMPLUseFor AS SUF ON SRQ.UseFor = SUF.OIDUF LEFT OUTER JOIN ");
+            sbSQL.Append("       GarmentCategory AS GC ON SRQ.OIDCATEGORY = GC.OIDGCATEGORY LEFT OUTER JOIN ");
+            sbSQL.Append("       ProductStyle AS PS ON SRQ.OIDSTYLE = PS.OIDSTYLE LEFT OUTER JOIN ");
+            sbSQL.Append("       Customer AS CUS ON SRQ.OIDCUST = CUS.OIDCUST LEFT OUTER JOIN ");
+            sbSQL.Append("       Branchs AS BN ON SRQ.OIDBranch = BN.OIDBranch LEFT OUTER JOIN ");
             sbSQL.Append("       Departments AS DP ON SRQ.OIDDEPT = DP.OIDDEPT ");
             sbSQL.Append("WHERE (SRQ.Status = '0')  ");
             sbSQL.Append("AND (SRQ.SMPLStatus = '1') ");

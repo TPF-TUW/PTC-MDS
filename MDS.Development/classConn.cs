@@ -11,7 +11,7 @@ namespace MDS.Development
 {
     public class classConn
     {
-        IniFile ini = new IniFile(@"\\172.16.0.190\MDS_Project\MDS\FileConfig\Configue.ini");
+        IniFile ini = new IniFile(@"\\192.168.101.3\Software_tuw\PTC-MDS\FileConfig\Configue.ini");
 
         public string _server;
         public string _dbname;
@@ -28,10 +28,10 @@ namespace MDS.Development
 
         public SqlConnection MDS()
         {
-            _server = "172.16.0.30";
+            _server = "domain-ii";
             _dbname = "MDS";
             _user = "sa";
-            _password = "gik8nv@tpf";
+            _password = "ZAQ113m4tuw";
 
             //string section = "ConnectionString";
             //_server = ini.Read("Server",section);
