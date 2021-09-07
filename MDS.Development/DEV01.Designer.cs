@@ -29,17 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DEV01));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions4 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions5 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions6 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.ribbonControl = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.bbiPrintPreview = new DevExpress.XtraBars.BarButtonItem();
             this.bsiRecordsCount = new DevExpress.XtraBars.BarStaticItem();
@@ -529,6 +530,8 @@
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.xtraOpenFileDialog1 = new DevExpress.XtraEditors.XtraOpenFileDialog(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.sbRefreshCS = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem117 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -887,6 +890,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem110)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem117)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl
@@ -3492,6 +3496,7 @@
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.sbRefreshCS);
             this.layoutControl2.Controls.Add(this.pbcSAVE);
             this.layoutControl2.Controls.Add(this.txeQtyDF);
             this.layoutControl2.Controls.Add(this.sbUnit);
@@ -3787,9 +3792,9 @@
             this.rep_bteDel.Appearance.Options.UseTextOptions = true;
             this.rep_bteDel.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.rep_bteDel.AutoHeight = false;
-            editorButtonImageOptions3.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions3.Image")));
+            editorButtonImageOptions5.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions5.Image")));
             this.rep_bteDel.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions5, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.rep_bteDel.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.Flat;
             this.rep_bteDel.ContextImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("rep_bteDel.ContextImageOptions.Image")));
             this.rep_bteDel.Name = "rep_bteDel";
@@ -3864,10 +3869,10 @@
             // 
             this.rep_Del.Appearance.Options.UseImage = true;
             this.rep_Del.AutoHeight = false;
-            editorButtonImageOptions4.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions4.Image")));
-            serializableAppearanceObject13.Options.UseImage = true;
+            editorButtonImageOptions6.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions6.Image")));
+            serializableAppearanceObject21.Options.UseImage = true;
             this.rep_Del.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, true, false, editorButtonImageOptions4, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, true, false, editorButtonImageOptions6, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.rep_Del.ContextImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("rep_Del.ContextImageOptions.Image")));
             this.rep_Del.ContextImageOptions.ImageUri.Uri = "Delete";
             this.rep_Del.Name = "rep_Del";
@@ -4924,7 +4929,8 @@
             this.layoutControlItem112,
             this.layoutControlItem115,
             this.emptySpaceItem1,
-            this.emptySpaceItem30});
+            this.emptySpaceItem30,
+            this.layoutControlItem117});
             this.layoutControlGroup5.Location = new System.Drawing.Point(467, 258);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
@@ -4961,9 +4967,9 @@
             // emptySpaceItem31
             // 
             this.emptySpaceItem31.AllowHotTrack = false;
-            this.emptySpaceItem31.Location = new System.Drawing.Point(350, 0);
+            this.emptySpaceItem31.Location = new System.Drawing.Point(376, 0);
             this.emptySpaceItem31.Name = "emptySpaceItem31";
-            this.emptySpaceItem31.Size = new System.Drawing.Size(133, 26);
+            this.emptySpaceItem31.Size = new System.Drawing.Size(107, 26);
             this.emptySpaceItem31.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem90
@@ -6328,6 +6334,31 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // sbRefreshCS
+            // 
+            this.sbRefreshCS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.sbRefreshCS.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("sbRefreshCS.ImageOptions.Image")));
+            this.sbRefreshCS.Location = new System.Drawing.Point(825, 288);
+            this.sbRefreshCS.Name = "sbRefreshCS";
+            this.sbRefreshCS.Size = new System.Drawing.Size(22, 22);
+            this.sbRefreshCS.StyleController = this.layoutControl2;
+            this.sbRefreshCS.TabIndex = 59;
+            this.sbRefreshCS.ToolTip = "Refresh Color & Size";
+            this.sbRefreshCS.ToolTipTitle = "Load new data";
+            this.sbRefreshCS.Click += new System.EventHandler(this.sbRefreshCS_Click);
+            // 
+            // layoutControlItem117
+            // 
+            this.layoutControlItem117.Control = this.sbRefreshCS;
+            this.layoutControlItem117.Location = new System.Drawing.Point(350, 0);
+            this.layoutControlItem117.MaxSize = new System.Drawing.Size(26, 26);
+            this.layoutControlItem117.MinSize = new System.Drawing.Size(26, 26);
+            this.layoutControlItem117.Name = "layoutControlItem117";
+            this.layoutControlItem117.Size = new System.Drawing.Size(26, 26);
+            this.layoutControlItem117.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem117.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem117.TextVisible = false;
+            // 
             // DEV01
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -6700,6 +6731,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem110)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem117)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -7195,5 +7227,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem106;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private DevExpress.XtraEditors.SimpleButton sbRefreshCS;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem117;
     }
 }

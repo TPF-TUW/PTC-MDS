@@ -1707,8 +1707,15 @@ namespace MDS.Development
                     sbSQL.Append("            FROM   SMPLRequest ");
                     sbSQL.Append("            WHERE  (SMPLNo = N'" + SMPLNo + "'))) ");
                     sbSQL.Append("ORDER BY ID ");
-                    new ObjDE.setGridControl(gcQtyRequired, gvQtyRequired, sbSQL).getData(false, false, true, true);
-
+                    int QCount = this.DBC.DBQuery(sbSQL).getCount();
+                    if (QCount > 0)
+                    {
+                        new ObjDE.setGridControl(gcQtyRequired, gvQtyRequired, sbSQL).getData(false, false, true, true);
+                    }
+                    else
+                    {
+                        gcQtyRequired.DataSource = dtQtyRequired;
+                    }
 
                     //Load Fabric Tab
                     txtSampleID_FB.Text = lblID.Text;
@@ -5358,6 +5365,7 @@ namespace MDS.Development
 
         private void gvQtyRequired_ValidateRow(object sender, DevExpress.XtraGrid.Views.Base.ValidateRowEventArgs e)
         {
+
             GridView view = sender as GridView;
             DevExpress.XtraGrid.Columns.GridColumn ColorCol = view.Columns["Color"];
             DevExpress.XtraGrid.Columns.GridColumn SizeCol = view.Columns["Size"];
@@ -5375,7 +5383,7 @@ namespace MDS.Development
                 view.SetColumnError(ColorCol, "Duplicate color & size. !! Please change.");
                 view.SetColumnError(SizeCol, "Duplicate color & size. !! Please change.");
             }
-            
+
         }
 
         private bool chkDupSizeColor(string strSize, string strColor, int rowIndex)
@@ -6317,7 +6325,7 @@ namespace MDS.Development
                 this.New_Color = Convert.ToString(e.Value);
             else if (e.Column.FieldName == "Size")
                 this.New_Size = Convert.ToString(e.Value);
-            else if(e.Column.FieldName == "Quantity")
+            else if (e.Column.FieldName == "Quantity")
                 this.New_Qty = Convert.ToString(e.Value);
 
             if (this.New_Color != "" && this.New_Size != "")
@@ -7989,6 +7997,11 @@ namespace MDS.Development
             //    newFileName = "N'" + newFileName + "'";
             //}
             return newFileName;
+        }
+
+        private void sbRefreshCS_Click(object sender, EventArgs e)
+        {
+            LoadSizeColor();
         }
     }
 }
