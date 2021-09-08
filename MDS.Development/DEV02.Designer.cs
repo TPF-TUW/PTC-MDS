@@ -2951,7 +2951,6 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.slueBranch.Properties.NullText = "";
             this.slueBranch.Properties.PopupView = this.searchLookUpEdit1View;
-            this.slueBranch.Properties.ReadOnly = true;
             this.slueBranch.Size = new System.Drawing.Size(138, 20);
             this.slueBranch.StyleController = this.layoutControl1;
             this.slueBranch.TabIndex = 8;

@@ -25,7 +25,7 @@ namespace MDS.Development
 {
     public partial class DEV02 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
-        private const string COMPANY_CODE = "TPF";
+        private const string COMPANY_CODE = "PTC";
         // Global Var
         goClass.dbConn db = new goClass.dbConn();
         goClass.ctool ct = new goClass.ctool();
@@ -33,7 +33,7 @@ namespace MDS.Development
         SqlConnection mainConn = new goClass.dbConn().MDS();
 
         public LogIn UserLogin { get; set; }
-
+        
         public string ConnectionString { get; set; }
         string CONNECT_STRING = "";
         DatabaseConnect DBC;
@@ -228,9 +228,10 @@ namespace MDS.Development
 
             LoadUserSMPL();
             LoadSMPL();
-
+            
             sbSQL.Clear();
-            sbSQL.Append("SELECT Name AS Branch, OIDBranch AS ID FROM Branchs WHERE OIDCOMPANY = (SELECT TOP(1) OIDCOMPANY FROM Company WHERE Code=N'" + COMPANY_CODE + "') ORDER BY OIDBranch");
+            //sbSQL.Append("SELECT Name AS Branch, OIDBranch AS ID FROM Branchs WHERE OIDCOMPANY = (SELECT TOP(1) OIDCOMPANY FROM Company WHERE Code=N'" + COMPANY_CODE + "') ORDER BY OIDBranch");
+            sbSQL.Append("SELECT Name AS Branch, OIDBranch AS ID FROM Branchs WHERE OIDCOMPANY = '" + UserLogin.OIDCompany + "' ORDER BY OIDBranch");
             new ObjDE.setSearchLookUpEdit(slueBranch, sbSQL, "Branch", "ID").getData();
             slueBranch.Properties.View.PopulateColumns(slueBranch.Properties.DataSource);
             slueBranch.Properties.View.Columns["ID"].Visible = false;
