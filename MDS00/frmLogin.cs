@@ -37,13 +37,13 @@ namespace MDS00
             db.ConnectionOpen();
             if (db.ExecuteFirstValue("SELECT COUNT(USERNAME) FROM Users WHERE OIDCompany='" + company + "' AND UserName='" + userName + "'")=="0")
             {
-                MessageBox.Show("User Name is not valid.","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                XtraMessageBox.Show("User Name is not valid.","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 db.ConnectionClose();
                 return null;
             }
             if (db.ExecuteFirstValue("SELECT COUNT(PASSWORD) FROM Users WHERE OIDCompany='" + company + "' AND UserName='" + userName+"' AND Password='"+passWord+"'")=="0")
             {
-                MessageBox.Show("Password is not correct.","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                XtraMessageBox.Show("Password is not correct.","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return null;
             }
             db.ConnectionClose();
@@ -84,7 +84,7 @@ namespace MDS00
         {
             if (glueCompany.Text == "")
             {
-                MessageBox.Show("Please select company.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("Please select company.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 glueCompany.Focus();
             }
             else
@@ -105,11 +105,11 @@ namespace MDS00
                 }
                 catch (SystemException ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (ApplicationException ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    XtraMessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

@@ -25,7 +25,7 @@ namespace MDS00
 {
     public partial class XtraForm3 : DevExpress.XtraEditors.XtraForm
     {
-        internal LogIn UserLogin { get; set; }
+        public LogIn UserLogin { get; set; }
         public int Company { get; set; }
 
         public XtraForm3()
