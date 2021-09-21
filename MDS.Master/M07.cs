@@ -113,6 +113,9 @@ namespace MDS.Master
             sbMeterial.Append("UNION ALL ");
             sbMeterial.Append(" SELECT '9' AS ID, 'Finished Goods' AS MaterialType ");
 
+            //SEARCH
+            new ObjDE.setSearchLookUpEdit(slueSMaterial, sbMeterial, "MaterialType", "ID").getData(true);
+
             NewData();
             LoadData();
             if (rgMaterial.SelectedIndex > -1)
@@ -130,6 +133,9 @@ namespace MDS.Master
             lblStatus.ForeColor = Color.White;
             lblStatus.BackColor = Color.Green;
             layoutControlItem78.AppearanceItemCaption.BackColor = Color.Green;
+
+            bbiSave.Caption = "Save";
+            bbiSaveNew.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
 
             //if (rgMaterial.SelectedIndex > -1)
             //{
@@ -225,6 +231,7 @@ namespace MDS.Master
             rgTax.ReadOnly = false;
             txePurchaseLoss.ReadOnly = false;
             dteFirstReceiptDate.ReadOnly = false;
+            sbVENDOR.Visible = true;
             //**************************************
             selCode = "";
 
@@ -363,9 +370,6 @@ namespace MDS.Master
             sbSQL.Append("       ENUMTYPE AS ENT ON VD.VendorType = ENT.No AND ENT.Module = N'Vendor' ");
             sbSQL.Append("ORDER BY VD.Name ");
             new ObjDE.setSearchLookUpEdit(slueVendorCode, sbSQL, "Code", "ID").getData(true);
-
-            //SEARCH
-            new ObjDE.setSearchLookUpEdit(slueSMaterial, sbMeterial, "MaterialType", "ID").getData(true);
 
             slueSCustomer.Properties.DataSource = slueCustomer.Properties.DataSource;
             slueSCustomer.Properties.DisplayMember = slueCustomer.Properties.DisplayMember;
@@ -516,8 +520,10 @@ namespace MDS.Master
             return isNum;
         }
 
-        private void bbiSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void SaveData(string saveType = "")
         {
+            string SaveType = saveType;
+
             if (tabbedControlGroup1.SelectedTabPage == layoutControlGroup1 || tabbedControlGroup1.SelectedTabPage == layoutControlGroup2) //Tab Main & Vendor Detail
             {
                 bool chkPass = true;
@@ -531,6 +537,8 @@ namespace MDS.Master
                             chkPass = false;
                         }
                 }
+
+               
 
                 if (chkPass == true)
                 {
@@ -571,32 +579,48 @@ namespace MDS.Master
                     //}
                     else
                     {
-                        if (FUNC.msgQuiz("Confirm save ?") == true)
+                        if (SaveType == "New")
                         {
-                            bool chkPASS = true;
-                            //Check Vendor
-                            if (slueFirstVendor.Text.Trim() != "")
+                            string Code = glueCode.Text.Trim();
+                            StringBuilder sbChkCode = new StringBuilder();
+                            sbChkCode.Append("SELECT OIDITEM FROM Items WHERE (Code=N'" + Code + "') ");
+                            string strChk = this.DBC.DBQuery(sbChkCode).getString();
+                            if (strChk != "")
                             {
-                                bool chkVendor = false;
-                                foreach (DataRow dr in dtVendor.Rows) // search whole table
-                                {
-                                    if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
-                                    {
-                                        chkVendor = true;
-                                        break;
-                                    }
-                                }
+                                FUNC.msgWarning("Duplicate Code. Please Change.");
+                                glueCode.Focus();
+                                chkPass = false;
+                            }
+                        }
 
-                                //if (chkVendor == false)
-                                //{
-                                //    FUNC.msgWarning("Please add vendor:'" + slueFirstVendor.Text.Trim() + "' to vendor details.");
-                                //    tabbedControlGroup1.SelectedTabPage = layoutControlGroup2;
-                                //    slueVendorCode.EditValue = slueFirstVendor.EditValue;
-                                //    slueVendorCode.Focus();
-                                //    chkPASS = false;
-                                //}
-                                //else
-                                //{
+                        if (chkPass == true)
+                        {
+                            if (FUNC.msgQuiz("Confirm save ?") == true)
+                            {
+                                bool chkPASS = true;
+                                //Check Vendor
+                                if (slueFirstVendor.Text.Trim() != "")
+                                {
+                                    bool chkVendor = false;
+                                    foreach (DataRow dr in dtVendor.Rows) // search whole table
+                                    {
+                                        if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
+                                        {
+                                            chkVendor = true;
+                                            break;
+                                        }
+                                    }
+
+                                    //if (chkVendor == false)
+                                    //{
+                                    //    FUNC.msgWarning("Please add vendor:'" + slueFirstVendor.Text.Trim() + "' to vendor details.");
+                                    //    tabbedControlGroup1.SelectedTabPage = layoutControlGroup2;
+                                    //    slueVendorCode.EditValue = slueFirstVendor.EditValue;
+                                    //    slueVendorCode.Focus();
+                                    //    chkPASS = false;
+                                    //}
+                                    //else
+                                    //{
                                     if (slueFirstVendor.EditValue.ToString() != slueDefaultVendor.EditValue.ToString())
                                     {
                                         chkVendor = false;
@@ -618,187 +642,219 @@ namespace MDS.Master
                                             chkPASS = true;
                                         }
                                     }
-                               // }
-                            }
-
-                            if (chkPASS == true)
-                            {
-                                StringBuilder sbSQL = new StringBuilder();
-
-                                string MaterialType = rgMaterial.EditValue.ToString();
-                                string PurchaseType = rgPurchase.EditValue.ToString();
-                                string TaxBenefits = "0";
-                                if (rgTax.SelectedIndex != -1)
-                                {
-                                    TaxBenefits = rgTax.EditValue.ToString();
-                                }
-                                string Zone = rgZone.EditValue.ToString();
-
-                                string newFileName = "";
-                                //CopyFile
-                                if (txePath.Text.Trim() != "")
-                                {
-                                    System.IO.FileInfo fi = new System.IO.FileInfo(txePath.Text);
-                                    string extn = fi.Extension;
-                                    newFileName = glueCode.Text.ToUpper().Trim() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extn;
-                                    string newPathFileName = imgPathFile + newFileName;
-                                    //MessageBox.Show(newFileName);
-                                    System.IO.File.Copy(txePath.Text, newPathFileName);
+                                    // }
                                 }
 
-                                string strCREATE = UserLogin.OIDUser.ToString() != "" ? UserLogin.OIDUser.ToString() : "0";
-                                string strUPDATE = UserLogin.OIDUser.ToString() != "" ? UserLogin.OIDUser.ToString() : "0";
-
-                                //******** save Items table ************
-                                string OIDCATEGORY = slueCategory.Text == "" ? "NULL" : "'" + slueCategory.EditValue.ToString() + "'";
-                                string OIDSTYLE = slueStyle.Text == "" ? "NULL" : "'" + slueStyle.EditValue.ToString() + "'";
-                                string OIDCOLOR = slueColor.Text == "" ? "NULL" : "'" + slueColor.EditValue.ToString() + "'";
-                                string OIDSIZE = slueSize.Text == "" ? "NULL" : "'" + slueSize.EditValue.ToString() + "'";
-                                string OIDCUST = slueCustomer.Text == "" ? "NULL" : "'" + slueCustomer.EditValue.ToString() + "'";
-                                string PurchaseLoss = txePurchaseLoss.Text.Trim() == "" ? "NULL" : "'" + txePurchaseLoss.Text.Trim() + "'";
-                                string MinStock = txeMinStock.Text.Trim() == "" ? "NULL" : "'" + txeMinStock.Text.Trim() + "'";
-                                string MaxStock = txeMaxStock.Text.Trim() == "" ? "NULL" : "'" + txeMaxStock.Text.Trim() + "'";
-                                string StockShelfLife = txeStockSheifLife.Text.Trim() == "" ? "NULL" : "'" + txeStockSheifLife.Text.Trim() + "'";
-                                string StdCost = txeStdCost.Text.Trim() == "" ? "NULL" : "'" + txeStdCost.Text.Trim() + "'";
-                                string DefaultUnit = slueDefaultUnit.Text == "" ? "NULL" : "'" + slueDefaultUnit.EditValue.ToString() + "'";
-
-                                string ConvertUnit = slueUnit.Text == "" ? "NULL" : "'" + slueUnit.ToString() + "'";
-                                string Factor = txeFactor.Text.Trim() == "" ? "NULL" : "'" + txeFactor.Text.Trim() + "'";
-
-                                string Branch = glueBranch.Text == "" ? "NULL" : "'" + glueBranch.EditValue.ToString() + "'";
-
-                                string StdPrice = txeStdPrice.Text.Trim() == "" ? "0" : txeStdPrice.Text.Trim();
-                                string FirstVendor = slueFirstVendor.Text == "" ? "NULL" : "'" + slueFirstVendor.EditValue.ToString() + "'";
-                                string QCInspection = txeQCInspection.Text.Trim() == "" ? "0" : txeQCInspection.Text.Trim();
-
-                                string FirstReceiptDate = dteFirstReceiptDate.Text == "" ? "NULL" : "'" + Convert.ToDateTime(dteFirstReceiptDate.Text).ToString("yyyy-MM-dd") + "'";
-                                string ApprovedLabDate = dteApprovedLabDate.Text == "" ? "NULL" : "'" + Convert.ToDateTime(dteApprovedLabDate.Text).ToString("yyyy-MM-dd") + "'";
-
-                                if (lblStatus.Text.ToUpper().Trim() == "NEW" || txeID.Text.Trim() == "" || txeID.Text.Trim() == "0")
+                                if (chkPASS == true)
                                 {
-                                    sbSQL.Append("  INSERT INTO Items(MaterialType, Code, Description, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, OIDCUST, BusinessUnit, Season, ClassType, Branch,  ");
-                                    sbSQL.Append("       CostSheetNo, StdPrice, FirstVendor, PurchaseType, PurchaseLoss, TaxBenefits, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, StdCost, DefaultUnit, ConvertUnit, ConvertFactor, PathFile, LabTestNo, ApprovedLabDate, QCInspection, ");
-                                    sbSQL.Append("       CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, OIDCOMPANY) ");
-                                    sbSQL.Append("  VALUES('" + MaterialType + "', N'" + glueCode.Text.Trim().Replace("'", "''") + "', N'" + txeDescription.Text.Trim().Replace("'", "''") + "', N'" + txeComposition.Text.Trim().Replace("'", "''") + "', N'" + txeWeight.Text.Trim().Replace("'", "''") + "', N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', N'" + txeModelName.Text.Trim().Replace("'", "''") + "', " + OIDCATEGORY + ", " + OIDSTYLE + ", " + OIDCOLOR + ", " + OIDSIZE + ", " + OIDCUST + ",  ");
-                                    sbSQL.Append("         N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', N'" + cbeSeason.Text.Trim() + "', N'" + cbeClass.Text.Trim().Replace("'", "''") + "', " + Branch + ", N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', '" + StdPrice + "', " + FirstVendor + ", '" + PurchaseType + "', " + PurchaseLoss + ", '" + TaxBenefits + "', " + FirstReceiptDate + ", '" + slueDefaultVendor.EditValue.ToString() + "', ");
-                                    sbSQL.Append("         " + MinStock + ", " + MaxStock + ", " + StockShelfLife + ", " + StdCost + ", " + DefaultUnit + ", " + ConvertUnit + ", " + Factor + ", N'" + newFileName + "', N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', " + ApprovedLabDate + ", '" + QCInspection + "', ");
-                                    sbSQL.Append("         '" + strCREATE + "', GETDATE(), '" + strUPDATE + "', GETDATE(), '" + this.Company + "') ");
-                                }
-                                else if (lblStatus.Text.ToUpper().Trim() == "EDIT")
-                                {
-                                    sbSQL.Append("  UPDATE Items SET ");
-                                    sbSQL.Append("      MaterialType = '" + MaterialType + "', Code = N'" + glueCode.Text.Trim().Replace("'", "''") + "', Description = N'" + txeDescription.Text.Trim().Replace("'", "''") + "', Composition = N'" + txeComposition.Text.Trim().Replace("'", "''") + "', WeightOrMoreDetail = N'" + txeWeight.Text.Trim().Replace("'", "''") + "',  ");
-                                    sbSQL.Append("      ModelNo = N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', ModelName = N'" + txeModelName.Text.Trim().Replace("'", "''") + "', OIDCATEGORY = " + OIDCATEGORY + ", OIDSTYLE = " + OIDSTYLE + ", OIDCOLOR = " + OIDCOLOR + ", ");
-                                    sbSQL.Append("      OIDSIZE = " + OIDSIZE + ", OIDCUST = " + OIDCUST + ", BusinessUnit = N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', Season = N'" + cbeSeason.Text.Trim() + "', ClassType = N'" + cbeClass.Text.Trim().Replace("'", "''") + "', ");
-                                    sbSQL.Append("      Branch = " + Branch + ", CostSheetNo = N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', StdPrice = '" + StdPrice + "', FirstVendor = " + FirstVendor + ", PurchaseType = '" + PurchaseType + "', PurchaseLoss = " + PurchaseLoss + ", ");
-                                    sbSQL.Append("      TaxBenefits = '" + TaxBenefits + "', FirstReceiptDate = " + FirstReceiptDate + ", DefaultVendor = '" + slueDefaultVendor.EditValue.ToString() + "', MinStock = " + MinStock + ", MaxStock = " + MaxStock + ", ");
-                                    sbSQL.Append("      StockShelfLife = " + StockShelfLife + ", StdCost = " + StdCost + ", DefaultUnit = " + DefaultUnit + ", ConvertUnit = " + ConvertUnit + ", ConvertFactor = " + Factor + ", PathFile = N'" + newFileName + "', LabTestNo = N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', ");
-                                    sbSQL.Append("      ApprovedLabDate = " + ApprovedLabDate + ", QCInspection = '" + QCInspection + "', UpdatedBy = '" + strUPDATE + "', UpdatedDate = GETDATE() ");
-                                    sbSQL.Append("  WHERE(OIDITEM = '" + txeID.Text.Trim() + "') ");
-                                }
+                                    StringBuilder sbSQL = new StringBuilder();
 
-                                bool chkSAVE = false;
-                                try
-                                {
-                                    chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
-                                }
-                                catch (Exception)
-                                { }
-
-                                if (chkSAVE == true)
-                                {
-
-                                    sbSQL.Clear();
-                                    sbSQL.Append("SELECT OIDITEM FROM Items WHERE MaterialType = '" + MaterialType + "' AND Code = N'" + glueCode.Text.Trim().Replace("'", "''") + "'");
-                                    string OIDITEM = this.DBC.DBQuery(sbSQL).getString();
-                                    //******** save ItemInspection table ********
-                                    sbSQL.Clear();
-                                    string strCONDQC = "";
-                                    int iCQC = 0;
-                                    foreach (DataRowView item in clbQC.CheckedItems)
+                                    string MaterialType = rgMaterial.EditValue.ToString();
+                                    string PurchaseType = rgPurchase.EditValue.ToString();
+                                    string TaxBenefits = "0";
+                                    if (rgTax.SelectedIndex != -1)
                                     {
-                                        if (iCQC != 0)
+                                        TaxBenefits = rgTax.EditValue.ToString();
+                                    }
+                                    string Zone = rgZone.EditValue.ToString();
+
+                                    string newFileName = "";
+                                    //CopyFile
+                                    if (txePath.Text.Trim() != "")
+                                    {
+                                        System.IO.FileInfo fi = new System.IO.FileInfo(txePath.Text);
+                                        string extn = fi.Extension;
+                                        newFileName = glueCode.Text.ToUpper().Trim() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extn;
+                                        string newPathFileName = imgPathFile + newFileName;
+                                        //MessageBox.Show(newFileName);
+                                        System.IO.File.Copy(txePath.Text, newPathFileName);
+                                    }
+
+                                    string strCREATE = UserLogin.OIDUser.ToString() != "" ? UserLogin.OIDUser.ToString() : "0";
+                                    string strUPDATE = UserLogin.OIDUser.ToString() != "" ? UserLogin.OIDUser.ToString() : "0";
+
+                                    //******** save Items table ************
+                                    string OIDCATEGORY = slueCategory.Text == "" ? "NULL" : "'" + slueCategory.EditValue.ToString() + "'";
+                                    string OIDSTYLE = slueStyle.Text == "" ? "NULL" : "'" + slueStyle.EditValue.ToString() + "'";
+                                    string OIDCOLOR = slueColor.Text == "" ? "NULL" : "'" + slueColor.EditValue.ToString() + "'";
+                                    string OIDSIZE = slueSize.Text == "" ? "NULL" : "'" + slueSize.EditValue.ToString() + "'";
+                                    string OIDCUST = slueCustomer.Text == "" ? "NULL" : "'" + slueCustomer.EditValue.ToString() + "'";
+                                    string PurchaseLoss = txePurchaseLoss.Text.Trim() == "" ? "NULL" : "'" + txePurchaseLoss.Text.Trim() + "'";
+                                    string MinStock = txeMinStock.Text.Trim() == "" ? "NULL" : "'" + txeMinStock.Text.Trim() + "'";
+                                    string MaxStock = txeMaxStock.Text.Trim() == "" ? "NULL" : "'" + txeMaxStock.Text.Trim() + "'";
+                                    string StockShelfLife = txeStockSheifLife.Text.Trim() == "" ? "NULL" : "'" + txeStockSheifLife.Text.Trim() + "'";
+                                    string StdCost = txeStdCost.Text.Trim() == "" ? "NULL" : "'" + txeStdCost.Text.Trim() + "'";
+                                    string DefaultUnit = slueDefaultUnit.Text == "" ? "NULL" : "'" + slueDefaultUnit.EditValue.ToString() + "'";
+
+                                    string ConvertUnit = slueUnit.Text == "" ? "NULL" : "'" + slueUnit.EditValue.ToString() + "'";
+                                    string Factor = txeFactor.Text.Trim() == "" ? "NULL" : "'" + txeFactor.Text.Trim() + "'";
+
+                                    string Branch = glueBranch.Text == "" ? "NULL" : "'" + glueBranch.EditValue.ToString() + "'";
+
+                                    string StdPrice = txeStdPrice.Text.Trim() == "" ? "0" : txeStdPrice.Text.Trim();
+                                    string FirstVendor = slueFirstVendor.Text == "" ? "NULL" : "'" + slueFirstVendor.EditValue.ToString() + "'";
+                                    string QCInspection = txeQCInspection.Text.Trim() == "" ? "0" : txeQCInspection.Text.Trim();
+
+                                    string FirstReceiptDate = dteFirstReceiptDate.Text == "" ? "NULL" : "'" + Convert.ToDateTime(dteFirstReceiptDate.Text).ToString("yyyy-MM-dd") + "'";
+                                    string ApprovedLabDate = dteApprovedLabDate.Text == "" ? "NULL" : "'" + Convert.ToDateTime(dteApprovedLabDate.Text).ToString("yyyy-MM-dd") + "'";
+
+                                    if (lblStatus.Text.ToUpper().Trim() == "NEW" || txeID.Text.Trim() == "" || txeID.Text.Trim() == "0")
+                                    {
+                                        sbSQL.Append("  INSERT INTO Items(MaterialType, Code, Description, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, OIDCUST, BusinessUnit, Season, ClassType, Branch,  ");
+                                        sbSQL.Append("       CostSheetNo, StdPrice, FirstVendor, PurchaseType, PurchaseLoss, TaxBenefits, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, StdCost, DefaultUnit, ConvertUnit, ConvertFactor, PathFile, LabTestNo, ApprovedLabDate, QCInspection, ");
+                                        sbSQL.Append("       CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, OIDCOMPANY) ");
+                                        sbSQL.Append("  VALUES('" + MaterialType + "', N'" + glueCode.Text.Trim().Replace("'", "''") + "', N'" + txeDescription.Text.Trim().Replace("'", "''") + "', N'" + txeComposition.Text.Trim().Replace("'", "''") + "', N'" + txeWeight.Text.Trim().Replace("'", "''") + "', N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', N'" + txeModelName.Text.Trim().Replace("'", "''") + "', " + OIDCATEGORY + ", " + OIDSTYLE + ", " + OIDCOLOR + ", " + OIDSIZE + ", " + OIDCUST + ",  ");
+                                        sbSQL.Append("         N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', N'" + cbeSeason.Text.Trim() + "', N'" + cbeClass.Text.Trim().Replace("'", "''") + "', " + Branch + ", N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', '" + StdPrice + "', " + FirstVendor + ", '" + PurchaseType + "', " + PurchaseLoss + ", '" + TaxBenefits + "', " + FirstReceiptDate + ", '" + slueDefaultVendor.EditValue.ToString() + "', ");
+                                        sbSQL.Append("         " + MinStock + ", " + MaxStock + ", " + StockShelfLife + ", " + StdCost + ", " + DefaultUnit + ", " + ConvertUnit + ", " + Factor + ", N'" + newFileName + "', N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', " + ApprovedLabDate + ", '" + QCInspection + "', ");
+                                        sbSQL.Append("         '" + strCREATE + "', GETDATE(), '" + strUPDATE + "', GETDATE(), '" + this.Company + "') ");
+                                    }
+                                    else if (lblStatus.Text.ToUpper().Trim() == "EDIT")
+                                    {
+                                        if (SaveType == "New")
                                         {
-                                            strCONDQC += ", ";
+                                            sbSQL.Append("  INSERT INTO Items(MaterialType, Code, Description, Composition, WeightOrMoreDetail, ModelNo, ModelName, OIDCATEGORY, OIDSTYLE, OIDCOLOR, OIDSIZE, OIDCUST, BusinessUnit, Season, ClassType, Branch,  ");
+                                            sbSQL.Append("       CostSheetNo, StdPrice, FirstVendor, PurchaseType, PurchaseLoss, TaxBenefits, FirstReceiptDate, DefaultVendor, MinStock, MaxStock, StockShelfLife, StdCost, DefaultUnit, ConvertUnit, ConvertFactor, PathFile, LabTestNo, ApprovedLabDate, QCInspection, ");
+                                            sbSQL.Append("       CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, OIDCOMPANY) ");
+                                            sbSQL.Append("  VALUES('" + MaterialType + "', N'" + glueCode.Text.Trim().Replace("'", "''") + "', N'" + txeDescription.Text.Trim().Replace("'", "''") + "', N'" + txeComposition.Text.Trim().Replace("'", "''") + "', N'" + txeWeight.Text.Trim().Replace("'", "''") + "', N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', N'" + txeModelName.Text.Trim().Replace("'", "''") + "', " + OIDCATEGORY + ", " + OIDSTYLE + ", " + OIDCOLOR + ", " + OIDSIZE + ", " + OIDCUST + ",  ");
+                                            sbSQL.Append("         N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', N'" + cbeSeason.Text.Trim() + "', N'" + cbeClass.Text.Trim().Replace("'", "''") + "', " + Branch + ", N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', '" + StdPrice + "', " + FirstVendor + ", '" + PurchaseType + "', " + PurchaseLoss + ", '" + TaxBenefits + "', " + FirstReceiptDate + ", '" + slueDefaultVendor.EditValue.ToString() + "', ");
+                                            sbSQL.Append("         " + MinStock + ", " + MaxStock + ", " + StockShelfLife + ", " + StdCost + ", " + DefaultUnit + ", " + ConvertUnit + ", " + Factor + ", N'" + newFileName + "', N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', " + ApprovedLabDate + ", '" + QCInspection + "', ");
+                                            sbSQL.Append("         '" + strCREATE + "', GETDATE(), '" + strUPDATE + "', GETDATE(), '" + this.Company + "') ");
                                         }
-                                        strCONDQC += "'" + item["OIDCONDQC"].ToString() + "'";
-                                        sbSQL.Append("IF NOT EXISTS(SELECT OIDITEMINSP FROM ItemInspection WHERE OIDITEM = '" + OIDITEM + "' AND OIDCONDQC = '" + item["OIDCONDQC"].ToString() + "') ");
-                                        sbSQL.Append(" BEGIN ");
-                                        sbSQL.Append("  INSERT INTO ItemInspection(OIDITEM, OIDCONDQC, CreatedBy, CreatedDate) ");
-                                        sbSQL.Append("  VALUES('" + OIDITEM + "', '" + item["OIDCONDQC"].ToString() + "', '" + strCREATE + "', GETDATE()) ");
-                                        sbSQL.Append(" END ");
-                                        iCQC++;
-                                    }
-
-                                    if (strCONDQC == "")
-                                    {
-                                        sbSQL.Append("DELETE FROM ItemInspection WHERE (OIDITEM = '" + OIDITEM + "')  ");
-                                    }
-                                    else
-                                    {
-                                        sbSQL.Append("DELETE FROM ItemInspection WHERE (OIDITEM = '" + OIDITEM + "') AND (OIDCONDQC NOT IN (" + strCONDQC + "))  ");
-                                    }
-
-                                    //******** save ItemVendor table ************
-
-                                    if (dtVendor != null)
-                                    {
-                                        foreach (DataRow dr in dtVendor.Rows) // search whole table
+                                        else
                                         {
-                                            string Price = txePrice.Text.Trim() == "" ? "NULL" : "'" + txePrice.Text.Trim() + "'";
-                                            string LotSize = dr["LotSize"].ToString() == "" ? "NULL" : "'" + dr["LotSize"].ToString() + "'";
-                                            string ProductionLead = dr["ProductionLead"].ToString() == "" ? "NULL" : "'" + dr["ProductionLead"].ToString() + "'";
-                                            string DeliveryLead = dr["DeliveryLead"].ToString() == "" ? "NULL" : "'" + dr["DeliveryLead"].ToString() + "'";
-                                            string ArrivalLead = dr["ArrivalLead"].ToString() == "" ? "NULL" : "'" + dr["ArrivalLead"].ToString() + "'";
-                                            string POCancelPeriod = dr["POCancelPeriod"].ToString() == "" ? "NULL" : "'" + dr["POCancelPeriod"].ToString() + "'";
-                                            string PurchaseLots1 = dr["PurchaseLots1"].ToString() == "" ? "NULL" : "'" + dr["PurchaseLots1"].ToString() + "'";
-                                            string PurchaseLots2 = dr["PurchaseLots2"].ToString() == "" ? "NULL" : "'" + dr["PurchaseLots2"].ToString() + "'";
-                                            string PurchaseLots3 = dr["PurchaseLots3"].ToString() == "" ? "NULL" : "'" + dr["PurchaseLots3"].ToString() + "'";
-
-                                            if (dr["OIDVENDItem"].ToString() == "") //Insert
-                                            {
-                                                sbSQL.Append("INSERT INTO ItemVendor(OIDVEND, OIDITEM, ");
-                                                if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
-                                                {
-                                                    sbSQL.Append("MatDetails, MatCode, SMPLLotNo, Price, Currency, ");
-                                                }
-                                                sbSQL.Append("  LotSize, ProductionLead, DeliveryLead, ArrivalLead, POCancelPeriod, PurchaseLots1, PurchaseLots2, PurchaseLots3, Remark) ");
-                                                sbSQL.Append(" VALUES('" + dr["OIDVEND"].ToString() + "', '" + OIDITEM + "',  ");
-                                                if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
-                                                {
-                                                    sbSQL.Append("N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', " + Price + ", N'" + slueCurrency.EditValue.ToString() + "',  ");
-                                                }
-                                                sbSQL.Append(" " + LotSize + ", " + ProductionLead + ", " + DeliveryLead + ", " + ArrivalLead + ", " + POCancelPeriod + ", " + PurchaseLots1 + ", " + PurchaseLots2 + ", " + PurchaseLots3 + ", N'" + dr["Remark"].ToString().Replace("'", "''") + "')  ");
-                                            }
-                                            else //Update
-                                            {
-                                                sbSQL.Append("UPDATE ItemVendor SET ");
-                                                sbSQL.Append("  OIDVEND = '" + dr["OIDVEND"].ToString() + "', OIDITEM = '" + OIDITEM + "', ");
-                                                if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
-                                                {
-                                                    sbSQL.Append("MatDetails = N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', MatCode = N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', SMPLLotNo = N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', Price = " + Price + ", Currency = N'" + slueCurrency.EditValue.ToString() + "',  ");
-                                                }
-                                                sbSQL.Append("LotSize = " + LotSize + ", ProductionLead = " + ProductionLead + ", DeliveryLead = " + DeliveryLead + ", ArrivalLead = " + ArrivalLead + ", POCancelPeriod = " + POCancelPeriod + ", PurchaseLots1 = " + PurchaseLots1 + ", PurchaseLots2 = " + PurchaseLots2 + ", PurchaseLots3 = " + PurchaseLots3 + ", Remark = N'" + dr["Remark"].ToString().Replace("'", "''") + "'  ");
-                                                sbSQL.Append("WHERE (OIDVENDItem = '" + dr["OIDVENDItem"].ToString() + "') ");
-                                            }
+                                            sbSQL.Append("  UPDATE Items SET ");
+                                            sbSQL.Append("      MaterialType = '" + MaterialType + "', Code = N'" + glueCode.Text.Trim().Replace("'", "''") + "', Description = N'" + txeDescription.Text.Trim().Replace("'", "''") + "', Composition = N'" + txeComposition.Text.Trim().Replace("'", "''") + "', WeightOrMoreDetail = N'" + txeWeight.Text.Trim().Replace("'", "''") + "',  ");
+                                            sbSQL.Append("      ModelNo = N'" + txeModelNo.Text.Trim().Replace("'", "''") + "', ModelName = N'" + txeModelName.Text.Trim().Replace("'", "''") + "', OIDCATEGORY = " + OIDCATEGORY + ", OIDSTYLE = " + OIDSTYLE + ", OIDCOLOR = " + OIDCOLOR + ", ");
+                                            sbSQL.Append("      OIDSIZE = " + OIDSIZE + ", OIDCUST = " + OIDCUST + ", BusinessUnit = N'" + txeBusinessUnit.Text.Trim().Replace("'", "''") + "', Season = N'" + cbeSeason.Text.Trim() + "', ClassType = N'" + cbeClass.Text.Trim().Replace("'", "''") + "', ");
+                                            sbSQL.Append("      Branch = " + Branch + ", CostSheetNo = N'" + txeCostSheet.Text.Trim().Replace("'", "''") + "', StdPrice = '" + StdPrice + "', FirstVendor = " + FirstVendor + ", PurchaseType = '" + PurchaseType + "', PurchaseLoss = " + PurchaseLoss + ", ");
+                                            sbSQL.Append("      TaxBenefits = '" + TaxBenefits + "', FirstReceiptDate = " + FirstReceiptDate + ", DefaultVendor = '" + slueDefaultVendor.EditValue.ToString() + "', MinStock = " + MinStock + ", MaxStock = " + MaxStock + ", ");
+                                            sbSQL.Append("      StockShelfLife = " + StockShelfLife + ", StdCost = " + StdCost + ", DefaultUnit = " + DefaultUnit + ", ConvertUnit = " + ConvertUnit + ", ConvertFactor = " + Factor + ", PathFile = N'" + newFileName + "', LabTestNo = N'" + txeLabTestNo.Text.Trim().Replace("'", "''") + "', ");
+                                            sbSQL.Append("      ApprovedLabDate = " + ApprovedLabDate + ", QCInspection = '" + QCInspection + "', UpdatedBy = '" + strUPDATE + "', UpdatedDate = GETDATE() ");
+                                            sbSQL.Append("  WHERE(OIDITEM = '" + txeID.Text.Trim() + "') ");
                                         }
                                     }
-
-                                    //MessageBox.Show("2");
                                     //MessageBox.Show(sbSQL.ToString());
-                                    if (sbSQL.Length > 0)
+                                    bool chkSAVE = false;
+                                    try
                                     {
-                                        try
+                                        chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
+                                    }
+                                    catch (Exception)
+                                    { }
+
+                                    if (chkSAVE == true)
+                                    {
+
+                                        sbSQL.Clear();
+                                        sbSQL.Append("SELECT OIDITEM FROM Items WHERE MaterialType = '" + MaterialType + "' AND Code = N'" + glueCode.Text.Trim().Replace("'", "''") + "'");
+                                        string OIDITEM = this.DBC.DBQuery(sbSQL).getString();
+                                        //******** save ItemInspection table ********
+                                        sbSQL.Clear();
+                                        string strCONDQC = "";
+                                        int iCQC = 0;
+                                        foreach (DataRowView item in clbQC.CheckedItems)
                                         {
-                                            chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
-                                            if (chkSAVE == true)
+                                            if (iCQC != 0)
                                             {
-                                                FUNC.msgInfo("Save complete.");
-                                                bbiNew.PerformClick();
+                                                strCONDQC += ", ";
+                                            }
+                                            strCONDQC += "'" + item["OIDCONDQC"].ToString() + "'";
+                                            sbSQL.Append("IF NOT EXISTS(SELECT OIDITEMINSP FROM ItemInspection WHERE OIDITEM = '" + OIDITEM + "' AND OIDCONDQC = '" + item["OIDCONDQC"].ToString() + "') ");
+                                            sbSQL.Append(" BEGIN ");
+                                            sbSQL.Append("  INSERT INTO ItemInspection(OIDITEM, OIDCONDQC, CreatedBy, CreatedDate) ");
+                                            sbSQL.Append("  VALUES('" + OIDITEM + "', '" + item["OIDCONDQC"].ToString() + "', '" + strCREATE + "', GETDATE()) ");
+                                            sbSQL.Append(" END ");
+                                            iCQC++;
+                                        }
+
+                                        if (strCONDQC == "")
+                                        {
+                                            sbSQL.Append("DELETE FROM ItemInspection WHERE (OIDITEM = '" + OIDITEM + "')  ");
+                                        }
+                                        else
+                                        {
+                                            sbSQL.Append("DELETE FROM ItemInspection WHERE (OIDITEM = '" + OIDITEM + "') AND (OIDCONDQC NOT IN (" + strCONDQC + "))  ");
+                                        }
+
+                                        //******** save ItemVendor table ************
+
+                                        if (dtVendor != null)
+                                        {
+                                            foreach (DataRow dr in dtVendor.Rows) // search whole table
+                                            {
+                                                string Price = txePrice.Text.Trim() == "" ? "NULL" : "'" + txePrice.Text.Trim() + "'";
+                                                string LotSize = dr["LotSize"].ToString() == "" ? "NULL" : "'" + dr["LotSize"].ToString() + "'";
+                                                string ProductionLead = dr["ProductionLead"].ToString() == "" ? "NULL" : "'" + dr["ProductionLead"].ToString() + "'";
+                                                string DeliveryLead = dr["DeliveryLead"].ToString() == "" ? "NULL" : "'" + dr["DeliveryLead"].ToString() + "'";
+                                                string ArrivalLead = dr["ArrivalLead"].ToString() == "" ? "NULL" : "'" + dr["ArrivalLead"].ToString() + "'";
+                                                string POCancelPeriod = dr["POCancelPeriod"].ToString() == "" ? "NULL" : "'" + dr["POCancelPeriod"].ToString() + "'";
+                                                string PurchaseLots1 = dr["PurchaseLots1"].ToString() == "" ? "NULL" : "'" + dr["PurchaseLots1"].ToString() + "'";
+                                                string PurchaseLots2 = dr["PurchaseLots2"].ToString() == "" ? "NULL" : "'" + dr["PurchaseLots2"].ToString() + "'";
+                                                string PurchaseLots3 = dr["PurchaseLots3"].ToString() == "" ? "NULL" : "'" + dr["PurchaseLots3"].ToString() + "'";
+
+                                                if (SaveType == "New")
+                                                {
+                                                    sbSQL.Append("INSERT INTO ItemVendor(OIDVEND, OIDITEM, ");
+                                                    if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
+                                                    {
+                                                        sbSQL.Append("MatDetails, MatCode, SMPLLotNo, Price, Currency, ");
+                                                    }
+                                                    sbSQL.Append("  LotSize, ProductionLead, DeliveryLead, ArrivalLead, POCancelPeriod, PurchaseLots1, PurchaseLots2, PurchaseLots3, Remark) ");
+                                                    sbSQL.Append(" VALUES('" + dr["OIDVEND"].ToString() + "', '" + OIDITEM + "',  ");
+                                                    if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
+                                                    {
+                                                        sbSQL.Append("N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', " + Price + ", N'" + slueCurrency.EditValue.ToString() + "',  ");
+                                                    }
+                                                    sbSQL.Append(" " + LotSize + ", " + ProductionLead + ", " + DeliveryLead + ", " + ArrivalLead + ", " + POCancelPeriod + ", " + PurchaseLots1 + ", " + PurchaseLots2 + ", " + PurchaseLots3 + ", N'" + dr["Remark"].ToString().Replace("'", "''") + "')  ");
+                                                }
+                                                else
+                                                {
+                                                    if (dr["OIDVENDItem"].ToString() == "") //Insert
+                                                    {
+                                                        sbSQL.Append("INSERT INTO ItemVendor(OIDVEND, OIDITEM, ");
+                                                        if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
+                                                        {
+                                                            sbSQL.Append("MatDetails, MatCode, SMPLLotNo, Price, Currency, ");
+                                                        }
+                                                        sbSQL.Append("  LotSize, ProductionLead, DeliveryLead, ArrivalLead, POCancelPeriod, PurchaseLots1, PurchaseLots2, PurchaseLots3, Remark) ");
+                                                        sbSQL.Append(" VALUES('" + dr["OIDVEND"].ToString() + "', '" + OIDITEM + "',  ");
+                                                        if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
+                                                        {
+                                                            sbSQL.Append("N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', " + Price + ", N'" + slueCurrency.EditValue.ToString() + "',  ");
+                                                        }
+                                                        sbSQL.Append(" " + LotSize + ", " + ProductionLead + ", " + DeliveryLead + ", " + ArrivalLead + ", " + POCancelPeriod + ", " + PurchaseLots1 + ", " + PurchaseLots2 + ", " + PurchaseLots3 + ", N'" + dr["Remark"].ToString().Replace("'", "''") + "')  ");
+                                                    }
+                                                    else //Update
+                                                    {
+                                                        sbSQL.Append("UPDATE ItemVendor SET ");
+                                                        sbSQL.Append("  OIDVEND = '" + dr["OIDVEND"].ToString() + "', OIDITEM = '" + OIDITEM + "', ");
+                                                        if (dr["OIDVEND"].ToString() == slueFirstVendor.EditValue.ToString())
+                                                        {
+                                                            sbSQL.Append("MatDetails = N'" + txeMatDetails.Text.Trim().Replace("'", "''") + "', MatCode = N'" + txeMatCode.Text.Trim().Replace("'", "''") + "', SMPLLotNo = N'" + txeSMPLLotNo.Text.Trim().Replace("'", "''") + "', Price = " + Price + ", Currency = N'" + slueCurrency.EditValue.ToString() + "',  ");
+                                                        }
+                                                        sbSQL.Append("LotSize = " + LotSize + ", ProductionLead = " + ProductionLead + ", DeliveryLead = " + DeliveryLead + ", ArrivalLead = " + ArrivalLead + ", POCancelPeriod = " + POCancelPeriod + ", PurchaseLots1 = " + PurchaseLots1 + ", PurchaseLots2 = " + PurchaseLots2 + ", PurchaseLots3 = " + PurchaseLots3 + ", Remark = N'" + dr["Remark"].ToString().Replace("'", "''") + "'  ");
+                                                        sbSQL.Append("WHERE (OIDVENDItem = '" + dr["OIDVENDItem"].ToString() + "') ");
+                                                    }
+                                                }
                                             }
                                         }
-                                        catch (Exception)
-                                        { }
+
+                                        //MessageBox.Show("2");
+                                        //MessageBox.Show(sbSQL.ToString());
+                                        if (sbSQL.Length > 0)
+                                        {
+                                            try
+                                            {
+                                                chkSAVE = this.DBC.DBQuery(sbSQL).runSQL();
+                                                if (chkSAVE == true)
+                                                {
+                                                    FUNC.msgInfo("Save complete.");
+                                                    bbiNew.PerformClick();
+                                                }
+                                            }
+                                            catch (Exception)
+                                            { }
+                                        }
                                     }
                                 }
                             }
@@ -1201,7 +1257,7 @@ namespace MDS.Master
                                 sbSQL.Append("    WHERE (Code = N'" + CODE + "') ");
                                 sbSQL.Append(" END   ");
                                 sbSQL.Append("SELECT OIDITEM FROM Items WHERE (Code = N'" + CODE + "')  ");
-                                
+
                                 //memoEdit1.EditValue = sbSQL.ToString();
                                 //break;
                                 //MessageBox.Show(sbSQL.ToString());
@@ -1221,7 +1277,7 @@ namespace MDS.Master
                                     sbIV.Append("      LotSize='" + LOT_SIZE + "', ProductionLead='" + PRODUCTION_LEAD + "', DeliveryLead='" + DELIVERY_LEAD + "', ArrivalLead='" + ARRIVAL_LEAD + "', POCancelPeriod='" + PO_CANCEL + "', PurchaseLots1='" + FIRST_LOTS + "', PurchaseLots2='" + SECOND_LOTS + "', PurchaseLots3='" + THIRD_LOTS + "', Remark=N'" + REMARK + "'  ");
                                     sbIV.Append("    WHERE (OIDVENDItem = (SELECT TOP(1) OIDVENDItem FROM ItemVendor WHERE (OIDVEND = '" + OIDVEND + "') AND (OIDITEM = '" + OIDITEM + "')))  ");
                                     sbIV.Append(" END  ");
-                     
+
                                     chkSAVE = this.DBC.DBQuery(sbIV).runSQL();
                                     if (chkSAVE == false)
                                     {
@@ -1266,6 +1322,11 @@ namespace MDS.Master
                     }
                 }
             }
+        }
+
+        private void bbiSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SaveData();
         }
 
         //private void selectMaterial(int value)
@@ -1454,6 +1515,10 @@ namespace MDS.Master
                 lblStatus.ForeColor = Color.White;
                 lblStatus.BackColor = Color.Navy;
                 layoutControlItem78.AppearanceItemCaption.BackColor = Color.Navy;
+
+                bbiSave.Caption = "Update";
+                bbiSaveNew.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
+
                 //return;
                 if (arrItem[1] != "" && arrItem[1] != "8")
                     rgMaterial.EditValue = Convert.ToInt32(arrItem[1]);
@@ -1572,15 +1637,20 @@ namespace MDS.Master
                 if (slueFirstVendor.Text != "")
                 {
                     slueFirstVendor.ReadOnly = true;
-                    txeMatDetails.ReadOnly = true;
-                    txeMatCode.ReadOnly = true;
-                    txeSMPLLotNo.ReadOnly = true;
-                    txePrice.ReadOnly = true;
-                    slueCurrency.ReadOnly = true;
-                    rgPurchase.ReadOnly = true;
-                    rgTax.ReadOnly = true;
-                    txePurchaseLoss.ReadOnly = true;
-                    dteFirstReceiptDate.ReadOnly = true;
+                    sbVENDOR.Visible = false;
+                    //txeMatDetails.ReadOnly = true;
+                    //txeMatCode.ReadOnly = true;
+                    //txeSMPLLotNo.ReadOnly = true;
+                    //txePrice.ReadOnly = true;
+                    //slueCurrency.ReadOnly = true;
+                    //rgPurchase.ReadOnly = true;
+                    //rgTax.ReadOnly = true;
+                    //txePurchaseLoss.ReadOnly = true;
+                    //dteFirstReceiptDate.ReadOnly = true;
+                }
+                else
+                {
+                    sbVENDOR.Visible = true;
                 }
                 //**************************************
             }
@@ -1593,6 +1663,14 @@ namespace MDS.Master
                 //{
                 //    txeDescription.Text = "";
                 //}
+
+                lblStatus.Text = "NEW";
+                lblStatus.ForeColor = Color.White;
+                lblStatus.BackColor = Color.Green;
+                layoutControlItem78.AppearanceItemCaption.BackColor = Color.Green;
+
+                bbiSave.Caption = "Save";
+                bbiSaveNew.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
 
                 txeDescription.Focus();
             }
@@ -1668,20 +1746,37 @@ namespace MDS.Master
             txePrice.Text = "";
             slueCurrency.EditValue = "";
 
-            StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("SELECT TOP (1) MatDetails, MatCode, SMPLLotNo, FORMAT(Price, '###0.####') AS Price, Currency ");
-            sbSQL.Append("FROM   ItemVendor ");
-            sbSQL.Append("WHERE(OIDITEM = '" + txeID.Text.Trim() + "') AND(OIDVEND = '" + slueFirstVendor.EditValue.ToString() + "') ");
-            string[] arrVEND = this.DBC.DBQuery(sbSQL).getMultipleValue();
-            if (arrVEND.Length > 0)
+            if (slueFirstVendor.Text != "")
             {
-                txeMatDetails.Text = arrVEND[0];
-                txeMatCode.Text = arrVEND[1];
-                txeSMPLLotNo.Text = arrVEND[2];
-                txePrice.Text = arrVEND[3];
-                slueCurrency.EditValue = arrVEND[4];
-            }
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT TOP (1) MatDetails, MatCode, SMPLLotNo, FORMAT(Price, '###0.####') AS Price, Currency ");
+                sbSQL.Append("FROM   ItemVendor ");
+                sbSQL.Append("WHERE (OIDITEM = '" + txeID.Text.Trim() + "') AND(OIDVEND = '" + slueFirstVendor.EditValue.ToString() + "') ");
+                string[] arrVEND = this.DBC.DBQuery(sbSQL).getMultipleValue();
+                if (arrVEND.Length > 0)
+                {
+                    txeMatDetails.Text = arrVEND[0];
+                    txeMatCode.Text = arrVEND[1];
+                    txeSMPLLotNo.Text = arrVEND[2];
+                    txePrice.Text = arrVEND[3];
+                    slueCurrency.EditValue = arrVEND[4];
+                }
 
+                //*** ดึง Default Vendor ****
+                sbSQL.Clear();
+                sbSQL.Append("SELECT PaymentCurrency FROM Vendor WHERE (OIDVEND = '" + slueFirstVendor.EditValue.ToString() + "') ");
+                int VENID = this.DBC.DBQuery(sbSQL).getInt();
+                slueCurrency.EditValue = VENID;
+                if (VENID > 0)
+                {
+                    slueCurrency.EditValue = VENID;
+                    if (VENID == 1)
+                        rgPurchase.EditValue = 0;
+                    else
+                        rgPurchase.EditValue = 1;
+                }
+                //**************************
+            }
             txeMatDetails.Focus();
         }
 
@@ -2642,6 +2737,11 @@ namespace MDS.Master
         {
             string pathFile = @"\\192.168.101.3\Software_tuw\PTC-MDS\ImportFile\Item\Import-Item-Exam.xlsx";
             System.Diagnostics.Process.Start(pathFile);
+        }
+
+        private void bbiSaveNew_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SaveData("New");
         }
     }
 }
