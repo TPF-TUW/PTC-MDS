@@ -306,8 +306,6 @@ namespace MDS.Development
             DataTable dt = db.GetDataTable(strSQL);
             gridControl1.DataSource = dt;
             if (dt == null) return;
-            gridView1.Columns["BOMNO"].Caption = "BOM No.";
-            gridView1.Columns["REVISIONNO"].Caption = "Revise";
             gridView1.Columns["SMPLITEM"].Caption = "SMPL Item";
             gridView1.Columns["SMPLNO"].Caption = "SMPL No.";
             gridView1.Columns["SEASON"].Caption = "Season";
@@ -451,6 +449,20 @@ namespace MDS.Development
             gridView4.OptionsView.EnableAppearanceOddRow = true;
             gridView4.OptionsView.ColumnAutoWidth = false;
             gridView4.BestFitColumns();
+
+            //ทำเครื่องหมายเช็คใน gridview 2 ที่มีรายการตรงกับใน gridview4
+            for (int i = 0; i < gridView4.DataRowCount; i++)
+            {
+                string itemNo = gridView4.GetRowCellValue(i, "ITEMNO").ToString();
+                for (int j = 0; j < gridView3.DataRowCount; j++)
+                {
+                    if (Equals(itemNo, gridView3.GetRowCellValue(j, "ITEMNO")))
+                    {
+                        gridView3.SetRowCellValue(j, "X", true);
+                        break;
+                    }
+                }
+            }
         }
 
         private void MyStyleChanged(object sender, EventArgs e)
@@ -553,6 +565,16 @@ namespace MDS.Development
             if (e.Info.IsRowIndicator) e.Info.DisplayText = (e.RowHandle + 1).ToString();
             gridView2.IndicatorWidth = 45;
         }
+        private void gridView3_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        {
+            if (e.Info.IsRowIndicator) e.Info.DisplayText = (e.RowHandle + 1).ToString();
+            gridView3.IndicatorWidth = 45;
+        }
+        private void gridView4_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        {
+            if (e.Info.IsRowIndicator) e.Info.DisplayText = (e.RowHandle + 1).ToString();
+            gridView4.IndicatorWidth = 45;
+        }
         private void gridView1_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
@@ -654,14 +676,14 @@ namespace MDS.Development
                     //gridView3.CopyToClipboard();
                     //gridView4.PasteFromClipboard();
                 }
-                else
-                {
-                    for (int i = 0; i < gridView4.DataRowCount; i++)
-                    {
-                        if (Equals(itemNO, gridView4.GetRowCellValue(i, "ITEMNO"))) gridView4.DeleteRow(i); 
-                    }
+                //else
+                //{
+                //    for (int i = 0; i < gridView4.DataRowCount; i++)
+                //    {
+                //        if (Equals(itemNO, gridView4.GetRowCellValue(i, "ITEMNO"))) gridView4.DeleteRow(i); 
+                //    }
 
-                }
+                //}
                 
                 
             }
@@ -701,6 +723,25 @@ namespace MDS.Development
             else
                 GetBOMList(0);
         }
+        private void gridControl4_ProcessGridKey(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (gridView4.IsEditing == false) { gridView4.DeleteSelectedRows(); }
+            }
+        }
+        private void gridView4_RowDeleting(object sender, DevExpress.Data.RowDeletingEventArgs e)
+        {
+            string itemNO = ((DataRowView)e.Row)["ITEMNO"].ToString();
+            for (int i = 0; i < gridView3.DataRowCount; i++)
+            {
+                if (Equals(itemNO, gridView3.GetRowCellValue(i, "ITEMNO")))
+                {
+                    gridView3.SetRowCellValue(i, "X", false);
+                    break;
+                }
+            }
+        }
 
         private void bbiNew_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -729,18 +770,7 @@ namespace MDS.Development
             //System.Diagnostics.Process.Start(pathFile);
         }
 
-
-
-
-        private void LoadListBOM()
-        {
-            StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("");
-            new ObjDE.setGridControl(gridControl1, gridView1, sbSQL).getData(false, false, false, true);
-        }
-
         
-
         private bool chkDuplicate()
         {
             bool chkDup = true;
