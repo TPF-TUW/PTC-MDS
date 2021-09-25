@@ -685,7 +685,7 @@
             this.txtConsumption.Name = "txtConsumption";
             this.txtConsumption.Properties.BeepOnError = false;
             this.txtConsumption.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.txtConsumption.Properties.MaskSettings.Set("mask", "n");
+            this.txtConsumption.Properties.MaskSettings.Set("mask", "n6");
             this.txtConsumption.Size = new System.Drawing.Size(189, 20);
             this.txtConsumption.StyleController = this.layoutControl1;
             this.txtConsumption.TabIndex = 55;
@@ -712,7 +712,7 @@
             this.txtPrice.Properties.BeepOnError = false;
             this.txtPrice.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.txtPrice.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
-            this.txtPrice.Properties.MaskSettings.Set("mask", "n");
+            this.txtPrice.Properties.MaskSettings.Set("mask", "n6");
             this.txtPrice.Size = new System.Drawing.Size(189, 20);
             this.txtPrice.StyleController = this.layoutControl1;
             this.txtPrice.TabIndex = 52;
