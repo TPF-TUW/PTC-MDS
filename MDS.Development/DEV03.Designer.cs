@@ -63,7 +63,6 @@
             this.txtCreateBy = new DevExpress.XtraEditors.TextEdit();
             this.txtCost = new DevExpress.XtraEditors.TextEdit();
             this.treeBom = new DevExpress.XtraTreeList.TreeList();
-            this.txtConsumption = new DevExpress.XtraEditors.TextEdit();
             this.txtMatLoss = new DevExpress.XtraEditors.TextEdit();
             this.txtPrice = new DevExpress.XtraEditors.TextEdit();
             this.txtSmplLotNo = new DevExpress.XtraEditors.TextEdit();
@@ -107,6 +106,7 @@
             this.txtVendor = new DevExpress.XtraEditors.TextEdit();
             this.txtWorkStation = new DevExpress.XtraEditors.TextEdit();
             this.txtMatUnit = new DevExpress.XtraEditors.TextEdit();
+            this.txtConsumption = new DevExpress.XtraEditors.CalcEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.tabbed_Master = new DevExpress.XtraLayout.TabbedControlGroup();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -193,7 +193,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCreateBy.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCost.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeBom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtConsumption.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatLoss.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSmplLotNo.Properties)).BeginInit();
@@ -238,6 +237,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtVendor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWorkStation.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatUnit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtConsumption.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbed_Master)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
@@ -520,7 +520,6 @@
             this.layoutControl1.Controls.Add(this.txtCreateBy);
             this.layoutControl1.Controls.Add(this.txtCost);
             this.layoutControl1.Controls.Add(this.treeBom);
-            this.layoutControl1.Controls.Add(this.txtConsumption);
             this.layoutControl1.Controls.Add(this.txtMatLoss);
             this.layoutControl1.Controls.Add(this.txtPrice);
             this.layoutControl1.Controls.Add(this.txtSmplLotNo);
@@ -558,6 +557,7 @@
             this.layoutControl1.Controls.Add(this.txtVendor);
             this.layoutControl1.Controls.Add(this.txtWorkStation);
             this.layoutControl1.Controls.Add(this.txtMatUnit);
+            this.layoutControl1.Controls.Add(this.txtConsumption);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 90);
             this.layoutControl1.Name = "layoutControl1";
@@ -661,6 +661,8 @@
             this.txtCost.Location = new System.Drawing.Point(641, 342);
             this.txtCost.MenuManager = this.ribbonControl;
             this.txtCost.Name = "txtCost";
+            this.txtCost.Properties.Appearance.Options.UseTextOptions = true;
+            this.txtCost.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.txtCost.Properties.BeepOnError = false;
             this.txtCost.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.txtCost.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
@@ -677,19 +679,6 @@
             this.treeBom.Name = "treeBom";
             this.treeBom.Size = new System.Drawing.Size(451, 372);
             this.treeBom.TabIndex = 57;
-            // 
-            // txtConsumption
-            // 
-            this.txtConsumption.Location = new System.Drawing.Point(641, 318);
-            this.txtConsumption.MenuManager = this.ribbonControl;
-            this.txtConsumption.Name = "txtConsumption";
-            this.txtConsumption.Properties.BeepOnError = false;
-            this.txtConsumption.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
-            this.txtConsumption.Properties.MaskSettings.Set("mask", "n6");
-            this.txtConsumption.Size = new System.Drawing.Size(189, 20);
-            this.txtConsumption.StyleController = this.layoutControl1;
-            this.txtConsumption.TabIndex = 55;
-            this.txtConsumption.EditValueChanged += new System.EventHandler(this.txtConsumption_EditValueChanged);
             // 
             // txtMatLoss
             // 
@@ -709,6 +698,8 @@
             this.txtPrice.Location = new System.Drawing.Point(641, 294);
             this.txtPrice.MenuManager = this.ribbonControl;
             this.txtPrice.Name = "txtPrice";
+            this.txtPrice.Properties.Appearance.Options.UseTextOptions = true;
+            this.txtPrice.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.txtPrice.Properties.BeepOnError = false;
             this.txtPrice.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
             this.txtPrice.Properties.MaskSettings.Set("MaskManagerSignature", "allowNull=False");
@@ -1153,6 +1144,21 @@
             this.txtMatUnit.Size = new System.Drawing.Size(145, 20);
             this.txtMatUnit.StyleController = this.layoutControl1;
             this.txtMatUnit.TabIndex = 56;
+            // 
+            // txtConsumption
+            // 
+            this.txtConsumption.Location = new System.Drawing.Point(641, 318);
+            this.txtConsumption.MenuManager = this.ribbonControl;
+            this.txtConsumption.Name = "txtConsumption";
+            this.txtConsumption.Properties.BeepOnError = false;
+            this.txtConsumption.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.txtConsumption.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.NumericMaskManager));
+            this.txtConsumption.Properties.MaskSettings.Set("mask", "n6");
+            this.txtConsumption.Size = new System.Drawing.Size(189, 20);
+            this.txtConsumption.StyleController = this.layoutControl1;
+            this.txtConsumption.TabIndex = 55;
+            this.txtConsumption.EditValueChanged += new System.EventHandler(this.txtConsumption_EditValueChanged);
             // 
             // Root
             // 
@@ -1948,7 +1954,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCreateBy.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCost.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeBom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtConsumption.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatLoss.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSmplLotNo.Properties)).EndInit();
@@ -1993,6 +1998,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtVendor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWorkStation.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatUnit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtConsumption.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbed_Master)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
@@ -2152,7 +2158,6 @@
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem11;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
-        private DevExpress.XtraEditors.TextEdit txtConsumption;
         private DevExpress.XtraEditors.TextEdit txtMatLoss;
         private DevExpress.XtraEditors.TextEdit txtPrice;
         private DevExpress.XtraEditors.TextEdit txtSmplLotNo;
@@ -2226,5 +2231,6 @@
         private DevExpress.XtraEditors.TextEdit txtVendor;
         private DevExpress.XtraEditors.TextEdit txtWorkStation;
         private DevExpress.XtraEditors.TextEdit txtMatUnit;
+        private DevExpress.XtraEditors.CalcEdit txtConsumption;
     }
 }
